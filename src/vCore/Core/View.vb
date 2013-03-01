@@ -166,6 +166,14 @@ Public Class View
 
 
     Public Class BufferPaint
+        Friend Sub New()
 
+        End Sub
+        Public Sub Initialise()
+
+        End Sub
+        Public Sub Render()
+
+        End Sub
     End Class
 End Class
