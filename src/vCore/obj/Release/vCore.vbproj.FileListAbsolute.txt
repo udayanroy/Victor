@@ -1,0 +1,9 @@
+H:\Udayan\Victor\vCore\obj\Release\ResolveAssemblyReference.cache
+H:\Udayan\Victor\vCore\obj\Release\vCore.Resources.resources
+H:\Udayan\Victor\vCore\obj\Release\vCore.vbproj.GenerateResource.Cache
+H:\Udayan\Victor\vCore\bin\Release\vCore.dll
+H:\Udayan\Victor\vCore\bin\Release\vCore.pdb
+H:\Udayan\Victor\vCore\bin\Release\vCore.xml
+H:\Udayan\Victor\vCore\obj\Release\vCore.dll
+H:\Udayan\Victor\vCore\obj\Release\vCore.xml
+H:\Udayan\Victor\vCore\obj\Release\vCore.pdb
