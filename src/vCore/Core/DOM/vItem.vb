@@ -1,10 +1,12 @@
 ﻿Imports System.Drawing
 
 Public Interface vItem
+    Inherits IDisposable
 
     Sub Draw(ByRef g As Graphics)
     Function GetBound() As RectangleF
     Function HitTest(ByVal p As PointF) As Boolean
+    Sub Translate(ByVal x As Single, ByVal y As Single)
 End Interface
 
 

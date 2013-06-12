@@ -2,7 +2,7 @@
 Imports System.Drawing.Drawing2D
 
 Public Class Msr
-    Implements Iedtr
+    'Implements Iedtr
 
 
     Private bound As New Rectangle(30, 30, 200, 200)
@@ -15,7 +15,7 @@ Public Class Msr
 
 
 
-    Public Sub Draw(ByRef g As System.Drawing.Graphics, ByVal mat As matrix) Implements Iedtr.Draw
+    Public Sub Draw(ByRef g As System.Drawing.Graphics, ByVal mat As Matrix) 'Implements Iedtr.Draw
         g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
         g.DrawRectangle(Pens.Black, bound)
 

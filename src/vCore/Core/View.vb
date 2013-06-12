@@ -3,6 +3,9 @@ Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
 Public Class View
+    Implements IDisposable
+
+
     Private mem As DOM
     Private device As advancedPanel
     Private zom As Single = 1.0
@@ -13,7 +16,7 @@ Public Class View
     Dim page_location As New Point
     Dim Canvas_rect, page_rect As Rectangle
 
-
+    Dim bffgraphics As BufferPaint
 
 
 
@@ -24,6 +27,7 @@ Public Class View
         Initialize_View()  'initialize view
         StartView()
 
+        bffgraphics = New BufferPaint(device)
 
     End Sub
     Public Sub Refresh()
@@ -34,6 +38,12 @@ Public Class View
             Return mem
         End Get
     End Property
+    Public ReadOnly Property BufferGraphics As BufferPaint
+        Get
+            Return Me.bffgraphics
+        End Get
+    End Property
+
     Public Sub paint(ByVal g As Graphics)
 
         Dim gc As GraphicsContainer
@@ -89,13 +99,53 @@ Public Class View
         Dim ky As Double = p.Y / zom
         Return New PointF(kx - (device.AutoScrollPosition.X / zom), ky - (device.AutoScrollPosition.Y / zom))
     End Function
+    ''' <summary>
+    ''' Convert Device point to Canvas Point.
+    ''' </summary>
+    ''' <param name="p">Device point.</param>
+    ''' <returns>Return canvas point.</returns>
+    ''' <remarks></remarks>
+    Public Function Dc2memPt(ByVal p As PointF) As PointF
+        Dim m = Me.DCpointToMemory(p)
+        Dim mp = Me.getpagerctOrg
 
+        Return New PointF(m.X - mp.X, m.Y - mp.Y)
+    End Function
+    ''' <summary>
+    ''' Convert Memory Path to Device Path.
+    ''' </summary>
+    ''' <param name="path"></param>
+    ''' <remarks></remarks>
+    Public Sub mem2DcPath(ByRef path As GraphicsPath)
+
+        Using mat As New Matrix
+            mat.Translate(Me.postionFactor.X, Me.postionFactor.Y)
+            mat.Scale(Me.zoomFactor, Me.zoomFactor)
+            mat.Translate(Me.getpagerctOrg.X, Me.getpagerctOrg.Y)
+
+            path.Transform(mat)
+        End Using
+
+    End Sub
+
+    Public Sub Dc2MemPath(ByRef path As GraphicsPath)
+
+        Using mat As New Matrix
+            mat.Translate(Me.postionFactor.X, Me.postionFactor.Y)
+            mat.Scale(Me.zoomFactor, Me.zoomFactor)
+            mat.Translate(Me.getpagerctOrg.X, Me.getpagerctOrg.Y)
+            mat.Invert()
+
+            path.Transform(mat)
+        End Using
+
+    End Sub
     Public Function MemorypointToDC(ByVal p As PointF) As PointF
         Return New PointF()
     End Function
-    
 
-    
+
+
 
     Private Sub Initialize_View()
         '// Initialize View
@@ -113,7 +163,7 @@ Public Class View
         page_rect = New Rectangle(page_location, page_size)
         '// set minimum Scroll Rect
         device.AutoScrollMinSize = New System.Drawing.Size(2000, 2000)
-        
+
 
     End Sub
     Private Sub StartView()
@@ -165,15 +215,36 @@ Public Class View
     End Property
 
 
-    Public Class BufferPaint
-        Friend Sub New()
 
-        End Sub
-        Public Sub Initialise()
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' To detect redundant calls
 
-        End Sub
-        Public Sub Render()
+    ' IDisposable
+    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
+        If Not Me.disposedValue Then
+            If disposing Then
+                ' TODO: dispose managed state (managed objects).
+            End If
+            bffgraphics.Dispose()
+            ' TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
+            ' TODO: set large fields to null.
+        End If
+        Me.disposedValue = True
+    End Sub
 
-        End Sub
-    End Class
+    ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
+    'Protected Overrides Sub Finalize()
+    '    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+    '    Dispose(False)
+    '    MyBase.Finalize()
+    'End Sub
+
+    ' This code added by Visual Basic to correctly implement the disposable pattern.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+        Dispose(True)
+        GC.SuppressFinalize(Me)
+    End Sub
+#End Region
+
 End Class

@@ -1,67 +1,72 @@
 ﻿Imports System.Drawing
 Imports System.Drawing.Drawing2D
-Public Enum selectionType
-    MSR
-    Pathedt
-End Enum
-Public Structure memLoc
-    Dim layer As Integer
-    Dim obj As Integer
-    Public Sub create(ByVal l As Integer, ByVal o As Integer)
-        layer = l
-        obj = o
-    End Sub
-End Structure
 
-Public Class Selection
-
-    Dim memloc As memLoc
-    Dim emty As Boolean
-    Public Sub New()
-        emty = True
-    End Sub
-    Public Property isEmty() As Boolean
-        Get
-            Return emty
-        End Get
-        Set(ByVal value As Boolean)
-            emty = value
-        End Set
-    End Property
-
-
-    Public Property MemoryLocation() As memLoc
-        Get
-            Return memloc
-        End Get
-        Set(ByVal value As memLoc)
-            memloc = value
-        End Set
-    End Property
-End Class
 Public Class vEditor
 
 
     Dim vcor As vCore
     Dim slct As Selection
+    Dim iedt As Iedtr
 
+    Dim move As eMove
+    Dim size As eSize
+    Dim rotate As eRotate
+    Dim pathedt As ePathPt
 
-    Dim msr As New Msr
-
+    Dim type As selectionType
 
     Public Sub New(ByRef v As vCore)
+
         vcor = v
         slct = New Selection
-    End Sub
-    Public Sub SelectAt(ByVal p As Point)
+        move = New eMove(Me)
+        size = New eSize(Me)
+        rotate = New eRotate(Me)
+        pathedt = New ePathPt(Me)
 
+        type = SelectionType.None
+
+    End Sub
+    Public Function HittestAt(ByVal p As Point) As Selection
+        Dim retn As New Selection()
 
         Dim memloc As memLoc
         Dim flage As Boolean = False
 
-        Dim m As PointF = vcor.View.DCpointToMemory(p)
-        Dim mp As New PointF(m.X - vcor.View.getpagerctOrg.X, m.Y - vcor.View.getpagerctOrg.Y)
+        Dim mp = vcor.View.Dc2memPt(p)
 
+        Dim len, lobj As Integer
+        len = vcor.View.Memory.Layers.Count
+
+        For l As Integer = 0 To len - 1
+            lobj = vcor.View.Memory.Layers(l).Item.Count
+            For k As Integer = 0 To lobj - 1
+                If vcor.View.Memory.Layers(l).Item(k).HitTest(mp) Then
+                    memloc.create(l, k)
+
+                    flage = True
+                End If
+            Next
+        Next
+
+        If flage = True Then
+            retn.MemoryLocation = memloc
+            retn.isEmty = False
+        Else
+            retn.isEmty = True
+        End If
+
+        Return retn
+    End Function
+    Public Function SelectAt(ByVal p As Point) As Integer
+        Dim r As Integer = 0
+
+        Dim memloc As memLoc
+        Dim flage As Boolean = False
+
+        'Dim m As PointF = vcor.View.DCpointToMemory(p)
+        'Dim mp As New PointF(m.X - vcor.View.getpagerctOrg.X, m.Y - vcor.View.getpagerctOrg.Y)
+        Dim mp = vcor.View.Dc2memPt(p)
 
         Dim len, lobj As Integer
         len = vcor.View.Memory.Layers.Count
@@ -77,68 +82,103 @@ Public Class vEditor
             Next
         Next
         If flage = True Then
+            If memloc.Equals(slct.MemoryLocation) Then
+                r = 1
+            Else
+                r = 2
+            End If
             slct.MemoryLocation = memloc
             slct.isEmty = False
+
         Else
             slct.isEmty = True
+            r = 0
         End If
 
-        Refresh()
+        ' Refresh()
+        Return r
 
-
-    End Sub
+    End Function
 
 
     Public Sub DisSelect()
-
+        slct.isEmty = True
     End Sub
+
+    Public ReadOnly Property selection() As Selection
+        Get
+            Return Me.slct
+        End Get
+    End Property
+
+    Public ReadOnly Property View As View
+        Get
+            Return vcor.View
+        End Get
+
+    End Property
     Public Sub Refresh()
         vcor.View.Refresh()
     End Sub
-    Public Sub StartDrag(ByVal p As Point)
 
-    End Sub
-    Public Sub DragTo(ByVal p As Point)
-
-    End Sub
-    Public Sub EndDrag(ByVal p As Point)
-
-    End Sub
-    Public Property SelectionType() As selectionType
+    Public Property EditingType() As selectionType
         Get
-
+            Return Me.type
         End Get
         Set(ByVal value As selectionType)
 
+            Select Case value
+                Case selectionType.None
+                    Me.iedt = Nothing
+                Case selectionType.Move
+                    Me.iedt = move
+            End Select
         End Set
     End Property
+    Public Sub setEditingType(ByVal typ As selectionType)
 
+
+        Select Case typ
+            Case selectionType.None
+                Me.iedt = Nothing
+            Case selectionType.Move
+                Me.iedt = move
+            Case selectionType.Size
+                Me.iedt = size
+            Case selectionType.Rotate
+                Me.iedt = rotate
+            Case selectionType.PathEdit
+                Me.iedt = pathedt
+
+        End Select
+        type = typ
+
+        Refresh()
+    End Sub
+    Public Function getSelectionPath() As vPath
+        Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
+    End Function
     Public Sub paint(ByVal g As Graphics)
-        If slct.isEmty = False Then
 
-
-            Dim mat As New Matrix
-            Dim pth As New GraphicsPath
-
-
-            Dim rf As RectangleF = getBoundRect()
-            pth.AddRectangle(rf)
-
-
-            mat.Translate(vcor.View.postionFactor.X, vcor.View.postionFactor.Y)
-            mat.Scale(vcor.View.zoomFactor, vcor.View.zoomFactor)
-            mat.Translate(vcor.View.getpagerctOrg.X, vcor.View.getpagerctOrg.Y)
-
-
-            pth.Transform(mat)
-
-            Using p As New Pen(Color.Red)
-
-                g.DrawPath(p, pth)
-
-            End Using
+        If Me.type <> selectionType.None Then
+            Me.iedt.Draw(g)
         End If
 
+    End Sub
+    Public Sub mouse_Down(ByRef e As System.Windows.Forms.MouseEventArgs)
+        If Me.type <> selectionType.None Then
+            Me.iedt.mouse_Down(e)
+        End If
+    End Sub
+    Public Sub mouse_Move(ByRef e As System.Windows.Forms.MouseEventArgs)
+        If Me.type <> selectionType.None Then
+            Me.iedt.mouse_Move(e)
+        End If
+    End Sub
+    Public Sub mouse_Up(ByRef e As System.Windows.Forms.MouseEventArgs)
+        If Me.type <> selectionType.None Then
+            Me.iedt.mouse_Up(e)
+        End If
     End Sub
     Public Function getBoundRect() As RectangleF
         Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj).GetBound
