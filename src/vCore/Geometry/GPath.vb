@@ -63,6 +63,33 @@ Public Class GPath
     End Sub
     Public Sub AddEllipse(ByVal x1 As Single, ByVal y1 As Single, ByVal width As Single, ByVal height As Single)
 
+        Dim pathkpa = 0.5522847498
+        Dim w = width
+        Dim h = height
+
+        Dim w2 = w / 2
+        Dim h2 = h / 2
+
+        Dim wk = w2 * pathkpa
+        Dim hk = h2 * pathkpa
+
+        Dim sp As New SubPath
+        sp.Closed = True
+
+        Dim p1 As New PathPoint(New PointF(x1 + w2, y1), New PointF(x1 + w2 - wk, y1), _
+                                New PointF(x1 + w2 + wk, y1), PathPointType.Smooth)
+        sp.Points.Add(p1)
+        Dim p2 As New PathPoint(New PointF(x1 + w, y1 + h2), New PointF(x1 + w, y1 + h2 - hk), _
+                                New PointF(x1 + w, y1 + h2 + hk), PathPointType.Smooth)
+        sp.Points.Add(p2)
+        Dim p3 As New PathPoint(New PointF(x1 + w2, y1 + h), New PointF(x1 + w2 + wk, y1 + h), _
+                                New PointF(x1 + w2 - wk, y1 + h), PathPointType.Smooth)
+        sp.Points.Add(p3)
+        Dim p4 As New PathPoint(New PointF(x1, y1 + h2), New PointF(x1, y1 + h2 + hk), _
+                                New PointF(x1, y1 + h2 - hk), PathPointType.Smooth)
+        sp.Points.Add(p4)
+
+        Me.spaths.Add(sp)
     End Sub
     Public Sub AddEllipse(ByVal rect As RectangleF)
         Me.AddEllipse(rect.X, rect.Y, rect.Width, rect.Height)
@@ -73,23 +100,44 @@ Public Class GPath
         Me.spaths.Add(path)
     End Sub
 
-    Public Function getPoints() As PointF()
+    Public Function Points() As PathPoint()
         Return Nothing
     End Function
+
+    Public ReadOnly Property Items(ByVal index As Integer) As SubPath
+        Get
+            Return Me.spaths.Item(index)
+        End Get
+    End Property
 
     Public Sub Transform(ByVal mat As Matrix)
 
     End Sub
 
-    Public Function GetBound() As RectangleF
+    Public Function GetBoundS() As RectangleF
 
     End Function
+
+    Public Function GetBoundL() As RectangleF
+
+    End Function
+
+    Public Function Copy() As GPath
+        Return Nothing
+    End Function
+
+    Public Function ToGraphicsPath() As GraphicsPath
+        Dim gp As New GraphicsPath
+
+        Return gp
+    End Function
+
+
 End Class
 
 Public Class SubPath
 
     Private pts As New List(Of PathPoint)
-
 
     Public Sub New()
         Me.Closed = False
@@ -121,23 +169,50 @@ Public Class SubPath
 
     End Sub
 
-    Public Function GetBound() As RectangleF
+    Public Function GetBoundL() As RectangleF
 
     End Function
+
+    Public Function GetBoundS() As RectangleF
+
+    End Function
+
+    Public Function Copy() As SubPath
+        Return Nothing
+    End Function
+
 End Class
 
 Public Class PathPoint
+
     Public Sub New()
 
     End Sub
+
     Public Sub New(ByVal p As PointF)
         Me.M = p
         Me.Type = PathPointType.None
     End Sub
+
+    Public Sub New(ByVal main As PointF, ByVal pControlPoint As PointF, _
+                    ByVal nControlPoint As PointF, Optional ByVal pType As PathPointType = PathPointType.Sharp)
+
+        Me.M = main
+        Me.C1 = pControlPoint
+        Me.C2 = nControlPoint
+        Me.Type = pType
+
+    End Sub
+
     Public Property M As PointF
     Public Property C1 As PointF
     Public Property C2 As PointF
     Public Property Type As PathPointType
+
+    Public Function Copy() As PathPoint
+        Return New PathPoint(Me.M, Me.C1, Me.C2, Me.Type)
+    End Function
+
 End Class
 
 Public Enum PathPointType

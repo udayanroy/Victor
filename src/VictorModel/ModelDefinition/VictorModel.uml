@@ -32,7 +32,17 @@
         name="Projector"
         isAbstract="false"
         isLeaf="false"
-        isActiveClass="false" />
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="e28f684f-2c79-466c-99de-b6088da3fdca">
+            <classMoniker
+              Id="8cad2153-5413-4794-bc3b-5e205a762883"
+              LastKnownName="Dom"
+              LastKnownLocation="VictorModel.uml" />
+          </dependency>
+        </suppliersInternal>
+      </class>
     </packageHasNamedElement>
     <packageHasNamedElement>
       <class

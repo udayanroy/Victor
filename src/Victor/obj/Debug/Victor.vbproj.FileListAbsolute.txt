@@ -62,3 +62,6 @@ H:\Experiment\Victor\Victor\obj\Debug\GenerateResource-ResGen.write.1.tlog
 H:\Experiment\Victor\Victor\obj\Debug\Victor.exe
 H:\Experiment\Victor\Victor\obj\Debug\Victor.xml
 H:\Experiment\Victor\Victor\obj\Debug\Victor.pdb
+H:\git\repo\victor\victor\src\Victor\obj\Debug\Victor.exe
+H:\git\repo\victor\victor\src\Victor\obj\Debug\Victor.xml
+H:\git\repo\victor\victor\src\Victor\obj\Debug\Victor.pdb
