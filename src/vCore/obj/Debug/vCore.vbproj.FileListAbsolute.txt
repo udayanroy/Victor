@@ -16,3 +16,13 @@ D:\udayan\Victor\vCore\obj\Debug\vCore.vbproj.GenerateResource.Cache
 D:\udayan\Victor\vCore\obj\Debug\vCore.dll
 D:\udayan\Victor\vCore\obj\Debug\vCore.xml
 D:\udayan\Victor\vCore\obj\Debug\vCore.pdb
+H:\Experiment\Victor\vCore\bin\Debug\vCore.dll
+H:\Experiment\Victor\vCore\bin\Debug\vCore.pdb
+H:\Experiment\Victor\vCore\bin\Debug\vCore.xml
+H:\Experiment\Victor\vCore\obj\Debug\ResolveAssemblyReference.cache
+H:\Experiment\Victor\vCore\obj\Debug\vCore.Resources.resources
+H:\Experiment\Victor\vCore\obj\Debug\GenerateResource-ResGen.read.1.tlog
+H:\Experiment\Victor\vCore\obj\Debug\GenerateResource-ResGen.write.1.tlog
+H:\Experiment\Victor\vCore\obj\Debug\vCore.dll
+H:\Experiment\Victor\vCore\obj\Debug\vCore.xml
+H:\Experiment\Victor\vCore\obj\Debug\vCore.pdb

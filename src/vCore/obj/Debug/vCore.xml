@@ -6,6 +6,32 @@ vCore
 </name>
 </assembly>
 <members>
-
+<member name="M:vCore.View.Dc2memPt(System.Drawing.PointF)">
+	<summary>
+ Convert Device point to Canvas Point.
+ </summary>
+	<param name="p">Device point.</param>
+	<returns>Return canvas point.</returns>
+	<remarks></remarks>
+</member><member name="M:vCore.View.mem2DcPath(System.Drawing.Drawing2D.GraphicsPath@)">
+	<summary>
+ Convert Memory Path to Device Path.
+ </summary>
+	<param name="path"></param>
+	<remarks></remarks>
+</member><member name="P:vCore.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:vCore.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:vCore.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
 </members>
 </doc>
