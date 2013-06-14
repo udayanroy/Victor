@@ -112,27 +112,59 @@ Public Class GPath
 
     Public Sub Transform(ByVal mat As Matrix)
 
+        For Each sp As SubPath In Me.spaths
+            sp.Transform(mat)
+        Next
+
     End Sub
 
-    Public Function GetBoundS() As RectangleF
+    Public Function GetStrictBound() As RectangleF
 
     End Function
 
-    Public Function GetBoundL() As RectangleF
+    Public Function GetBound() As RectangleF
+        Dim bnd As RectangleF
 
+        Using gp As GraphicsPath = Me.ToGraphicsPath
+            bnd = gp.GetBounds
+        End Using
+
+        Return bnd
     End Function
 
-    Public Function Copy() As GPath
-        Return Nothing
+    Public Function Clone() As GPath
+        Dim gp As New GPath
+        For Each sp As SubPath In Me.spaths
+            gp.spaths.Add(sp.Clone)
+        Next
+        Return gp
     End Function
 
     Public Function ToGraphicsPath() As GraphicsPath
         Dim gp As New GraphicsPath
 
-        Return gp
+        Return (gp)
     End Function
 
+    Public Function isOutlineVisible(ByVal p As PointF, ByVal pen As Pen) As Boolean
+        Dim isv As Boolean
 
+        Using gp As GraphicsPath = Me.ToGraphicsPath
+            isv = gp.IsOutlineVisible(p, pen)
+        End Using
+
+        Return isv
+    End Function
+
+    Public Function isVisible(ByVal p As PointF) As Boolean
+        Dim isv As Boolean
+
+        Using gp As GraphicsPath = Me.ToGraphicsPath
+            isv = gp.IsVisible(p)
+        End Using
+
+        Return isv
+    End Function
 End Class
 
 Public Class SubPath
@@ -166,24 +198,40 @@ Public Class SubPath
     Public Property Closed As Boolean
 
     Public Sub Transform(ByVal mat As Matrix)
-
+        For Each pt As PathPoint In Me.Points
+            pt.Transform(mat)
+        Next
     End Sub
 
-    Public Function GetBoundL() As RectangleF
+    Public Function GetBound() As RectangleF
 
     End Function
 
-    Public Function GetBoundS() As RectangleF
+    Public Function GetStrictBound() As RectangleF
 
     End Function
 
-    Public Function Copy() As SubPath
-        Return Nothing
+    Public Function Clone() As SubPath
+        Dim sp As New SubPath
+        sp.Closed = Me.Closed
+
+        For Each pt As PathPoint In Me.Points
+            sp.Points.Add(pt.Clone)
+        Next
+
+        Return sp
     End Function
 
+    Public Function ToGraphicsPath() As GraphicsPath
+        Dim gp As New GraphicsPath
+
+        Return (gp)
+    End Function
 End Class
 
 Public Class PathPoint
+
+    Dim pts(3) As PointF
 
     Public Sub New()
 
@@ -205,14 +253,39 @@ Public Class PathPoint
     End Sub
 
     Public Property M As PointF
+        Get
+            Return Me.pts(0)
+        End Get
+        Set(ByVal value As PointF)
+            Me.pts(0) = value
+        End Set
+    End Property
     Public Property C1 As PointF
+        Get
+            Return Me.pts(1)
+        End Get
+        Set(ByVal value As PointF)
+            Me.pts(1) = value
+        End Set
+    End Property
     Public Property C2 As PointF
+        Get
+            Return Me.pts(2)
+        End Get
+        Set(ByVal value As PointF)
+            Me.pts(2) = value
+        End Set
+    End Property
+
     Public Property Type As PathPointType
 
-    Public Function Copy() As PathPoint
+    Public Function Clone() As PathPoint
         Return New PathPoint(Me.M, Me.C1, Me.C2, Me.Type)
     End Function
 
+    Public Sub Transform(ByVal mat As Matrix)
+        mat.TransformPoints(Me.pts)
+    End Sub
 End Class
 
 Public Enum PathPointType
