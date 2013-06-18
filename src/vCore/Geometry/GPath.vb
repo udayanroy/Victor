@@ -101,6 +101,18 @@ Public Class GPath
     End Sub
 
     Public Function Points() As PathPoint()
+
+        Dim np As Integer = 0
+
+        For Each sp As SubPath In Me.spaths
+            np += sp.CountPoints
+        Next
+
+        Dim parray As New List(Of PathPoint)(np)
+
+        For Each sp As SubPath In Me.spaths
+            parray.AddRange(sp.Points)
+        Next
         Return Nothing
     End Function
 
@@ -142,6 +154,10 @@ Public Class GPath
 
     Public Function ToGraphicsPath() As GraphicsPath
         Dim gp As New GraphicsPath
+
+        For Each sp As SubPath In Me.spaths
+            gp.AddPath(sp.ToGraphicsPath, False)
+        Next
 
         Return (gp)
     End Function
@@ -204,7 +220,13 @@ Public Class SubPath
     End Sub
 
     Public Function GetBound() As RectangleF
+        Dim bnd As RectangleF
 
+        Using gp As GraphicsPath = Me.ToGraphicsPath
+            bnd = gp.GetBounds
+        End Using
+
+        Return bnd
     End Function
 
     Public Function GetStrictBound() As RectangleF
@@ -223,7 +245,71 @@ Public Class SubPath
     End Function
 
     Public Function ToGraphicsPath() As GraphicsPath
+
+        Dim np = Me.CountPoints
+        If np < 2 Then
+            Return Nothing
+            Exit Function
+        End If
+
+
+        Dim lst As New List(Of PointF)
         Dim gp As New GraphicsPath
+
+        Dim p0 = pts(0)
+
+        If p0.Type = PathPointType.None Then
+            lst.Add(p0.M)
+            lst.Add(p0.M)
+        Else
+            lst.Add(p0.M)
+            lst.Add(p0.C2)
+        End If
+
+        If np > 2 Then
+            For i As Integer = 1 To np - 2
+                Dim p As PathPoint = Me.pts(i)
+
+                If p.Type = PathPointType.None Then
+                    lst.Add(p.M)
+                    lst.Add(p.M)
+                    lst.Add(p.M)
+                Else
+                    lst.Add(p.C1)
+                    lst.Add(p.M)
+                    lst.Add(p.C2)
+                End If
+
+
+            Next
+        End If
+
+
+        Dim pl = pts(np - 1)
+
+        If pl.Type = PathPointType.None Then
+            lst.Add(pl.M)
+            lst.Add(pl.M)
+        Else
+            lst.Add(pl.C1)
+            lst.Add(pl.M)
+        End If
+
+        If Me.Closed Then
+            lst.Add(pl.C2)
+
+            lst.Add(p0.C1)
+            lst.Add(p0.M)
+
+            gp.AddBeziers(lst.ToArray)
+            gp.CloseFigure()
+        Else
+            gp.AddBeziers(lst.ToArray)
+            gp.SetMarkers()
+        End If
+
+
+
 
         Return (gp)
     End Function
