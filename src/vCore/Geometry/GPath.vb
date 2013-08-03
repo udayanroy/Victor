@@ -181,6 +181,9 @@ Public Class GPath
 
         Return isv
     End Function
+    Public Sub drawPath(ByVal g As Graphics, Optional ByVal pn As Pen = Nothing, Optional ByVal brsh As Brush = Nothing)
+
+    End Sub
 End Class
 
 Public Class SubPath

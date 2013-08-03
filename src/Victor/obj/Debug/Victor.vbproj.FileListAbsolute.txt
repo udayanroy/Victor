@@ -65,3 +65,4 @@ H:\Experiment\Victor\Victor\obj\Debug\Victor.pdb
 H:\git\repo\victor\victor\src\Victor\obj\Debug\Victor.exe
 H:\git\repo\victor\victor\src\Victor\obj\Debug\Victor.xml
 H:\git\repo\victor\victor\src\Victor\obj\Debug\Victor.pdb
+G:\git\repo\victor\victor\src\Victor\obj\Debug\Victor.xml
