@@ -1,3 +1,0 @@
-13/june/2013:	the Project is now GIT supported.
-08/June/2013:	GPath.vb added. GPath, subPath, PathPoint, PathPointType are Created.
-06/June/2013:	Modeling Project "VictorModel" is added
