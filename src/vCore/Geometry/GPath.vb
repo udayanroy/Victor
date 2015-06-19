@@ -181,8 +181,17 @@ Public Class GPath
 
         Return isv
     End Function
-    Public Sub drawPath(ByVal g As Graphics, Optional ByVal pn As Pen = Nothing, Optional ByVal brsh As Brush = Nothing)
-
+    Public Sub drawPath(ByVal g As Graphics, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
+        If (Pen IsNot Nothing) Or (Brush IsNot Nothing) Then
+            Using gp As GraphicsPath = Me.ToGraphicsPath
+                If Brush IsNot Nothing Then
+                    g.FillPath(Brush, gp)
+                End If
+                If Pen IsNot Nothing Then
+                    g.DrawPath(Pen, gp)
+                End If
+            End Using
+        End If
     End Sub
 End Class
 
