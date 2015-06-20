@@ -13,7 +13,7 @@ Public Class eRotate
    
 
     Dim s As Integer = 0
-    Dim svp As GraphicsPath
+    Dim svp As GPath
     Dim mda As Single
     Dim mdp As Point
     Dim rotating As Boolean = False
@@ -70,7 +70,7 @@ Public Class eRotate
                         mda = Me.Angle(mdp, e.Location)
 
                         svp = v.getSelectionPath.GraphicsPath.Clone
-                        v.View.mem2DcPath(svp)
+                        v.View.mem2DcGPath(svp)
                         v.View.BufferGraphics.Initialize()
                         rotating = True
                     Else
@@ -90,7 +90,7 @@ Public Class eRotate
         If e.Button = MouseButtons.Left And rotating Then
             Dim angl = Me.Angle(mdp, e.Location)
             v.View.BufferGraphics.Clear()
-            Using mat As New Matrix, tmpth As GraphicsPath = svp.Clone
+            Using mat As New Matrix, tmpth As GraphicsPath = svp.ToGraphicsPath
                 mat.RotateAt(angl - mda, mdp)
                 tmpth.Transform(mat)
                 v.View.BufferGraphics.Graphics.DrawPath(Pens.Brown, tmpth)
@@ -110,7 +110,7 @@ Public Class eRotate
 
             End Using
 
-            svp.Dispose()
+            'svp.Dispose()
         End If
         v.View.Refresh()
     End Sub

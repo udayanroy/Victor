@@ -122,6 +122,12 @@ Public Class GPath
         End Get
     End Property
 
+    Public ReadOnly Property subpaths As List(Of SubPath)
+        Get
+            Return Me.spaths
+        End Get
+    End Property
+
     Public Sub Transform(ByVal mat As Matrix)
 
         For Each sp As SubPath In Me.spaths

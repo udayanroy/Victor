@@ -44,10 +44,10 @@ Public Class tEllipseTool
        
 
         Dim vp As New vPath
-        vp.GraphicsPath.Reset()
+        vp.GraphicsPath.subpaths.clear()
         vp.GraphicsPath.AddEllipse(mdl.X, mdl.Y, e.Location.X - mdl.X, e.Location.Y - mdl.Y)
         'Convert path to memory path
-        v.Dc2MemPath(vp.GraphicsPath)
+        v.Dc2MemGPath(vp.GraphicsPath)
         'Add it to Memory
         v.Memory.Layers(0).Item.Add(vp)
 

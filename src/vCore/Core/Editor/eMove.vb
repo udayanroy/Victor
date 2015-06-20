@@ -9,7 +9,7 @@ Public Class eMove
     Dim md As Point
 
     Dim s As Integer = 0
-    Dim svp As GraphicsPath
+    Dim svp As GPath
 
     Public Sub New(ByRef edtr As vEditor)
         v = edtr
@@ -37,7 +37,7 @@ Public Class eMove
 
         If s <> 0 Then
             svp = v.getSelectionPath.GraphicsPath.Clone
-            v.View.mem2DcPath(svp)
+            v.View.mem2DcGPath(svp)
             v.View.BufferGraphics.Initialize()
         End If
     End Sub
@@ -52,7 +52,7 @@ Public Class eMove
                     svp.Transform(mat)
                 End Using
 
-                v.View.BufferGraphics.Graphics.DrawPath(Pens.Black, svp)
+                v.View.BufferGraphics.Graphics.DrawPath(Pens.Black, svp.ToGraphicsPath)
                 v.View.BufferGraphics.Render()
 
                 mdl = e.Location
@@ -66,7 +66,7 @@ Public Class eMove
             Dim p2 = v.View.Dc2memPt(e.Location)
             v.getSelectionPath.Translate(p2.X - p1.X, p2.Y - p1.Y)
 
-            svp.Dispose()
+            'svp.Dispose()
         End If
         v.View.Refresh()
     End Sub

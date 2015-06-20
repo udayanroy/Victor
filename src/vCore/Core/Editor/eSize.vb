@@ -14,7 +14,7 @@ Public Class eSize
     Dim md As Point
 
     Dim s As Integer = 0
-    Dim svp As GraphicsPath
+    Dim svp As GPath
 
     Dim sizing As Boolean = False
     Dim hit As Integer = -1
@@ -94,7 +94,7 @@ Public Class eSize
                 sizing = True
                 'Debug.Print("true")
                 svp = v.getSelectionPath.GraphicsPath.Clone
-                v.View.mem2DcPath(svp)
+                v.View.mem2DcGPath(svp)
                 v.View.BufferGraphics.Initialize()
             Else
 
@@ -132,9 +132,9 @@ Public Class eSize
             tr.Width = pk.X - tr.X
             tr.Height = pk.Y - tr.Y
 
-            ScalePath(v.getSelectionPath.GraphicsPath, tr)
+            ScaleGPath(v.getSelectionPath.GraphicsPath, tr)
 
-            svp.Dispose()
+            'svp.Dispose()
         End If
 
 
@@ -193,7 +193,7 @@ Public Class eSize
         If hit = 0 Then
             Dim p1 = point
 
-            Dim bnd = svp.GetBounds
+            Dim bnd = svp.GetBound
             Dim p2 = New Point(bnd.Right, bnd.Bottom) 'New Point(bnd.X + bnd.Width, bnd.Y + bnd.Height)
 
             Dim n = bnd.Height / bnd.Width
@@ -227,16 +227,16 @@ Public Class eSize
 
 
 
-            Dim gp As GraphicsPath = svp.Clone
+            Dim gp As GraphicsPath = svp.ToGraphicsPath
             ScalePath(gp, rtn)
             nrect = rtn
             Return gp
         ElseIf hit = 1 Then
 
-            Dim bnd = svp.GetBounds
+            Dim bnd = svp.GetBound
             Dim l = (point.Y - bnd.Y)
 
-            Dim gp As GraphicsPath = svp.Clone
+            Dim gp As GraphicsPath = svp.ToGraphicsPath
 
             Dim trect As New RectangleF(point.X, bnd.Y, (bnd.X - point.X) + bnd.Width, bnd.Height)
 
@@ -247,7 +247,7 @@ Public Class eSize
         ElseIf hit = 2 Then
 
 
-            Dim bnd = svp.GetBounds
+            Dim bnd = svp.GetBound
             Dim p1 = point
             Dim p2 = New Point(bnd.Right, bnd.Top)
 
@@ -282,16 +282,16 @@ Public Class eSize
 
 
 
-            Dim gp As GraphicsPath = svp.Clone
+            Dim gp As GraphicsPath = svp.ToGraphicsPath
             ScalePath(gp, rtn)
             nrect = rtn
             Return gp
         ElseIf hit = 3 Then
 
-            Dim bnd = svp.GetBounds
+            Dim bnd = svp.GetBound
             Dim l = (point.Y - bnd.Y)
 
-            Dim gp As GraphicsPath = svp.Clone
+            Dim gp As GraphicsPath = svp.ToGraphicsPath
 
             Dim trect As New RectangleF(bnd.X, point.Y, bnd.Width, (bnd.Y - point.Y) + bnd.Height)
             ScalePath(gp, trect)
@@ -301,10 +301,10 @@ Public Class eSize
         ElseIf hit = 4 Then
 
 
-            Dim bnd = svp.GetBounds
+            Dim bnd = svp.GetBound
             Dim l = (point.Y - bnd.Y)
 
-            Dim gp As GraphicsPath = svp.Clone
+            Dim gp As GraphicsPath = svp.ToGraphicsPath
 
             Dim trect As New RectangleF(bnd.X, bnd.Y, bnd.Width, l)
             ScalePath(gp, trect)
@@ -315,7 +315,7 @@ Public Class eSize
 
             Dim p1 = point
 
-            Dim bnd = svp.GetBounds
+            Dim bnd = svp.GetBound
             Dim p2 = New Point(bnd.Left, bnd.Bottom) 'New Point(bnd.X + bnd.Width, bnd.Y + bnd.Height)
 
             Dim n = bnd.Height / bnd.Width
@@ -349,13 +349,13 @@ Public Class eSize
 
 
 
-            Dim gp As GraphicsPath = svp.Clone
+            Dim gp As GraphicsPath = svp.ToGraphicsPath
             ScalePath(gp, rtn)
             nrect = rtn
             Return gp
         ElseIf hit = 6 Then
 
-            Dim bnd = svp.GetBounds
+            Dim bnd = svp.GetBound
             Dim l = (point.X - bnd.X)
             ' Dim s = l / bnd.Width
             'Debug.Print(s)
@@ -365,7 +365,7 @@ Public Class eSize
             'mat.Reset()
             'mat.Translate(-k, 0)
             ' svp.Transform(mat)
-            Dim gp As GraphicsPath = svp.Clone
+            Dim gp As GraphicsPath = svp.ToGraphicsPath
 
             Dim trect As New RectangleF(bnd.X, bnd.Y, l, bnd.Height)
             ScalePath(gp, trect)
@@ -375,7 +375,7 @@ Public Class eSize
 
         ElseIf hit = 7 Then
 
-            Dim bnd = svp.GetBounds
+            Dim bnd = svp.GetBound
             Dim p1 = bnd.Location
 
             Dim p2 = point  'New Point(bnd.X + bnd.Width, bnd.Y + bnd.Height)
@@ -412,7 +412,7 @@ Public Class eSize
 
 
 
-            Dim gp As GraphicsPath = svp.Clone
+            Dim gp As GraphicsPath = svp.ToGraphicsPath
             ScalePath(gp, rtn)
             nrect = rtn
             Return gp
@@ -446,5 +446,29 @@ Public Class eSize
 
         End Using
     End Sub
-    
+
+    Private Sub ScaleGPath(ByRef gp As GPath, ByVal Torect As RectangleF)
+        Dim bnd = gp.GetBound
+        Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
+        Dim yinvert As Boolean = IIf(Torect.Height < 0, True, False)
+
+
+        Using mat As New Matrix
+            mat.Translate(-bnd.X, -bnd.Y)
+            gp.Transform(mat)
+
+            mat.Reset()
+            Dim sx = Torect.Width / bnd.Width
+            Dim sy = Torect.Height / bnd.Height
+            mat.Scale(sx, sy)
+            gp.Transform(mat)
+
+            mat.Reset()
+            mat.Translate(Torect.X, Torect.Y)
+            gp.Transform(mat)
+
+
+        End Using
+    End Sub
+
 End Class

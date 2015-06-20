@@ -18,7 +18,7 @@ Public Class vCore
 
         mem.Layers(0).Item.Add(New vPath)
         Dim vp As New vPath
-        vp.pth = New Graphicspath
+        vp.pth.subpaths.Clear()
         vp.pth.AddRectangle(New Rectangle(-20, 0, 30, 30))
         mem.Layers(0).Item.Add(vp)
 

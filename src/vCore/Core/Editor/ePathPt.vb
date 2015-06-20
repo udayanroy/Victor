@@ -18,7 +18,7 @@ Public Class ePathPt
     Public Sub Draw(ByRef g As System.Drawing.Graphics) Implements Iedtr.Draw
         If v.selection.isEmty = False Then
 
-            Using p As New Pen(Color.SkyBlue), pth As GraphicsPath = v.getSelectionPath.GraphicsPath.Clone
+            Using p As New Pen(Color.SkyBlue), pth As GraphicsPath = v.getSelectionPath.GraphicsPath.ToGraphicsPath
 
                 v.View.mem2DcPath(pth)
 

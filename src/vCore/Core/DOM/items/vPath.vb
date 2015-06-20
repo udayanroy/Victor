@@ -7,24 +7,25 @@ Public Class vPath
 
 
 
-    Friend pth As GraphicsPath
+    Friend pth As GPath
 
     Friend mode As List(Of Boolean)
 
 
 
     Public Sub New()
-        pth = New GraphicsPath
+        pth = New GPath
         pth.AddEllipse(100, 100, 400, 200)
     End Sub
 
 
     Public Sub Draw(ByRef g As System.Drawing.Graphics) Implements vItem.Draw
-        g.FillPath(Drawing.Brushes.Blue, pth)
+        'g.FillPath(Drawing.Brushes.Blue, pth)
+        pth.drawPath(g, Nothing, Drawing.Brushes.Blue)
     End Sub
 
     Public Function GetBound() As System.Drawing.RectangleF Implements vItem.GetBound
-        Return pth.GetBounds()
+        Return pth.GetBound()
     End Function
 
 
@@ -32,14 +33,14 @@ Public Class vPath
         Return pth.IsVisible(p)
     End Function
 
-    Public ReadOnly Property GraphicsPath As GraphicsPath
+    Public ReadOnly Property GraphicsPath As GPath
         Get
             Return pth
         End Get
     End Property
     Public Sub setPath(ByRef path As GraphicsPath)
-        pth.Dispose()
-        pth = path
+        ' pth.Dispose()
+        ' pth = path
     End Sub
 
     Public Sub Translate(ByVal x As Single, ByVal y As Single) Implements vItem.Translate
@@ -61,7 +62,7 @@ Public Class vPath
             End If
 
             'delete path
-            pth.Dispose()
+            ' pth.Dispose()
 
             ' TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
             ' TODO: set large fields to null.
