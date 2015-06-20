@@ -38,9 +38,9 @@ Public Class vPath
             Return pth
         End Get
     End Property
-    Public Sub setPath(ByRef path As GraphicsPath)
+    Public Sub setPath(ByRef path As GPath)
         ' pth.Dispose()
-        ' pth = path
+        pth = path
     End Sub
 
     Public Sub Translate(ByVal x As Single, ByVal y As Single) Implements vItem.Translate
