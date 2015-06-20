@@ -343,6 +343,8 @@ Public Class PathPoint
 
     Public Sub New(ByVal p As PointF)
         Me.M = p
+        Me.C1 = p
+        Me.C2 = p
         Me.Type = PathPointType.None
     End Sub
 
