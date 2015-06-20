@@ -140,6 +140,31 @@ Public Class View
         End Using
 
     End Sub
+
+    Public Sub mem2DcGPath(ByRef gpath As GPath)
+
+        Using mat As New Matrix
+            mat.Translate(Me.postionFactor.X, Me.postionFactor.Y)
+            mat.Scale(Me.zoomFactor, Me.zoomFactor)
+            mat.Translate(Me.getpagerctOrg.X, Me.getpagerctOrg.Y)
+
+            gpath.Transform(mat)
+        End Using
+
+    End Sub
+
+    Public Sub Dc2MemGPath(ByRef gpath As GPath)
+
+        Using mat As New Matrix
+            mat.Translate(Me.postionFactor.X, Me.postionFactor.Y)
+            mat.Scale(Me.zoomFactor, Me.zoomFactor)
+            mat.Translate(Me.getpagerctOrg.X, Me.getpagerctOrg.Y)
+            mat.Invert()
+
+            gpath.Transform(mat)
+        End Using
+
+    End Sub
     Public Function MemorypointToDC(ByVal p As PointF) As PointF
         Return New PointF()
     End Function
