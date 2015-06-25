@@ -5,9 +5,9 @@ Imports System.Drawing.Drawing2D
 Public Class tPointerConvert
     Implements Itool
 
-    Dim v As View
+    Dim v As vCore
     Dim WithEvents dc As advancedPanel
-    Public Sub New(ByRef vew As View)
+    Public Sub New(ByRef vew As vCore)
         v = vew
     End Sub
 
@@ -23,5 +23,6 @@ Public Class tPointerConvert
 
     Public Sub SelectTool(ByRef d As advancedPanel) Implements Itool.SelectTool
         dc = d
+        v.Editor.setEditingType(selectionType.PointerConvert)
     End Sub
 End Class

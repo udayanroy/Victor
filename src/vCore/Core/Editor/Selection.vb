@@ -6,6 +6,7 @@ Public Enum selectionType
     Size
     Rotate
     PathEdit
+    PointerConvert
     Other
 End Enum
 

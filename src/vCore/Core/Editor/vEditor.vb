@@ -12,6 +12,7 @@ Public Class vEditor
     Dim size As eSize
     Dim rotate As eRotate
     Dim pathedt As ePathPt
+    Dim ptconvert As ePointerConvert
 
     Dim type As selectionType
 
@@ -23,6 +24,7 @@ Public Class vEditor
         size = New eSize(Me)
         rotate = New eRotate(Me)
         pathedt = New ePathPt(Me)
+        ptconvert = New ePointerConvert(Me)
 
         type = SelectionType.None
 
@@ -149,7 +151,8 @@ Public Class vEditor
                 Me.iedt = rotate
             Case selectionType.PathEdit
                 Me.iedt = pathedt
-
+            Case selectionType.PointerConvert
+                Me.iedt = ptconvert
         End Select
         type = typ
 
