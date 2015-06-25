@@ -6,6 +6,7 @@ Public Enum selectionType
     Size
     Rotate
     PathEdit
+    Other
 End Enum
 
 Public Structure memLoc

@@ -155,6 +155,14 @@ Public Class vEditor
 
         Refresh()
     End Sub
+    Public Sub setIEdit(ByVal Editor As Iedtr)
+
+        Me.iedt = Editor
+        type = selectionType.other
+        Refresh()
+
+    End Sub
+
     Public Function getSelectionPath() As vPath
         Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
     End Function
