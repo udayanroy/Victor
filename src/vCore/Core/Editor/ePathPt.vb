@@ -111,51 +111,60 @@ Public Class ePathPt
 
     Private Sub SetNodePt(ns As nodeselection, location As Point)
         If ns.typeid = 3 Then
-            Dim v1 = New PointF(ns.selectednode.C2.X - ns.selectednode.M.X,
-                               ns.selectednode.C2.Y - ns.selectednode.M.Y)
-            Dim v2 = New PointF(location.X - ns.selectednode.M.X,
-                                location.Y - ns.selectednode.M.Y)
+            If ns.selectednode.Type = PathPointType.Sharp Then
+                ns.selectednode.C2 = location
+            Else
+                Dim v1 = New PointF(ns.selectednode.C2.X - ns.selectednode.M.X,
+                                               ns.selectednode.C2.Y - ns.selectednode.M.Y)
+                Dim v2 = New PointF(location.X - ns.selectednode.M.X,
+                                    location.Y - ns.selectednode.M.Y)
 
-            ' = v1 / v2
+                ' = v1 / v2
 
-            Dim a1 = Math.Atan2(v1.Y, v1.X)
-            Dim a2 = Math.Atan2(v2.Y, v2.X)
-            Dim a = a2 - a1
-            ns.selectednode.C2 = location
+                Dim a1 = Math.Atan2(v1.Y, v1.X)
+                Dim a2 = Math.Atan2(v2.Y, v2.X)
+                Dim a = a2 - a1
+                ns.selectednode.C2 = location
 
-            Dim deg As Double = a * (180 / Math.PI)
+                Dim deg As Double = a * (180 / Math.PI)
 
-            ' Dim rt As New RotateTransform(deg, ns.selectednode.M.X, ns.selectednode.M.Y)
-            Dim rt As New Matrix
-            rt.RotateAt(deg, New PointF(ns.selectednode.M.X, ns.selectednode.M.Y))
-            Dim pointArray = {ns.selectednode.C1}
-            rt.TransformPoints(pointArray)
-            ns.selectednode.C1 = pointArray(0)
+                ' Dim rt As New RotateTransform(deg, ns.selectednode.M.X, ns.selectednode.M.Y)
+                Dim rt As New Matrix
+                rt.RotateAt(deg, New PointF(ns.selectednode.M.X, ns.selectednode.M.Y))
+                Dim pointArray = {ns.selectednode.C1}
+                rt.TransformPoints(pointArray)
+                ns.selectednode.C1 = pointArray(0)
+            End If
+
 
         ElseIf ns.typeid = 2 Then
+            If ns.selectednode.Type = PathPointType.Sharp Then
+                ns.selectednode.C1 = location
+            Else
+                Dim v1 = New PointF(ns.selectednode.C1.X - ns.selectednode.M.X,
+                                             ns.selectednode.C1.Y - ns.selectednode.M.Y)
+                Dim v2 = New PointF(location.X - ns.selectednode.M.X,
+                                    location.Y - ns.selectednode.M.Y)
+                ' = v1 / v2
 
-            Dim v1 = New PointF(ns.selectednode.C1.X - ns.selectednode.M.X,
-                              ns.selectednode.C1.Y - ns.selectednode.M.Y)
-            Dim v2 = New PointF(location.X - ns.selectednode.M.X,
-                                location.Y - ns.selectednode.M.Y)
-            ' = v1 / v2
-
-            Dim a1 = Math.Atan2(v1.Y, v1.X)
-            Dim a2 = Math.Atan2(v2.Y, v2.X)
-            Dim a = a2 - a1
+                Dim a1 = Math.Atan2(v1.Y, v1.X)
+                Dim a2 = Math.Atan2(v2.Y, v2.X)
+                Dim a = a2 - a1
 
 
-            Dim deg As Double = a * (180 / Math.PI)
+                Dim deg As Double = a * (180 / Math.PI)
 
-            'Dim rt As New RotateTransform(deg, ns.selectednode.M.X, ns.selectednode.M.Y)
-            'ns.selectednode.C2 = rt.Transform(ns.selectednode.C2)
-            Dim rt As New Matrix
-            rt.RotateAt(deg, New PointF(ns.selectednode.M.X, ns.selectednode.M.Y))
-            Dim pointArray = {ns.selectednode.C2}
-            rt.TransformPoints(pointArray)
-            ns.selectednode.C2 = pointArray(0)
+                'Dim rt As New RotateTransform(deg, ns.selectednode.M.X, ns.selectednode.M.Y)
+                'ns.selectednode.C2 = rt.Transform(ns.selectednode.C2)
+                Dim rt As New Matrix
+                rt.RotateAt(deg, New PointF(ns.selectednode.M.X, ns.selectednode.M.Y))
+                Dim pointArray = {ns.selectednode.C2}
+                rt.TransformPoints(pointArray)
+                ns.selectednode.C2 = pointArray(0)
 
-            ns.selectednode.C1 = location
+                ns.selectednode.C1 = location
+            End If
+
         ElseIf ns.typeid = 1 Then
             Dim vector = New PointF(location.X - ns.selectednode.M.X,
                                     location.Y - ns.selectednode.M.Y)
