@@ -84,6 +84,7 @@
     <Compile Include="Core\Editor\Msr.vb" />
     <Compile Include="Core\Editor\Selection.vb" />
     <Compile Include="Core\Editor\vEditor.vb" />
+    <Compile Include="Core\Tool\PenTool.vb" />
     <Compile Include="Core\Tool\tEllipseTool.vb" />
     <Compile Include="Core\Tool\tMoveTool.vb" />
     <Compile Include="Core\Tool\tPathptTool.vb" />
