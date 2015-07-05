@@ -22,6 +22,7 @@ Public Class Tools
     Dim rotateTool As tRotate
     Dim pathptTool As tPathptTool
     Dim ptconvTool As tPointerConvert
+    Dim penTool As PenTool
 
     Public Sub New(ByRef vc As vCore)
         vcor = vc
@@ -35,6 +36,7 @@ Public Class Tools
         rotateTool = New tRotate(vcor)
         pathptTool = New tPathptTool(vcor)
         ptconvTool = New tPointerConvert(vcor)
+        penTool = New PenTool(vcor)
 
         itl = pantool
         itl.SelectTool(vcor.pDevice)
@@ -68,6 +70,8 @@ Public Class Tools
                 itl = pathptTool
             Case 9
                 itl = ptconvTool
+            Case 10
+                itl = penTool
         End Select
         itl.SelectTool(vcor.pDevice)
     End Sub
