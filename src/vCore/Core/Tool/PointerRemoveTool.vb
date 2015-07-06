@@ -63,6 +63,30 @@ Public Class PointerRemoveTool
     End Sub
 
     Public Sub mouse_Down(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Down
+        
+        Dim selNode As PathPoint = Nothing
+        Dim selFigure As SubPath = Nothing
+
+        For Each subpth As SubPath In editablepath.subpaths
+            For Each nd As PathPoint In subpth.Points
+                Dim bnd = getNodeptBound(nd.M)
+                If bnd.Contains(e.Location) Then
+                    selNode = nd
+                    selFigure = subpth
+                    GoTo EndLoop
+                End If
+            Next
+        Next
+
+EndLoop:
+        If selNode IsNot Nothing Then
+            selFigure.Points.Remove(selNode)
+
+            Core.View.Dc2MemGPath(editablepath)
+            spath.setPath(editablepath)
+            Core.View.Refresh()
+        End If
+
 
     End Sub
 
@@ -76,14 +100,21 @@ Public Class PointerRemoveTool
 
 
     Private Sub DrawNodes(g As System.Drawing.Graphics)
-        For Each sp As SubPath In editablepath.subpaths
-            For Each nd As PathPoint In sp.Points
-                g.FillEllipse(Brushes.White, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
-                g.DrawEllipse(New Pen(Brushes.Red, 2), nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+        Using Pen As New Pen(Brushes.Red, 1)
+            For Each sp As SubPath In editablepath.subpaths
+                For Each nd As PathPoint In sp.Points
+                    ' g.FillEllipse(Brushes.White, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                    ' g.DrawEllipse(Pen, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                    g.FillRectangle(Brushes.White, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                    g.DrawRectangle(Pen, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                Next
             Next
-        Next
-
+        End Using
     End Sub
- 
 
+    Private Function getNodeptBound(pt As PointF) As Rectangle
+        Dim l = New Point(pt.X - Me.noderadious, pt.Y - Me.noderadious)
+        Dim w = Me.noderadious * 2
+        Return New Rectangle(l, New Size(w, w))
+    End Function
 End Class
