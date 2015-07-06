@@ -162,7 +162,9 @@ Public Class GPath
         Dim gp As New GraphicsPath
 
         For Each sp As SubPath In Me.spaths
-            gp.AddPath(sp.ToGraphicsPath, False)
+            Dim tempGP = sp.ToGraphicsPath
+            If tempGP IsNot Nothing Then gp.AddPath(tempGP, False)
+
         Next
 
         Return (gp)
