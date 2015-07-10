@@ -32,7 +32,6 @@ Public Class AddPointerTool
     End Sub
 
 
-
     Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
 
         Me.mouse_Down(e)
@@ -74,7 +73,16 @@ Public Class AddPointerTool
 
 
     Private Sub DrawNodes(g As System.Drawing.Graphics)
-        
+        Using Pen As New Pen(Brushes.Red, 1)
+            For Each sp As SubPath In editablepath.subpaths
+                For Each nd As PathPoint In sp.Points
+                    ' g.FillEllipse(Brushes.White, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                    ' g.DrawEllipse(Pen, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                    g.FillRectangle(Brushes.White, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                    g.DrawRectangle(Pen, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                Next
+            Next
+        End Using
     End Sub
 
     Private Function getNodeptBound(pt As PointF) As Rectangle
