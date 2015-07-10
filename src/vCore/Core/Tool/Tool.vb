@@ -24,6 +24,7 @@ Public Class Tools
     Dim ptconvTool As tPointerConvert
     Dim penTool As PenTool
     Dim PointerRemoveTool As PointerRemoveTool
+    Dim AddPointerTool As AddPointerTool
 
     Public Sub New(ByRef vc As vCore)
         vcor = vc
@@ -39,6 +40,7 @@ Public Class Tools
         ptconvTool = New tPointerConvert(vcor)
         penTool = New PenTool(vcor)
         PointerRemoveTool = New PointerRemoveTool(vcor)
+        AddPointerTool = New AddPointerTool(vcor)
 
         itl = pantool
         itl.SelectTool(vcor.pDevice)
@@ -76,6 +78,8 @@ Public Class Tools
                 itl = penTool
             Case 11
                 itl = PointerRemoveTool
+            Case 12
+                itl = AddPointerTool
         End Select
         itl.SelectTool(vcor.pDevice)
     End Sub
