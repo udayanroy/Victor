@@ -84,6 +84,7 @@
     <Compile Include="Core\Editor\Msr.vb" />
     <Compile Include="Core\Editor\Selection.vb" />
     <Compile Include="Core\Editor\vEditor.vb" />
+    <Compile Include="Core\Tool\AddPointerTool.vb" />
     <Compile Include="Core\Tool\PenTool.vb" />
     <Compile Include="Core\Tool\PointerRemoveTool.vb" />
     <Compile Include="Core\Tool\tEllipseTool.vb" />
