@@ -1,5 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.Drawing.Drawing2D
+Imports Geom.Geometry
+
 
 Public Class AddPointerTool
     Implements Itool, Iedtr
@@ -60,7 +62,77 @@ Public Class AddPointerTool
     End Sub
 
     Public Sub mouse_Down(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Down
-         
+        Dim mouseLocation = e.Location
+
+        Dim Mindistance = Double.MaxValue
+        Dim n1 As PathPoint = Nothing
+        Dim n2 As PathPoint = Nothing
+        Dim fig As SubPath = Nothing
+
+        For Each figure As SubPath In editablepath.subpaths
+            If figure.Points.Count <= 1 Then Continue For
+            For nodeIndex As Integer = 0 To figure.Points.Count - 1
+                Dim node1, node2 As PathPoint
+                If nodeIndex = figure.Points.Count - 1 Then
+                    If figure.Closed Then
+                        node1 = figure.Points(nodeIndex)
+                        node2 = figure.Points(0)
+                    Else
+                        Continue For
+                    End If
+                Else
+                    node1 = figure.Points(nodeIndex)
+                    node2 = figure.Points(nodeIndex + 1)
+                End If
+
+
+                Dim bez As New GCubicBezier()
+                bez.P1 = New GPoint(node1.M.X, node1.M.Y)
+                bez.C1 = New GPoint(node1.C2.X, node1.C2.Y)
+
+                bez.C2 = New GPoint(node2.C1.X, node2.C1.Y)
+                bez.P2 = New GPoint(node2.M.X, node2.M.Y)
+
+                Dim dist = bez.DistancefromPoint(New GPoint(mouseLocation.X, mouseLocation.Y))
+
+                If dist < Mindistance Then
+                    Mindistance = dist
+                    n1 = node1
+                    n2 = node2
+                    fig = figure
+                End If
+            Next
+        Next
+
+        If Mindistance <= 2 Then
+            Dim pointerIndex = fig.Points.IndexOf(n1)
+            Dim nPointer As New PathPoint
+
+            Dim bez As New GCubicBezier()
+            bez.P1 = New GPoint(n1.M.X, n1.M.Y)
+            bez.C1 = New GPoint(n1.C2.X, n1.C2.Y)
+            bez.C2 = New GPoint(n2.C1.X, n2.C1.Y)
+            bez.P2 = New GPoint(n2.M.X, n2.M.Y)
+
+            Dim closept = bez.closestPointToBezier(New GPoint(mouseLocation.X, mouseLocation.Y))
+            Dim left = bez.divLeft(closept)
+            Dim right = bez.divRight(closept)
+
+            n1.C2 = New PointF(left.C1.X, left.C1.Y)
+            nPointer.C1 = New PointF(left.C2.X, left.C2.Y)
+            nPointer.M = New PointF(left.P2.X, left.P2.Y)
+            nPointer.C2 = New PointF(right.C1.X, right.C1.Y)
+            n2.C1 = New PointF(right.C2.X, right.C2.Y)
+
+            nPointer.Type = PathPointType.Smooth
+
+            fig.Points.Insert(pointerIndex + 1, nPointer)
+
+            Core.View.Dc2MemGPath(editablepath)
+            spath.setPath(editablepath)
+            Core.View.Refresh()
+        End If
+
     End Sub
 
     Public Sub mouse_Move(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Move
