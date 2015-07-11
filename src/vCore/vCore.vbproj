@@ -109,7 +109,6 @@
     <Compile Include="Core\Tool\tPanTool.vb" />
     <Compile Include="Core\View.vb" />
     <Compile Include="Geometry\GPath.vb" />
-    <Compile Include="Geometry\Rect.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
