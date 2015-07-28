@@ -22,10 +22,11 @@ Partial Class view
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Panel2 = New System.Windows.Forms.Panel
-        Me.TextBox1 = New System.Windows.Forms.TextBox
-        Me.Button1 = New System.Windows.Forms.Button
-        Me.Panel1 = New vCore.advancedPanel
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Panel1 = New vCore.advancedPanel()
+        Me.ToolBar1 = New Victor.ToolBar()
         Me.Panel2.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -39,13 +40,6 @@ Partial Class view
         Me.Panel2.Size = New System.Drawing.Size(731, 84)
         Me.Panel2.TabIndex = 1
         '
-        'TextBox1
-        '
-        Me.TextBox1.Location = New System.Drawing.Point(49, 36)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
-        Me.TextBox1.TabIndex = 0
-        '
         'Button1
         '
         Me.Button1.Location = New System.Drawing.Point(174, 34)
@@ -55,15 +49,31 @@ Partial Class view
         Me.Button1.Text = "Button1"
         Me.Button1.UseVisualStyleBackColor = True
         '
+        'TextBox1
+        '
+        Me.TextBox1.Location = New System.Drawing.Point(49, 36)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox1.TabIndex = 0
+        '
         'Panel1
         '
         Me.Panel1.AutoScroll = True
         Me.Panel1.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel1.Location = New System.Drawing.Point(0, 84)
+        Me.Panel1.Location = New System.Drawing.Point(78, 84)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(731, 449)
+        Me.Panel1.Size = New System.Drawing.Size(653, 449)
         Me.Panel1.TabIndex = 0
+        '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Left
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 84)
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.Size = New System.Drawing.Size(78, 449)
+        Me.ToolBar1.TabIndex = 0
         '
         'view
         '
@@ -71,6 +81,7 @@ Partial Class view
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(731, 533)
         Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.ToolBar1)
         Me.Controls.Add(Me.Panel2)
         Me.Name = "view"
         Me.Text = "view"
@@ -83,4 +94,5 @@ Partial Class view
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Friend WithEvents Button1 As System.Windows.Forms.Button
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
+    Friend WithEvents ToolBar1 As Victor.ToolBar
 End Class
