@@ -68,7 +68,7 @@ Partial Class view
         '
         'ToolBar1
         '
-        Me.ToolBar1.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.ToolBar1.BackColor = System.Drawing.SystemColors.ButtonHighlight
         Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Left
         Me.ToolBar1.Location = New System.Drawing.Point(0, 84)
         Me.ToolBar1.Name = "ToolBar1"
