@@ -21,7 +21,7 @@ Public Class vPath
 
     Public Sub Draw(ByRef g As System.Drawing.Graphics) Implements vItem.Draw
         'g.FillPath(Drawing.Brushes.Blue, pth)
-        pth.drawPath(g, Nothing, Drawing.Brushes.Blue)
+        pth.drawPath(g, Drawing.Pens.Black, Drawing.Brushes.Blue)
     End Sub
 
     Public Function GetBound() As System.Drawing.RectangleF Implements vItem.GetBound
