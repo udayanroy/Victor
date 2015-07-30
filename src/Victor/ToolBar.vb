@@ -25,6 +25,8 @@
         Tiles.Add(New ToolTile(IconBase & "Pathselection-tool.png", 5))
         Tiles.Add(New ToolTile(IconBase & "nodeselectiontoolicon.png", 8))
         Tiles.Add(New ToolTile(IconBase & "Editing-Ellipse-icon.png", 4))
+        Tiles.Add(New ToolTile(IconBase & "Editing-Rectangle-icon.png", 13))
+        Tiles.Add(New ToolTile(IconBase & "Editing-Line-icon.png", 14))
         Tiles.Add(New ToolTile(IconBase & "Editing-Pen-icon.png", 10))
         Tiles.Add(New ToolTile(IconBase & "Transform.png", 6))
         Tiles.Add(New ToolTile(IconBase & "pan tool.png", 1))
