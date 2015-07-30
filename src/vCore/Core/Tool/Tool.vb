@@ -26,6 +26,8 @@ Public Class Tools
     Dim PointerRemoveTool As PointerRemoveTool
     Dim AddPointerTool As AddPointerTool
     Dim RectangleTool As RectangleTool
+    Dim LineTool As LineTool
+
 
     Public Sub New(ByRef vc As vCore)
         vcor = vc
@@ -43,7 +45,7 @@ Public Class Tools
         PointerRemoveTool = New PointerRemoveTool(vcor)
         AddPointerTool = New AddPointerTool(vcor)
         RectangleTool = New RectangleTool(vcor)
-
+        LineTool = New LineTool(vcor)
 
         itl = pantool
         itl.SelectTool(vcor.pDevice)
@@ -85,6 +87,8 @@ Public Class Tools
                 itl = AddPointerTool
             Case 13
                 itl = RectangleTool
+            Case 14
+                itl = LineTool
 
         End Select
         itl.SelectTool(vcor.pDevice)
