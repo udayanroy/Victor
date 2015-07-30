@@ -9,6 +9,7 @@
     Private Sub view_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         core = New vCore.vCore(Panel1, pagesz)
         ToolBar1.core = core
+        ToolBar1.Width = 47
     End Sub
 
    

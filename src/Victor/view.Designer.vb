@@ -61,9 +61,9 @@ Partial Class view
         Me.Panel1.AutoScroll = True
         Me.Panel1.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.Panel1.Location = New System.Drawing.Point(78, 84)
+        Me.Panel1.Location = New System.Drawing.Point(66, 84)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(653, 449)
+        Me.Panel1.Size = New System.Drawing.Size(665, 449)
         Me.Panel1.TabIndex = 0
         '
         'ToolBar1
@@ -72,7 +72,7 @@ Partial Class view
         Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Left
         Me.ToolBar1.Location = New System.Drawing.Point(0, 84)
         Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.Size = New System.Drawing.Size(78, 449)
+        Me.ToolBar1.Size = New System.Drawing.Size(66, 449)
         Me.ToolBar1.TabIndex = 0
         '
         'view
