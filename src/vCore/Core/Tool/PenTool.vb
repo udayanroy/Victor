@@ -137,6 +137,9 @@ Public Class PenTool
             ElseIf e.Button = Windows.Forms.MouseButtons.None Then
                 BufferGraphics.Clear()
                 CurrentNode.M = e.Location
+                CurrentNode.C1 = e.Location
+                CurrentNode.C2 = e.Location
+
                 Path.drawPath(BufferGraphics.Graphics, Pens.Magenta)
 
                 BufferGraphics.Graphics.FillEllipse(Brushes.White,
