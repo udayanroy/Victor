@@ -149,8 +149,6 @@ Public Class vEditor
                 Me.iedt = size
             Case selectionType.Rotate
                 Me.iedt = rotate
-            Case selectionType.PathEdit
-                Me.iedt = pathedt
             Case selectionType.PointerConvert
                 Me.iedt = ptconvert
         End Select
