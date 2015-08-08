@@ -37,16 +37,16 @@ Public Class NodeEditTool
 
     Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
 
-        v.Editor.mouse_Down(e)
+        Me.mouse_Down(e)
     End Sub
 
     Private Sub dc_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseMove
 
-        v.Editor.mouse_Move(e)
+        Me.mouse_Move(e)
     End Sub
     Private Sub dc_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseUp
 
-        v.Editor.mouse_Up(e)
+        Me.mouse_Up(e)
     End Sub
     Public Sub DeSelectTool() Implements Itool.DeSelectTool
         dc = Nothing

@@ -93,7 +93,7 @@
     <Compile Include="Core\Tool\RectangleTool.vb" />
     <Compile Include="Core\Tool\tEllipseTool.vb" />
     <Compile Include="Core\Tool\tMoveTool.vb" />
-    <Compile Include="Core\Tool\tPathptTool.vb" />
+    <Compile Include="Core\Tool\NodeEditTool.vb" />
     <Compile Include="Core\Tool\tPointerConvert.vb" />
     <Compile Include="Core\Tool\tRotate.vb" />
     <Compile Include="Core\Tool\tsel.vb" />
