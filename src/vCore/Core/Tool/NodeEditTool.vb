@@ -10,8 +10,7 @@ Public Class NodeEditTool
 
     Dim v As vCore
     Dim WithEvents dc As advancedPanel
-    Dim mdl As Point
-    Dim md As Point
+    Dim MouseLocation As Point
     Private b As Integer = 3
 
     Dim mainpathBound As RectangleF
@@ -55,12 +54,16 @@ Public Class NodeEditTool
     Public Sub SelectTool(ByRef d As advancedPanel) Implements Itool.SelectTool
         dc = d
         v.Editor.setIEdit(Me)
+
+
     End Sub
 
     Public Sub Draw(ByRef g As Graphics) Implements Iedtr.Draw
+        editablepath = Nothing
         If v.Editor.selection.isEmty = False Then
             g.SmoothingMode = SmoothingMode.AntiAlias
             Using p As New Pen(Color.SkyBlue) ', pth As GraphicsPath = spath.GraphicsPath.ToGraphicsPath
+
                 spath = v.Editor.getSelectionPath()
                 editablepath = spath.GraphicsPath.Clone
                 v.View.mem2DcGPath(editablepath)
@@ -76,14 +79,33 @@ Public Class NodeEditTool
         End If
     End Sub
 
+
     Public Sub mouse_Down(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Down
-        Dim md = e.Location
-        nodesel = GetSelectPoint(md)
-        If nodesel.selectednode IsNot Nothing Then v.View.BufferGraphics.Initialize()
+        MouseLocation = e.Location
+        If editablepath Is Nothing Then
+            Dim s = v.Editor.SelectAt(MouseLocation)
+            If s <> 0 Then
+                v.View.Refresh()
+            End If
+        Else
+            nodesel = GetSelectPoint(MouseLocation)
+            If nodesel.selectednode IsNot Nothing Then
+                v.View.BufferGraphics.Initialize()
+            Else
+                Dim s = v.Editor.SelectAt(MouseLocation)
+                If s <> 0 Then
+                    v.View.Refresh()
+                End If
+            End If
+
+        End If
+
+
     End Sub
 
     Public Sub mouse_Move(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Move
-        If nodesel.selectednode Is Nothing Then Exit Sub
+
+        If editablepath Is Nothing Or nodesel.selectednode Is Nothing Then Exit Sub
 
         If e.Button = Windows.Forms.MouseButtons.Left Then
             Dim ml = e.Location
@@ -101,6 +123,7 @@ Public Class NodeEditTool
     End Sub
 
     Public Sub mouse_Up(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Up
+        If editablepath Is Nothing Then Exit Sub
         v.View.Dc2MemGPath(editablepath)
         spath.setPath(editablepath)
         v.View.Refresh()
