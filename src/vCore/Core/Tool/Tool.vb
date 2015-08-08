@@ -20,7 +20,7 @@ Public Class Tools
     Dim moveTool As tMoveTool
     Dim sizeTool As tSizeTool
     Dim rotateTool As tRotate
-    Dim pathptTool As tPathptTool
+    Dim pathptTool As NodeEditTool
     Dim ptconvTool As tPointerConvert
     Dim penTool As PenTool
     Dim PointerRemoveTool As PointerRemoveTool
@@ -39,7 +39,7 @@ Public Class Tools
         moveTool = New tMoveTool(vcor)
         sizeTool = New tSizeTool(vcor)
         rotateTool = New tRotate(vcor)
-        pathptTool = New tPathptTool(vcor)
+        pathptTool = New NodeEditTool(vcor)
         ptconvTool = New tPointerConvert(vcor)
         penTool = New PenTool(vcor)
         PointerRemoveTool = New PointerRemoveTool(vcor)

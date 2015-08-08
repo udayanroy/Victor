@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
-Public Class tPathptTool
+Public Class NodeEditTool
     Implements Itool, Iedtr
 
 
@@ -69,7 +69,7 @@ Public Class tPathptTool
 
                 DrawNodes(g)
 
-             
+
 
             End Using
 
