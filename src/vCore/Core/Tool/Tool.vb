@@ -16,7 +16,7 @@ Public Class Tools
     Dim pantool As tPanTool
     Dim zoomtool As tZoomTool
     Dim selectiontool As tsel
-    Dim ellipsetool As tEllipseTool
+    Dim ellipsetool As EllipseTool
     Dim moveTool As tMoveTool
     Dim sizeTool As tSizeTool
     Dim rotateTool As tRotate
@@ -35,7 +35,7 @@ Public Class Tools
         pantool = New tPanTool(vcor.View)
         zoomtool = New tZoomTool(vcor.View)
         selectiontool = New tsel(vcor)
-        ellipsetool = New tEllipseTool(vcor.View)
+        ellipsetool = New EllipseTool(vcor)
         moveTool = New tMoveTool(vcor)
         sizeTool = New tSizeTool(vcor)
         rotateTool = New tRotate(vcor)
