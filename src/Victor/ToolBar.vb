@@ -1,4 +1,6 @@
-﻿Public Class ToolBar
+﻿Imports System.Reflection
+
+Public Class ToolBar
     Inherits Panel
 
     Dim toolwidth = 16
@@ -17,19 +19,22 @@
     End Sub
 
     Private Sub InitTools()
-        Dim IconBase = "resource\icons\"
-
-
+        
         Tiles = New List(Of ToolTile)()
 
-        Tiles.Add(New ToolTile(IconBase & "Pathselection-tool.png", 5))
-        Tiles.Add(New ToolTile(IconBase & "nodeselectiontoolicon.png", 8))
-        Tiles.Add(New ToolTile(IconBase & "Editing-Ellipse-icon.png", 4))
-        Tiles.Add(New ToolTile(IconBase & "Editing-Rectangle-icon.png", 13))
-        Tiles.Add(New ToolTile(IconBase & "Editing-Line-icon.png", 14))
-        Tiles.Add(New ToolTile(IconBase & "Editing-Pen-icon.png", 10))
-        Tiles.Add(New ToolTile(IconBase & "Transform.png", 6))
-        Tiles.Add(New ToolTile(IconBase & "pan tool.png", 1))
+        Tiles.Add(New ToolTile(My.Resources.Path_selection_tool, 5))
+        Tiles.Add(New ToolTile(My.Resources.Direct_selection_tool, 8))
+        Tiles.Add(New ToolTile(My.Resources.Ellipse_tool, 4))
+        Tiles.Add(New ToolTile(My.Resources.Square, 13))
+        Tiles.Add(New ToolTile(My.Resources.Line, 14))
+        Tiles.Add(New ToolTile(My.Resources.Pen_tool, 10))
+        Tiles.Add(New ToolTile(My.Resources.Transform_2_icon__1_, 6))
+        Tiles.Add(New ToolTile(My.Resources.Hand_tool, 1))
+        Tiles.Add(New ToolTile(My.Resources.Connect_point_tool, 9))
+        Tiles.Add(New ToolTile(My.Resources.Add_anchor_point_tool, 12))
+        Tiles.Add(New ToolTile(My.Resources.Delete_anchor_point_tool, 11))
+        ' Tiles.Add(New ToolTile(IconBase & "Transform.png", 6))
+
     End Sub
 
 
@@ -123,7 +128,10 @@
                 ElseIf count = mouseOveron Then
                     e.Graphics.DrawRectangle(Pens.Green, x - 2, y - 2, toolwidth + 4, toolwidth + 4)
                 End If
-                e.Graphics.DrawImage(Tiles(count - 1).Icon, x, y, 16, 16)
+                If Tiles(count - 1).Icon IsNot Nothing Then
+                    e.Graphics.DrawImage(Tiles(count - 1).Icon, x, y, 16, 16)
+                End If
+
 
                 x += toolwidth + 5
                 count += 1
@@ -140,6 +148,10 @@
             Me.ToolId = id
             '
             Icon = Image.FromFile(AppDomain.CurrentDomain.BaseDirectory & Me.iconUrl)
+        End Sub
+        Public Sub New(bmp As Bitmap, id As Integer)
+            Me.ToolId = id
+            Icon = bmp
         End Sub
 
         Public Property Name As String
