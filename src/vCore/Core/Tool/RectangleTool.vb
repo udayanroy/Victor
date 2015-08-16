@@ -25,6 +25,7 @@ Public Class RectangleTool
 
     Public Sub SelectTool(ByRef d As advancedPanel) Implements Itool.SelectTool
         dc = d
+        Core.Editor.setEditingType(selectionType.None)
     End Sub
 
     Private Sub dc_MouseDown(sender As Object, e As Windows.Forms.MouseEventArgs) Handles dc.MouseDown
