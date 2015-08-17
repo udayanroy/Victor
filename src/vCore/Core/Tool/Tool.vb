@@ -27,7 +27,7 @@ Public Class Tools
     Dim AddPointerTool As AddPointerTool
     Dim RectangleTool As RectangleTool
     Dim LineTool As LineTool
-
+    Dim TransformTool As TransformTool
 
     Public Sub New(ByRef vc As vCore)
         vcor = vc
@@ -46,6 +46,8 @@ Public Class Tools
         AddPointerTool = New AddPointerTool(vcor)
         RectangleTool = New RectangleTool(vcor)
         LineTool = New LineTool(vcor)
+        TransformTool = New TransformTool(vcor)
+
 
         itl = pantool
         itl.SelectTool(vcor.pDevice)
@@ -89,7 +91,8 @@ Public Class Tools
                 itl = RectangleTool
             Case 14
                 itl = LineTool
-
+            Case 15
+                itl = TransformTool
         End Select
         itl.SelectTool(vcor.pDevice)
     End Sub
