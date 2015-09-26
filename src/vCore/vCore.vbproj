@@ -92,6 +92,7 @@
     <Compile Include="Core\Tool\PointerRemoveTool.vb" />
     <Compile Include="Core\Tool\RectangleTool.vb" />
     <Compile Include="Core\Tool\EllipseTool.vb" />
+    <Compile Include="Core\Tool\SelectionTool.vb" />
     <Compile Include="Core\Tool\tMoveTool.vb" />
     <Compile Include="Core\Tool\NodeEditTool.vb" />
     <Compile Include="Core\Tool\tPointerConvert.vb" />

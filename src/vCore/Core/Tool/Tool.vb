@@ -15,7 +15,7 @@ Public Class Tools
 
     Dim pantool As tPanTool
     Dim zoomtool As tZoomTool
-    Dim selectiontool As tsel
+    Dim seltool As tsel
     Dim ellipsetool As EllipseTool
     Dim moveTool As tMoveTool
     Dim sizeTool As tSizeTool
@@ -28,13 +28,14 @@ Public Class Tools
     Dim RectangleTool As RectangleTool
     Dim LineTool As LineTool
     Dim TransformTool As TransformTool
+    Dim SelectionTool As SelectionTool
 
     Public Sub New(ByRef vc As vCore)
         vcor = vc
 
         pantool = New tPanTool(vcor.View)
         zoomtool = New tZoomTool(vcor.View)
-        selectiontool = New tsel(vcor)
+        seltool = New tsel(vcor)
         ellipsetool = New EllipseTool(vcor)
         moveTool = New tMoveTool(vcor)
         sizeTool = New tSizeTool(vcor)
@@ -47,7 +48,7 @@ Public Class Tools
         RectangleTool = New RectangleTool(vcor)
         LineTool = New LineTool(vcor)
         TransformTool = New TransformTool(vcor)
-
+        SelectionTool = New SelectionTool(vcor)
 
         itl = pantool
         itl.SelectTool(vcor.pDevice)
@@ -68,7 +69,7 @@ Public Class Tools
             Case 2
                 itl = zoomtool
             Case 3
-                itl = selectiontool
+                itl = seltool
             Case 4
                 itl = ellipsetool
             Case 5
@@ -93,6 +94,9 @@ Public Class Tools
                 itl = LineTool
             Case 15
                 itl = TransformTool
+            Case 16
+                itl = SelectionTool
+
         End Select
         itl.SelectTool(vcor.pDevice)
     End Sub

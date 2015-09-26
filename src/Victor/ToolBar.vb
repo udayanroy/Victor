@@ -22,7 +22,7 @@ Public Class ToolBar
         
         Tiles = New List(Of ToolTile)()
 
-        Tiles.Add(New ToolTile(My.Resources.Path_selection_tool, 5))
+        Tiles.Add(New ToolTile(My.Resources.Path_selection_tool, 16))
         Tiles.Add(New ToolTile(My.Resources.Direct_selection_tool, 8))
         Tiles.Add(New ToolTile(My.Resources.Ellipse_tool, 4))
         Tiles.Add(New ToolTile(My.Resources.Square, 13))
