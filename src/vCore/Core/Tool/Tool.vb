@@ -29,6 +29,8 @@ Public Class Tools
     Dim LineTool As LineTool
     Dim TransformTool As TransformTool
     Dim SelectionTool As SelectionTool
+    Dim ResizeTool As ResizeTool
+
 
     Public Sub New(ByRef vc As vCore)
         vcor = vc
@@ -49,6 +51,8 @@ Public Class Tools
         LineTool = New LineTool(vcor)
         TransformTool = New TransformTool(vcor)
         SelectionTool = New SelectionTool(vcor)
+        ResizeTool = New ResizeTool(vcor)
+
 
         itl = pantool
         itl.SelectTool(vcor.pDevice)
@@ -96,9 +100,11 @@ Public Class Tools
                 itl = TransformTool
             Case 16
                 itl = SelectionTool
+            Case 17
+                itl = ResizeTool
 
         End Select
-        itl.SelectTool(vcor.pDevice)
+                itl.SelectTool(vcor.pDevice)
     End Sub
 End Class
 

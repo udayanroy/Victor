@@ -28,7 +28,7 @@ Public Class ToolBar
         Tiles.Add(New ToolTile(My.Resources.Square, 13))
         Tiles.Add(New ToolTile(My.Resources.Line, 14))
         Tiles.Add(New ToolTile(My.Resources.Pen_tool, 10))
-        Tiles.Add(New ToolTile(My.Resources.Transform_2_icon__1_, 15))
+        Tiles.Add(New ToolTile(My.Resources.Transform_2_icon__1_, 17))
         Tiles.Add(New ToolTile(My.Resources.Hand_tool, 1))
         Tiles.Add(New ToolTile(My.Resources.Connect_point_tool, 9))
         Tiles.Add(New ToolTile(My.Resources.Add_anchor_point_tool, 12))
