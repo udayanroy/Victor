@@ -98,7 +98,7 @@
     <Compile Include="Core\Tool\NodeEditTool.vb" />
     <Compile Include="Core\Tool\tPointerConvert.vb" />
     <Compile Include="Core\Tool\TransformTool.vb" />
-    <Compile Include="Core\Tool\tRotate.vb" />
+    <Compile Include="Core\Tool\RotateTool.vb" />
     <Compile Include="Core\Tool\tsel.vb" />
     <Compile Include="Core\Tool\tSizeTool.vb" />
     <Compile Include="Core\Tool\tZoomTool.vb" />

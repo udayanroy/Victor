@@ -19,7 +19,7 @@ Public Class Tools
     Dim ellipsetool As EllipseTool
     Dim moveTool As tMoveTool
     Dim sizeTool As tSizeTool
-    Dim rotateTool As tRotate
+    Dim rotateTool As RotateTool
     Dim pathptTool As NodeEditTool
     Dim ptconvTool As tPointerConvert
     Dim penTool As PenTool
@@ -41,7 +41,7 @@ Public Class Tools
         ellipsetool = New EllipseTool(vcor)
         moveTool = New tMoveTool(vcor)
         sizeTool = New tSizeTool(vcor)
-        rotateTool = New tRotate(vcor)
+        rotateTool = New RotateTool(vcor)
         pathptTool = New NodeEditTool(vcor)
         ptconvTool = New tPointerConvert(vcor)
         penTool = New PenTool(vcor)

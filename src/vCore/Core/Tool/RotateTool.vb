@@ -2,7 +2,7 @@
 Imports System.Windows.Forms
 Imports System.Drawing.Drawing2D
 
-Public Class tRotate
+Public Class RotateTool
     Implements Itool
 
 
@@ -24,12 +24,12 @@ Public Class tRotate
     Dim svp As GraphicsPath
 
     Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
-       
+
         v.Editor.mouse_Down(e)
     End Sub
 
     Private Sub dc_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseMove
-        
+
         v.Editor.mouse_Move(e)
     End Sub
     Private Sub dc_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseUp
