@@ -94,6 +94,7 @@
     <Compile Include="Core\Tool\EllipseTool.vb" />
     <Compile Include="Core\Tool\ResizeTool.vb" />
     <Compile Include="Core\Tool\SelectionTool.vb" />
+    <Compile Include="Core\Tool\ShearTool.vb" />
     <Compile Include="Core\Tool\tMoveTool.vb" />
     <Compile Include="Core\Tool\NodeEditTool.vb" />
     <Compile Include="Core\Tool\tPointerConvert.vb" />

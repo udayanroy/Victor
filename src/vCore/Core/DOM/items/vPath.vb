@@ -1,17 +1,12 @@
 ﻿Imports System.Drawing.Drawing2D
 
-Public Class vPath
+<Serializable()> Public Class vPath
     Implements vItem
 
-
-
-
+     
 
     Friend pth As GPath
-
-    Friend mode As List(Of Boolean)
-
-
+     
 
     Public Sub New()
         pth = New GPath
@@ -30,7 +25,7 @@ Public Class vPath
 
 
     Public Function HitTest(ByVal p As System.Drawing.PointF) As Boolean Implements vItem.HitTest
-        Return pth.IsVisible(p)
+        Return pth.isVisible(p)
     End Function
 
     Public ReadOnly Property GraphicsPath As GPath

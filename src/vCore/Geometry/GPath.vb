@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
-Public Class GPath
+<Serializable()> Public Class GPath
     Private spaths As New List(Of SubPath)
 
     Public Sub New()
@@ -203,7 +203,7 @@ Public Class GPath
     End Sub
 End Class
 
-Public Class SubPath
+<Serializable()> Public Class SubPath
 
     Private pts As New List(Of PathPoint)
 
@@ -335,7 +335,7 @@ Public Class SubPath
     End Function
 End Class
 
-Public Class PathPoint
+<Serializable()> Public Class PathPoint
 
     Dim pts(3) As PointF
 

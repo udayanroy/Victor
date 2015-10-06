@@ -191,5 +191,50 @@ Public Class vEditor
         Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj).GetBound
     End Function
 
+    Public Sub Cut()
+        If (Not selection.isEmty) Then
+            Dim obj As vPath = vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
+            Windows.Forms.Clipboard.SetData("vcimg", obj)
+            vcor.mem.Layers(slct.MemoryLocation.layer).Item.RemoveAt(slct.MemoryLocation.obj)
+            slct.isEmty = True
+            Me.Refresh()
+        End If
+    End Sub
+
+    Public Sub Copy()
+        If (Not selection.isEmty) Then
+            Dim obj As vPath = vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
+            Windows.Forms.Clipboard.SetData("vcimg", obj)
+        End If
+
+    End Sub
+
+    Public Sub Past()
+
+        If Windows.Forms.Clipboard.ContainsData("vcimg") Then
+            Dim path As vPath = Windows.Forms.Clipboard.GetData("vcimg")
+            View.Memory.Layers(0).Item.Add(path)
+            Me.Refresh()
+        End If
+
+    End Sub
+
+    Public Sub Delete()
+        If Not selection.isEmty Then
+            vcor.mem.Layers(slct.MemoryLocation.layer).Item.RemoveAt(slct.MemoryLocation.obj)
+            slct.isEmty = True
+            Me.Refresh()
+        End If
+
+    End Sub
+
+    Public Sub ClearAll()
+        For Each Layer As Layer In vcor.mem.Layers
+            Layer.Item.Clear()
+        Next
+        slct.isEmty = True
+        Me.Refresh()
+    End Sub
+
 End Class
 
