@@ -12,6 +12,7 @@ Public Class view
         core = New vCore.vCore(Panel1, pagesz)
         ToolBar1.core = core
         ' ToolBar1.Width = 47
+        AddHandler core.Editor.PropertyChanged, AddressOf SelectionPropertyChanged
     End Sub
 
 
@@ -83,11 +84,15 @@ Public Class view
     Private Sub Panel3_Click(sender As Object, e As EventArgs) Handles Panel3.Click
         Using clrDlg As New ColorDialog
             If clrDlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
-                Panel3.BackColor = clrDlg.Color
+                Dim color = clrDlg.Color
+                Panel3.BackColor = color
+                core.Editor.FillColor = color
             End If
         End Using
     End Sub
 
-     
+    Private Sub SelectionPropertyChanged()
+        Panel3.BackColor = core.Editor.FillColor
+    End Sub
     
 End Class
