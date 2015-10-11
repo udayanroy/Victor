@@ -48,9 +48,9 @@ Partial Class view
         Me.WindowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.Panel1 = New vCore.advancedPanel()
         Me.ToolBar1 = New Victor.ToolBar()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.Panel2.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -185,37 +185,40 @@ Partial Class view
         '
         'CutToolStripMenuItem
         '
+        Me.CutToolStripMenuItem.Enabled = False
         Me.CutToolStripMenuItem.Name = "CutToolStripMenuItem"
-        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
+        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.CutToolStripMenuItem.Text = "Cut"
         '
         'CopyToolStripMenuItem
         '
+        Me.CopyToolStripMenuItem.Enabled = False
         Me.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem"
-        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
+        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.CopyToolStripMenuItem.Text = "Copy"
         '
         'PastToolStripMenuItem
         '
         Me.PastToolStripMenuItem.Name = "PastToolStripMenuItem"
-        Me.PastToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
-        Me.PastToolStripMenuItem.Text = "Past"
+        Me.PastToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.PastToolStripMenuItem.Text = "Paste"
         '
         'DeleteToolStripMenuItem
         '
+        Me.DeleteToolStripMenuItem.Enabled = False
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(115, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(149, 6)
         '
         'ClearAllToolStripMenuItem
         '
         Me.ClearAllToolStripMenuItem.Name = "ClearAllToolStripMenuItem"
-        Me.ClearAllToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
+        Me.ClearAllToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ClearAllToolStripMenuItem.Text = "Clear All"
         '
         'WindowToolStripMenuItem
@@ -237,6 +240,16 @@ Partial Class view
         Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.AboutToolStripMenuItem.Text = "About"
         '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(206, 13)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(55, 21)
+        Me.Label3.TabIndex = 8
+        Me.Label3.Text = "Width:"
+        '
         'Panel1
         '
         Me.Panel1.AutoScroll = True
@@ -255,16 +268,6 @@ Partial Class view
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.Size = New System.Drawing.Size(66, 459)
         Me.ToolBar1.TabIndex = 0
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(206, 13)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(55, 21)
-        Me.Label3.TabIndex = 8
-        Me.Label3.Text = "Width:"
         '
         'view
         '

@@ -19,6 +19,8 @@ Public Class Editor
     Dim _strokecolor As Color = Color.Black
     Dim _strokewidth As Single = 1
 
+    Public Event PropertyChanged()
+    Public Event SelectionChanged()
 
     Public Sub New(ByRef v As vCore)
 
@@ -101,7 +103,7 @@ Public Class Editor
             r = 0
         End If
 
-        ' Refresh()
+        RaiseEvent SelectionChanged()
         Return r
 
     End Function
@@ -292,7 +294,6 @@ Public Class Editor
         End Set
     End Property
 
-    Public Event PropertyChanged()
-
+  
 End Class
 

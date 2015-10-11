@@ -13,14 +13,13 @@ Public Class view
         ToolBar1.core = core
         ' ToolBar1.Width = 47
         AddHandler core.Editor.PropertyChanged, AddressOf SelectionPropertyChanged
+        AddHandler core.Editor.SelectionChanged, AddressOf SelectionChanged
     End Sub
 
 
 
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        core.selectTool(CInt(TextBox1.Text))
-    End Sub
+    
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
         Application.Exit()
@@ -96,7 +95,15 @@ Public Class view
         Panel4.BackColor = core.Editor.StrokeColor
         ComboBox1.SelectedIndex = CInt(core.Editor.strokeWidth)
     End Sub
-    
+
+    Private Sub SelectionChanged()
+        Dim enable = Not core.Editor.selection.isEmty
+        CutToolStripMenuItem.Enabled = enable
+        CopyToolStripMenuItem.Enabled = enable
+        DeleteToolStripMenuItem.Enabled = enable
+
+    End Sub
+
     
     Private Sub Panel4_Click(sender As Object, e As EventArgs) Handles Panel4.Click
         Using clrDlg As New ColorDialog
