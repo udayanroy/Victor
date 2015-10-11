@@ -18,7 +18,7 @@ Public Class view
 
 
 
-    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         core.selectTool(CInt(TextBox1.Text))
     End Sub
 
@@ -93,6 +93,22 @@ Public Class view
 
     Private Sub SelectionPropertyChanged()
         Panel3.BackColor = core.Editor.FillColor
+        Panel4.BackColor = core.Editor.StrokeColor
+        ComboBox1.SelectedIndex = CInt(core.Editor.strokeWidth)
     End Sub
     
+    
+    Private Sub Panel4_Click(sender As Object, e As EventArgs) Handles Panel4.Click
+        Using clrDlg As New ColorDialog
+            If clrDlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                Dim color = clrDlg.Color
+                Panel4.BackColor = color
+                core.Editor.StrokeColor = color
+            End If
+        End Using
+    End Sub
+
+    Private Sub ComboBox1_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBox1.SelectionChangeCommitted
+        core.Editor.strokeWidth = ComboBox1.SelectedIndex
+    End Sub
 End Class
