@@ -1,22 +1,34 @@
 ﻿Imports System.Drawing.Drawing2D
+Imports System.Drawing
 
 <Serializable()> Public Class vPath
     Implements vItem
 
-     
+
 
     Friend pth As GPath
-     
+
 
     Public Sub New()
         pth = New GPath
         pth.AddEllipse(100, 100, 400, 200)
     End Sub
 
+    Public Property FillColor As Color = Color.Blue
+    Public Property StrokeColor As Color = Color.Black
+    Public Property StrokWidth As Integer = 1
+
 
     Public Sub Draw(ByRef g As System.Drawing.Graphics) Implements vItem.Draw
         'g.FillPath(Drawing.Brushes.Blue, pth)
-        pth.drawPath(g, Drawing.Pens.Black, Drawing.Brushes.Blue)
+        Using Brush As New SolidBrush(FillColor),
+                    penBrush As New SolidBrush(StrokeColor),
+                    pen As New Pen(penBrush, StrokWidth)
+
+            pth.drawPath(g, pen, Brush)
+
+        End Using
+
     End Sub
 
     Public Function GetBound() As System.Drawing.RectangleF Implements vItem.GetBound
