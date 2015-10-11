@@ -4,14 +4,14 @@ Imports System.Drawing
 Public Class eMove
     Implements Iedtr
 
-    Dim v As vEditor
+    Dim v As Editor
     Dim mdl As Point
     Dim md As Point
 
     Dim s As Integer = 0
     Dim svp As GPath
 
-    Public Sub New(ByRef edtr As vEditor)
+    Public Sub New(ByRef edtr As Editor)
         v = edtr
     End Sub
 

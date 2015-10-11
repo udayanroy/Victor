@@ -86,7 +86,7 @@
     <Compile Include="Core\Editor\Iedtr.vb" />
     <Compile Include="Core\Editor\Msr.vb" />
     <Compile Include="Core\Editor\Selection.vb" />
-    <Compile Include="Core\Editor\vEditor.vb" />
+    <Compile Include="Core\Editor\Editor.vb" />
     <Compile Include="Core\Tool\AddPointerTool.vb" />
     <Compile Include="Core\Tool\LineTool.vb" />
     <Compile Include="Core\Tool\PenTool.vb" />

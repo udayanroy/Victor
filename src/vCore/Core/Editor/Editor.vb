@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing
 Imports System.Drawing.Drawing2D
 
-Public Class vEditor
+Public Class Editor
 
 
     Dim vcor As vCore

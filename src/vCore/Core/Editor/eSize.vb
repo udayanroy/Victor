@@ -4,7 +4,7 @@ Imports System.Drawing.Drawing2D
 Public Class eSize
     Implements Iedtr
 
-    Dim v As vEditor
+    Dim v As Editor
 
     Private bound As Rectangle
     Private b As Integer = 3
@@ -23,7 +23,7 @@ Public Class eSize
 
     Dim nrect As RectangleF
 
-    Public Sub New(ByRef edtr As vEditor)
+    Public Sub New(ByRef edtr As Editor)
 
         wh = b * 2
 

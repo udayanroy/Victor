@@ -6,7 +6,7 @@ Public Class vCore
 
     Friend mem As DOM
     Private vu As View
-    Private edtr As vEditor
+    Private edtr As Editor
     Private WithEvents device As advancedPanel
 
     Private tool As Tools
@@ -23,7 +23,7 @@ Public Class vCore
         mem.Layers(0).Item.Add(vp)
 
         vu = New View(mem, device, pagesize)
-        edtr = New vEditor(Me)
+        edtr = New Editor(Me)
 
 
         tool = New Tools(Me)
@@ -40,7 +40,7 @@ Public Class vCore
             Return device
         End Get
     End Property
-    Public ReadOnly Property Editor() As vEditor
+    Public ReadOnly Property Editor() As Editor
         Get
             Return edtr
         End Get

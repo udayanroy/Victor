@@ -5,14 +5,14 @@ Imports System.Drawing
 Public Class ePointerConvert
     Implements Iedtr
 
-    Dim v As vEditor
+    Dim v As Editor
     Dim spath As vPath
     Dim editablepath As GPath
     Dim noderadious As Single = 3
 
     Dim nodesel As nodeselection
 
-    Public Sub New(ByRef edtr As vEditor)
+    Public Sub New(ByRef edtr As Editor)
         v = edtr
     End Sub
 

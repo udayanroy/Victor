@@ -9,8 +9,8 @@ Public Class eRotate
     Private wh As Integer = b * 2
 
 
-    Dim v As vEditor
-   
+    Dim v As Editor
+
 
     Dim s As Integer = 0
     Dim svp As GPath
@@ -19,7 +19,7 @@ Public Class eRotate
     Dim rotating As Boolean = False
     Dim mainpathBound As RectangleF
 
-    Public Sub New(ByRef edtr As vEditor)
+    Public Sub New(ByRef edtr As Editor)
         v = edtr
     End Sub
 
