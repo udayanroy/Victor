@@ -44,6 +44,10 @@ Public Class View
         End Get
     End Property
 
+    Public Function GetPageSize() As Size
+        Return Me.page_size
+    End Function
+
     Public Sub paint(ByVal g As Graphics)
 
         Dim gc As GraphicsContainer

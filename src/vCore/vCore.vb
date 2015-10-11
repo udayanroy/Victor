@@ -53,4 +53,7 @@ Public Class vCore
         vu.paint(e.Graphics)
         edtr.paint(e.Graphics)
     End Sub
+
+
+
 End Class

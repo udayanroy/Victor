@@ -23,6 +23,7 @@ Partial Class view
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
@@ -47,12 +48,15 @@ Partial Class view
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New vCore.advancedPanel()
         Me.ToolBar1 = New Victor.ToolBar()
+        Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Panel2.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel2
         '
+        Me.Panel2.Controls.Add(Me.Panel3)
+        Me.Panel2.Controls.Add(Me.Label1)
         Me.Panel2.Controls.Add(Me.Button1)
         Me.Panel2.Controls.Add(Me.TextBox1)
         Me.Panel2.Dock = System.Windows.Forms.DockStyle.Top
@@ -60,6 +64,16 @@ Partial Class view
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(731, 50)
         Me.Panel2.TabIndex = 1
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(13, 13)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(53, 21)
+        Me.Label1.TabIndex = 2
+        Me.Label1.Text = "Brush:"
         '
         'Button1
         '
@@ -72,7 +86,7 @@ Partial Class view
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(49, 13)
+        Me.TextBox1.Location = New System.Drawing.Point(163, 13)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(100, 20)
         Me.TextBox1.TabIndex = 0
@@ -149,36 +163,36 @@ Partial Class view
         'CutToolStripMenuItem
         '
         Me.CutToolStripMenuItem.Name = "CutToolStripMenuItem"
-        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.CutToolStripMenuItem.Text = "Cut"
         '
         'CopyToolStripMenuItem
         '
         Me.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem"
-        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.CopyToolStripMenuItem.Text = "Copy"
         '
         'PastToolStripMenuItem
         '
         Me.PastToolStripMenuItem.Name = "PastToolStripMenuItem"
-        Me.PastToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.PastToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.PastToolStripMenuItem.Text = "Past"
         '
         'DeleteToolStripMenuItem
         '
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(115, 6)
         '
         'ClearAllToolStripMenuItem
         '
         Me.ClearAllToolStripMenuItem.Name = "ClearAllToolStripMenuItem"
-        Me.ClearAllToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ClearAllToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.ClearAllToolStripMenuItem.Text = "Clear All"
         '
         'WindowToolStripMenuItem
@@ -218,6 +232,14 @@ Partial Class view
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.Size = New System.Drawing.Size(66, 459)
         Me.ToolBar1.TabIndex = 0
+        '
+        'Panel3
+        '
+        Me.Panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel3.Location = New System.Drawing.Point(68, 9)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(29, 31)
+        Me.Panel3.TabIndex = 3
         '
         'view
         '
@@ -263,4 +285,6 @@ Partial Class view
     Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
     Friend WithEvents HelpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AboutToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents Panel3 As System.Windows.Forms.Panel
 End Class

@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\BufferPaint.vb" />
+    <Compile Include="Core\DOM\Export.vb" />
     <Compile Include="Core\DOM\items\EditableGraphicsPath.vb" />
     <Compile Include="Core\Editor\eMove.vb" />
     <Compile Include="Core\Editor\ePointerConvert.vb" />

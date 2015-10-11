@@ -43,4 +43,7 @@ Public Class advancedPanel
     
 
    
+    Private Sub advancedPanel_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
+        Me.Focus()
+    End Sub
 End Class
