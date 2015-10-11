@@ -49,6 +49,8 @@ Partial Class view
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Label3 = New System.Windows.Forms.Label()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox2 = New System.Windows.Forms.CheckBox()
         Me.Panel1 = New vCore.advancedPanel()
         Me.ToolBar1 = New Victor.ToolBar()
         Me.Panel2.SuspendLayout()
@@ -57,6 +59,8 @@ Partial Class view
         '
         'Panel2
         '
+        Me.Panel2.Controls.Add(Me.CheckBox2)
+        Me.Panel2.Controls.Add(Me.CheckBox1)
         Me.Panel2.Controls.Add(Me.Label3)
         Me.Panel2.Controls.Add(Me.ComboBox1)
         Me.Panel2.Controls.Add(Me.Panel4)
@@ -187,38 +191,38 @@ Partial Class view
         '
         Me.CutToolStripMenuItem.Enabled = False
         Me.CutToolStripMenuItem.Name = "CutToolStripMenuItem"
-        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.CutToolStripMenuItem.Text = "Cut"
         '
         'CopyToolStripMenuItem
         '
         Me.CopyToolStripMenuItem.Enabled = False
         Me.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem"
-        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.CopyToolStripMenuItem.Text = "Copy"
         '
         'PastToolStripMenuItem
         '
         Me.PastToolStripMenuItem.Name = "PastToolStripMenuItem"
-        Me.PastToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.PastToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.PastToolStripMenuItem.Text = "Paste"
         '
         'DeleteToolStripMenuItem
         '
         Me.DeleteToolStripMenuItem.Enabled = False
         Me.DeleteToolStripMenuItem.Name = "DeleteToolStripMenuItem"
-        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.DeleteToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.DeleteToolStripMenuItem.Text = "Delete"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(149, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(115, 6)
         '
         'ClearAllToolStripMenuItem
         '
         Me.ClearAllToolStripMenuItem.Name = "ClearAllToolStripMenuItem"
-        Me.ClearAllToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ClearAllToolStripMenuItem.Size = New System.Drawing.Size(118, 22)
         Me.ClearAllToolStripMenuItem.Text = "Clear All"
         '
         'WindowToolStripMenuItem
@@ -249,6 +253,26 @@ Partial Class view
         Me.Label3.Size = New System.Drawing.Size(55, 21)
         Me.Label3.TabIndex = 8
         Me.Label3.Text = "Width:"
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(346, 14)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(38, 17)
+        Me.CheckBox1.TabIndex = 9
+        Me.CheckBox1.Text = "Fill"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
+        'CheckBox2
+        '
+        Me.CheckBox2.AutoSize = True
+        Me.CheckBox2.Location = New System.Drawing.Point(388, 14)
+        Me.CheckBox2.Name = "CheckBox2"
+        Me.CheckBox2.Size = New System.Drawing.Size(57, 17)
+        Me.CheckBox2.TabIndex = 10
+        Me.CheckBox2.Text = "Stroke"
+        Me.CheckBox2.UseVisualStyleBackColor = True
         '
         'Panel1
         '
@@ -317,4 +341,6 @@ Partial Class view
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents ComboBox1 As System.Windows.Forms.ComboBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents CheckBox2 As System.Windows.Forms.CheckBox
+    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
 End Class

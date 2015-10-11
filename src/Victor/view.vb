@@ -94,6 +94,8 @@ Public Class view
         Panel3.BackColor = core.Editor.FillColor
         Panel4.BackColor = core.Editor.StrokeColor
         ComboBox1.SelectedIndex = CInt(core.Editor.strokeWidth)
+        CheckBox1.Checked = core.Editor.isFill
+        CheckBox2.Checked = core.Editor.isStroke
     End Sub
 
     Private Sub SelectionChanged()
@@ -117,5 +119,13 @@ Public Class view
 
     Private Sub ComboBox1_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBox1.SelectionChangeCommitted
         core.Editor.strokeWidth = ComboBox1.SelectedIndex
+    End Sub
+
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+        core.Editor.isFill = CheckBox1.Checked
+    End Sub
+
+    Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox2.CheckedChanged
+        core.Editor.isStroke = CheckBox2.Checked
     End Sub
 End Class

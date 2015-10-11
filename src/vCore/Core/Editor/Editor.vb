@@ -117,6 +117,8 @@ Public Class Editor
         Me._fillcolor = path.FillColor
         Me._strokecolor = path.StrokeColor
         Me._strokewidth = path.StrokWidth
+        Me._isfill = path.isFill
+        Me._isstroke = path.isStroke
         RaiseEvent PropertyChanged()
     End Sub
 
