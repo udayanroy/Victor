@@ -15,9 +15,13 @@ Public Class Editor
 
     Dim type As selectionType
 
+    'global DrwingElement propertys
     Dim _fillcolor As Color = Color.Blue
     Dim _strokecolor As Color = Color.Black
     Dim _strokewidth As Single = 1
+    Dim _isfill As Boolean = True
+    Dim _isstroke As Boolean = True
+
 
     Public Event PropertyChanged()
     Public Event SelectionChanged()
@@ -294,6 +298,32 @@ Public Class Editor
         End Set
     End Property
 
-  
+    Public Property isFill As Boolean
+        Get
+            Return Me._isfill
+        End Get
+        Set(value As Boolean)
+            Me._isfill = value
+            If Not Me.selection.isEmty Then
+                Dim path = Me.getSelectionPath
+                path.isFill = value
+                Me.Refresh()
+            End If
+        End Set
+    End Property
+
+    Public Property isStroke As Boolean
+        Get
+            Return Me._isstroke
+        End Get
+        Set(value As Boolean)
+            Me._isstroke = value
+            If Not Me.selection.isEmty Then
+                Dim path = Me.getSelectionPath
+                path.isStroke = value
+                Me.Refresh()
+            End If
+        End Set
+    End Property
 End Class
 

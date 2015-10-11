@@ -17,17 +17,22 @@ Imports System.Drawing
     Public Property FillColor As Color = Color.Blue
     Public Property StrokeColor As Color = Color.Black
     Public Property StrokWidth As Single = 1
+    Public Property isFill As Boolean = True
+    Public Property isStroke As Boolean = True
 
 
     Public Sub Draw(ByRef g As System.Drawing.Graphics) Implements vItem.Draw
         'g.FillPath(Drawing.Brushes.Blue, pth)
-        Using Brush As New SolidBrush(FillColor),
-                    penBrush As New SolidBrush(StrokeColor),
-                    pen As New Pen(penBrush, StrokWidth)
+        Dim brush As Brush = Nothing
+        Dim pen As Pen = Nothing
+        If isFill Then brush = New SolidBrush(FillColor)
+        If isStroke Then
+            Dim penBrush As New SolidBrush(StrokeColor)
+            pen = New Pen(penBrush, StrokWidth)
+        End If
 
-            pth.drawPath(g, pen, Brush)
+        pth.drawPath(g, Pen, brush)
 
-        End Using
 
     End Sub
 
