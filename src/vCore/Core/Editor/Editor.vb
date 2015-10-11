@@ -15,6 +15,11 @@ Public Class Editor
 
     Dim type As selectionType
 
+    Dim _fillcolor As Color = Color.Blue
+    Dim _strokecolor As Color = Color.Black
+    Dim _strokewidth As Single = 1
+
+
     Public Sub New(ByRef v As vCore)
 
         vcor = v
@@ -89,6 +94,7 @@ Public Class Editor
             End If
             slct.MemoryLocation = memloc
             slct.isEmty = False
+            Me.OnSelectionChanged()
 
         Else
             slct.isEmty = True
@@ -100,6 +106,13 @@ Public Class Editor
 
     End Function
 
+    Private Sub OnSelectionChanged()
+        Dim path = Me.getSelectionPath
+        Me._fillcolor = path.FillColor
+        Me._strokecolor = path.StrokeColor
+        Me._strokewidth = path.StrokWidth
+        RaiseEvent PropertyChanged()
+    End Sub
 
     Public Sub DisSelect()
         slct.isEmty = True
@@ -235,6 +248,51 @@ Public Class Editor
         slct.isEmty = True
         Me.Refresh()
     End Sub
+
+    Public Property FillColor As Color
+        Get
+            Return Me._fillcolor
+        End Get
+        Set(value As Color)
+            Me._fillcolor = value
+            If Not Me.selection.isEmty Then
+                Dim path = Me.getSelectionPath
+                path.FillColor = value
+                Me.Refresh()
+            End If
+        End Set
+    End Property
+
+    Public Property StrokeColor As Color
+        Get
+            Return Me._strokecolor
+        End Get
+        Set(value As Color)
+            Me._strokecolor = value
+
+            If Not Me.selection.isEmty Then
+                Dim path = Me.getSelectionPath
+                path.StrokeColor = value
+                Me.Refresh()
+            End If
+        End Set
+    End Property
+
+    Public Property strokeWidth As Single
+        Get
+            Return Me._strokewidth
+        End Get
+        Set(value As Single)
+            Me._strokewidth = value
+            If Not Me.selection.isEmty Then
+                Dim path = Me.getSelectionPath
+                path.StrokWidth = value
+                Me.Refresh()
+            End If
+        End Set
+    End Property
+
+    Public Event PropertyChanged()
 
 End Class
 

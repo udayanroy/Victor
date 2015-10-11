@@ -54,8 +54,6 @@ Public Class vCore
         edtr.paint(e.Graphics)
     End Sub
 
-    Public Sub setColor(c As Color)
-
-    End Sub
+     
 
 End Class

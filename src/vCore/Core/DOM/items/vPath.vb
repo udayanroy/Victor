@@ -16,7 +16,7 @@ Imports System.Drawing
 
     Public Property FillColor As Color = Color.Blue
     Public Property StrokeColor As Color = Color.Black
-    Public Property StrokWidth As Integer = 1
+    Public Property StrokWidth As Single = 1
 
 
     Public Sub Draw(ByRef g As System.Drawing.Graphics) Implements vItem.Draw
