@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Drawing.Drawing2D
+Imports Geom.Geometry
 
 <Serializable()> Public Class GPath
     Private spaths As New List(Of SubPath)
@@ -249,8 +250,21 @@ End Class
         Return bnd
     End Function
 
-    Public Function GetStrictBound() As RectangleF
+    Public Function GetStrictBound() As GRect
+        Dim result As GRect
 
+
+        Dim n = countBezier()
+
+        result = getBezier(0).GetCozyBound
+        If n > 1 Then
+            For i As Integer = 1 To n - 1
+                Dim bound = getBezier(i).GetCozyBound
+                result = result.union(bound)
+            Next
+        End If
+
+        Return result
     End Function
 
     Public Function countBezier() As Integer
@@ -262,6 +276,42 @@ End Class
         End If
         Return n
 
+    End Function
+
+    Public Function getBezier(ByVal i As Integer) As GCubicBezier
+        Dim n = countBezier()
+        Dim pp1 = Points(i)
+
+        Dim np2 = i + 1
+        Dim npts = CountPoints()
+
+        If np2 = npts Then
+            If Closed Then
+                i = 0
+                np2 = 0
+            End If
+        Else
+            np2 = i + 1
+        End If
+        Dim pp2 = Points(np2)
+
+        Dim c1, c2, m1, m2 As GPoint
+        m1 = GeometryConverter.Pointf2Gpoint(pp1.M)
+        m2 = GeometryConverter.Pointf2Gpoint(pp2.M)
+        If pp1.Type = PathPointType.None Then
+            c1 = GeometryConverter.Pointf2Gpoint(pp1.M)
+        Else
+            c1 = GeometryConverter.Pointf2Gpoint(pp1.C2)
+        End If
+        If pp2.Type = PathPointType.None Then
+            c2 = GeometryConverter.Pointf2Gpoint(pp2.M)
+        Else
+            c2 = GeometryConverter.Pointf2Gpoint(pp2.C1)
+        End If
+
+        Dim bez As New GCubicBezier(m1, c1, c2, m2)
+
+        Return bez
     End Function
 
     Public Function Clone() As SubPath

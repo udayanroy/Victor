@@ -114,6 +114,7 @@
     <Compile Include="Core\Tool\Tool.vb" />
     <Compile Include="Core\Tool\tPanTool.vb" />
     <Compile Include="Core\View.vb" />
+    <Compile Include="Geometry\GeometryConverter.vb" />
     <Compile Include="Geometry\GPath.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
