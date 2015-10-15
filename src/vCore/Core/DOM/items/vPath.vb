@@ -41,8 +41,26 @@ Imports System.Drawing
     End Function
 
 
-    Public Function HitTest(ByVal p As System.Drawing.PointF) As Boolean Implements vItem.HitTest
-        Return pth.isVisible(p)
+    Public Function HitTest(ByVal location As System.Drawing.PointF) As Boolean Implements vItem.HitTest
+        Dim isbodyvisible, isOutline As Boolean
+
+        Dim bound = Me.GraphicsPath.GetBound
+        If bound.Contains(location) Then
+            Using gp As GraphicsPath = Me.pth.ToGraphicsPath
+                isbodyvisible = gp.IsVisible(location)
+                If Not isbodyvisible Then
+                    Dim penwidth = IIf(Me.isStroke, Me.StrokWidth, 1)
+                    Using Pen = New Pen(Brushes.Black, penwidth)
+                        isOutline = gp.IsOutlineVisible(location, Pen)
+                    End Using
+                End If
+            End Using
+        End If
+
+
+        Return isbodyvisible Or isOutline
+
+
     End Function
 
     Public ReadOnly Property GraphicsPath As GPath
