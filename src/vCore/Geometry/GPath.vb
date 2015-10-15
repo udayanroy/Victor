@@ -137,8 +137,18 @@ Imports Geom.Geometry
 
     End Sub
 
-    Public Function GetStrictBound() As RectangleF
-
+    Public Function GetTightBound() As RectangleF
+        Dim flag As Boolean = True
+        Dim bound As GRect
+        For Each sp As SubPath In Me.spaths
+            If flag Then
+                bound = sp.GetTightBound()
+                flag = False
+            Else
+                bound = bound.union(sp.GetTightBound)
+            End If
+        Next
+        Return GeometryConverter.Grect2Rectanglef(bound)
     End Function
 
     Public Function GetBound() As RectangleF
@@ -250,7 +260,7 @@ End Class
         Return bnd
     End Function
 
-    Public Function GetStrictBound() As GRect
+    Public Function GetTightBound() As GRect
         Dim result As GRect
 
 
