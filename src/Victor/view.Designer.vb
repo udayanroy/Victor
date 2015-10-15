@@ -49,11 +49,11 @@ Partial Class view
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.ClearAllToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.WindowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MinimizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MaximizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New vCore.advancedPanel()
-        Me.MinimizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MaximizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolBar1 = New Victor.ToolBar()
         Me.Panel2.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
@@ -264,6 +264,18 @@ Partial Class view
         Me.WindowToolStripMenuItem.Size = New System.Drawing.Size(63, 20)
         Me.WindowToolStripMenuItem.Text = "Window"
         '
+        'MinimizeToolStripMenuItem
+        '
+        Me.MinimizeToolStripMenuItem.Name = "MinimizeToolStripMenuItem"
+        Me.MinimizeToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+        Me.MinimizeToolStripMenuItem.Text = "Minimize"
+        '
+        'MaximizeToolStripMenuItem
+        '
+        Me.MaximizeToolStripMenuItem.Name = "MaximizeToolStripMenuItem"
+        Me.MaximizeToolStripMenuItem.Size = New System.Drawing.Size(124, 22)
+        Me.MaximizeToolStripMenuItem.Text = "Maximize"
+        '
         'HelpToolStripMenuItem
         '
         Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutToolStripMenuItem})
@@ -286,18 +298,6 @@ Partial Class view
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(665, 459)
         Me.Panel1.TabIndex = 0
-        '
-        'MinimizeToolStripMenuItem
-        '
-        Me.MinimizeToolStripMenuItem.Name = "MinimizeToolStripMenuItem"
-        Me.MinimizeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.MinimizeToolStripMenuItem.Text = "Minimize"
-        '
-        'MaximizeToolStripMenuItem
-        '
-        Me.MaximizeToolStripMenuItem.Name = "MaximizeToolStripMenuItem"
-        Me.MaximizeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.MaximizeToolStripMenuItem.Text = "Maximize"
         '
         'ToolBar1
         '

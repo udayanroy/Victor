@@ -1,6 +1,7 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
+Imports System.Runtime.Serialization.Formatters.Binary
 
 Public Class vCore
 
@@ -15,13 +16,8 @@ Public Class vCore
 
         device = dc
         mem = New DOM()
-
-        mem.Layers(0).Item.Add(New vPath)
-        Dim vp As New vPath
-        vp.pth.subpaths.Clear()
-        vp.pth.AddRectangle(New Rectangle(-20, 0, 30, 30))
-        mem.Layers(0).Item.Add(vp)
-
+        mem.PageSize = pagesize
+ 
         vu = New View(mem, device, pagesize)
         edtr = New Editor(Me)
 
@@ -30,6 +26,26 @@ Public Class vCore
 
 
     End Sub
+    Public Sub New(ByVal dc As advancedPanel, ByVal file As String)
+
+        Using strm As IO.FileStream = New IO.FileStream(file, IO.FileMode.Open, IO.FileAccess.ReadWrite, IO.FileShare.None)
+            Dim Formatter = New BinaryFormatter()
+
+            device = dc
+            mem = Formatter.Deserialize(strm)
+ 
+            vu = New View(mem, device, mem.PageSize)
+            edtr = New Editor(Me)
+
+
+            tool = New Tools(Me)
+
+        End Using
+
+
+
+    End Sub
+
     Public ReadOnly Property View() As View
         Get
             Return vu
@@ -45,6 +61,9 @@ Public Class vCore
             Return edtr
         End Get
     End Property
+
+    Public Property AsociateFile As String
+
     Public Sub selectTool(ByVal t As Integer)
         tool.SelectTool(t)
     End Sub
@@ -54,6 +73,21 @@ Public Class vCore
         edtr.paint(e.Graphics)
     End Sub
 
-     
+    Public Sub SaveDocumentTo(file As String)
+        AsociateFile = file
+        Using strm As IO.FileStream = New IO.FileStream(file, IO.FileMode.OpenOrCreate, IO.FileAccess.ReadWrite, IO.FileShare.None)
+            strm.SetLength(0)
+            Dim Formatter = New BinaryFormatter()
+            Formatter.Serialize(strm, Me.mem)
+        End Using
+    End Sub
+
+    Public Sub save()
+        Using strm As IO.FileStream = New IO.FileStream(AsociateFile, IO.FileMode.OpenOrCreate, IO.FileAccess.ReadWrite, IO.FileShare.None)
+            strm.SetLength(0)
+            Dim Formatter = New BinaryFormatter()
+            Formatter.Serialize(strm, Me.mem)
+        End Using
+    End Sub
 
 End Class

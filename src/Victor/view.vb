@@ -4,12 +4,19 @@ Public Class view
     Dim core As vCore.vCore
     Dim pagesz As New Size(500, 500)
 
+    Public Property FileName As String
+
     Private Sub Panel1_Paint(ByVal sender As System.Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Panel1.Paint
 
     End Sub
 
     Private Sub view_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        core = New vCore.vCore(Panel1, pagesz)
+        If FileName = "" Then
+            core = New vCore.vCore(Panel1, pagesz)
+        Else
+            core = New vCore.vCore(Panel1, FileName)
+        End If
+
         ToolBar1.core = core
         ' ToolBar1.Width = 47
 
@@ -144,5 +151,46 @@ Public Class view
     Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewToolStripMenuItem.Click
         Dim newwindow As New view
         newwindow.Show()
+    End Sub
+
+    Private Sub SaveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveToolStripMenuItem.Click
+        If core.AsociateFile = "" Then
+            saveAS()
+        Else
+            core.save()
+        End If
+    End Sub
+
+    Private Sub SaveAsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveAsToolStripMenuItem.Click
+        saveAS()
+    End Sub
+
+    Private Sub saveAS()
+        Using savedlg As New SaveFileDialog
+            savedlg.Filter = "Victor Image|*.vimg"
+            savedlg.Title = "Save As"
+            savedlg.FileName = "untitle"
+
+            If savedlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                If savedlg.FileName <> "" Then
+                    core.SaveDocumentTo(savedlg.FileName)
+                End If
+            End If
+
+        End Using
+    End Sub
+
+    Private Sub OpenToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenToolStripMenuItem.Click
+        Using opendlg As New OpenFileDialog
+            opendlg.Filter = "Victor Image|*.vimg"
+            opendlg.Title = "Open File"
+
+            If opendlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                Dim newwindow As New view
+                newwindow.FileName = opendlg.FileName
+                newwindow.Show()
+            End If
+
+        End Using
     End Sub
 End Class

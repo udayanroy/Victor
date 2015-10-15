@@ -1,6 +1,6 @@
 ﻿Imports System.Drawing
 
-Public Class Layer
+<Serializable()> Public Class Layer
     Implements IDisposable
 
     Private _lock, vwble As Boolean

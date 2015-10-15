@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing.Drawing2D
 Imports System.Drawing
 
-Public Class DOM
+<Serializable()> Public Class DOM
     Implements IDisposable
 
 
@@ -24,6 +24,7 @@ Public Class DOM
         End Get
     End Property
 
+    Public Property PageSize As Size
 
     Public Sub Draw(ByRef g As Graphics, ByVal page_loc As Point)
         Dim gcon As GraphicsContainer = g.BeginContainer
