@@ -83,6 +83,15 @@ Public Class PenTool
                 vpath.setPath(Path)
                 core.View.Memory.Layers(0).Item.Add(vpath)
 
+                'Add Active styles
+                Dim edtr = core.Editor
+                vpath.FillColor = edtr.FillColor
+                vpath.StrokeColor = edtr.StrokeColor
+                vpath.StrokWidth = edtr.strokeWidth
+                vpath.isFill = edtr.isFill
+                vpath.isStroke = edtr.isStroke
+
+                'Set global states
                 DrawingStarted = False
                 CurrentNode = Nothing
                 startnode = Nothing
