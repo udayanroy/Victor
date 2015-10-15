@@ -12,6 +12,10 @@ Public Class view
         core = New vCore.vCore(Panel1, pagesz)
         ToolBar1.core = core
         ' ToolBar1.Width = 47
+
+        'update GUI variables
+        SelectionPropertyChanged()
+
         AddHandler core.Editor.PropertyChanged, AddressOf SelectionPropertyChanged
         AddHandler core.Editor.SelectionChanged, AddressOf SelectionChanged
     End Sub
