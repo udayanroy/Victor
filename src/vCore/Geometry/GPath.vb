@@ -253,6 +253,17 @@ End Class
 
     End Function
 
+    Public Function countBezier() As Integer
+
+        Dim n As Integer
+        n = CountPoints()
+        If Not Closed Then
+            If n <> 0 Then n -= 1
+        End If
+        Return n
+
+    End Function
+
     Public Function Clone() As SubPath
         Dim sp As New SubPath
         sp.Closed = Me.Closed
