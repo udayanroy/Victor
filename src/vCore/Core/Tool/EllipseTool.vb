@@ -46,8 +46,18 @@ Public Class EllipseTool
         Dim vp As New vPath
         vp.GraphicsPath.subpaths.clear()
         vp.GraphicsPath.AddEllipse(mdl.X, mdl.Y, e.Location.X - mdl.X, e.Location.Y - mdl.Y)
+
         'Convert path to memory path
         v.View.Dc2MemGPath(vp.GraphicsPath)
+
+        'Add Active styles
+        Dim edtr = v.Editor
+        vp.FillColor = edtr.FillColor
+        vp.StrokeColor = edtr.StrokeColor
+        vp.StrokWidth = edtr.strokeWidth
+        vp.isFill = edtr.isFill
+        vp.isStroke = edtr.isStroke
+
         'Add it to Memory
         v.View.Memory.Layers(0).Item.Add(vp)
 
