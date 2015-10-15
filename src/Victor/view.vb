@@ -140,4 +140,9 @@ Public Class view
     Private Sub MaximizeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaximizeToolStripMenuItem.Click
         Me.WindowState = FormWindowState.Maximized
     End Sub
+
+    Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewToolStripMenuItem.Click
+        Dim newwindow As New view
+        newwindow.Show()
+    End Sub
 End Class

@@ -52,9 +52,9 @@ Partial Class view
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New vCore.advancedPanel()
-        Me.ToolBar1 = New Victor.ToolBar()
         Me.MinimizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.MaximizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolBar1 = New Victor.ToolBar()
         Me.Panel2.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -169,47 +169,47 @@ Partial Class view
         'NewToolStripMenuItem
         '
         Me.NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(114, 22)
+        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.NewToolStripMenuItem.Text = "New"
         '
         'OpenToolStripMenuItem
         '
         Me.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
-        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(114, 22)
+        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.OpenToolStripMenuItem.Text = "Open"
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(111, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(149, 6)
         '
         'SaveToolStripMenuItem
         '
         Me.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
-        Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(114, 22)
+        Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.SaveToolStripMenuItem.Text = "Save"
         '
         'SaveAsToolStripMenuItem
         '
         Me.SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem"
-        Me.SaveAsToolStripMenuItem.Size = New System.Drawing.Size(114, 22)
+        Me.SaveAsToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.SaveAsToolStripMenuItem.Text = "Save As"
         '
         'ExportToolStripMenuItem
         '
         Me.ExportToolStripMenuItem.Name = "ExportToolStripMenuItem"
-        Me.ExportToolStripMenuItem.Size = New System.Drawing.Size(114, 22)
+        Me.ExportToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ExportToolStripMenuItem.Text = "Export"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(111, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(149, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(114, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'EditToolStripMenuItem
@@ -287,15 +287,6 @@ Partial Class view
         Me.Panel1.Size = New System.Drawing.Size(665, 459)
         Me.Panel1.TabIndex = 0
         '
-        'ToolBar1
-        '
-        Me.ToolBar1.BackColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Left
-        Me.ToolBar1.Location = New System.Drawing.Point(0, 74)
-        Me.ToolBar1.Name = "ToolBar1"
-        Me.ToolBar1.Size = New System.Drawing.Size(66, 459)
-        Me.ToolBar1.TabIndex = 0
-        '
         'MinimizeToolStripMenuItem
         '
         Me.MinimizeToolStripMenuItem.Name = "MinimizeToolStripMenuItem"
@@ -307,6 +298,15 @@ Partial Class view
         Me.MaximizeToolStripMenuItem.Name = "MaximizeToolStripMenuItem"
         Me.MaximizeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.MaximizeToolStripMenuItem.Text = "Maximize"
+        '
+        'ToolBar1
+        '
+        Me.ToolBar1.BackColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.ToolBar1.Dock = System.Windows.Forms.DockStyle.Left
+        Me.ToolBar1.Location = New System.Drawing.Point(0, 74)
+        Me.ToolBar1.Name = "ToolBar1"
+        Me.ToolBar1.Size = New System.Drawing.Size(66, 459)
+        Me.ToolBar1.TabIndex = 0
         '
         'view
         '
