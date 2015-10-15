@@ -181,11 +181,20 @@ Public Class NodeEditTool
                 Dim deg As Double = a * (180 / Math.PI)
 
                 ' Dim rt As New RotateTransform(deg, ns.selectednode.M.X, ns.selectednode.M.Y)
-                Dim rt As New Matrix
-                rt.RotateAt(deg, New PointF(ns.selectednode.M.X, ns.selectednode.M.Y))
-                Dim pointArray = {ns.selectednode.C1}
-                rt.TransformPoints(pointArray)
-                ns.selectednode.C1 = pointArray(0)
+
+                'Dim rt As New Matrix
+                'rt.RotateAt(deg, New PointF(ns.selectednode.M.X, ns.selectednode.M.Y))
+                'Dim pointArray = {ns.selectednode.C1}
+                'rt.TransformPoints(pointArray)
+
+                Dim trans As New Geom.Geometry.GMatrix
+                Dim centerpoint = GeometryConverter.Pointf2Gpoint(ns.selectednode.M)
+                trans.RoatateAt(deg, centerpoint)
+                Dim gp = GeometryConverter.Pointf2Gpoint(ns.selectednode.C1)
+                trans.map(gp)
+                ns.selectednode.C1 = GeometryConverter.Gpoint2Pointf(gp)
+
+                ' ns.selectednode.C1 = pointArray(0)
             End If
 
 
@@ -202,19 +211,26 @@ Public Class NodeEditTool
                 Dim a1 = Math.Atan2(v1.Y, v1.X)
                 Dim a2 = Math.Atan2(v2.Y, v2.X)
                 Dim a = a2 - a1
-
+                ns.selectednode.C1 = location
 
                 Dim deg As Double = a * (180 / Math.PI)
 
                 'Dim rt As New RotateTransform(deg, ns.selectednode.M.X, ns.selectednode.M.Y)
                 'ns.selectednode.C2 = rt.Transform(ns.selectednode.C2)
-                Dim rt As New Matrix
-                rt.RotateAt(deg, New PointF(ns.selectednode.M.X, ns.selectednode.M.Y))
-                Dim pointArray = {ns.selectednode.C2}
-                rt.TransformPoints(pointArray)
-                ns.selectednode.C2 = pointArray(0)
+                'Dim rt As New Matrix
+                'rt.RotateAt(deg, New PointF(ns.selectednode.M.X, ns.selectednode.M.Y))
+                'Dim pointArray = {ns.selectednode.C2}
+                'rt.TransformPoints(pointArray)
+                'ns.selectednode.C2 = pointArray(0)
 
-                ns.selectednode.C1 = location
+
+
+                Dim trans As New Geom.Geometry.GMatrix
+                Dim centerpoint = GeometryConverter.Pointf2Gpoint(ns.selectednode.M)
+                trans.RoatateAt(deg, centerpoint)
+                Dim gp = GeometryConverter.Pointf2Gpoint(ns.selectednode.C2)
+                trans.map(gp)
+                ns.selectednode.C2 = GeometryConverter.Gpoint2Pointf(gp)
             End If
 
         ElseIf ns.typeid = 1 Then
