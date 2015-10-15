@@ -53,6 +53,15 @@ Public Class RectangleTool
         vp.GraphicsPath.AddRectangle(primaryLocation.X, primaryLocation.Y, e.Location.X - primaryLocation.X, e.Location.Y - primaryLocation.Y)
         'Convert path to memory path
         Core.View.Dc2MemGPath(vp.GraphicsPath)
+
+        'Add Active styles
+        Dim edtr = Core.Editor
+        vp.FillColor = edtr.FillColor
+        vp.StrokeColor = edtr.StrokeColor
+        vp.StrokWidth = edtr.strokeWidth
+        vp.isFill = edtr.isFill
+        vp.isStroke = edtr.isStroke
+
         'Add it to Memory
         Core.View.Memory.Layers(0).Item.Add(vp)
 
