@@ -23,6 +23,9 @@ Partial Class view
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.CheckBox2 = New System.Windows.Forms.CheckBox()
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.Label3 = New System.Windows.Forms.Label()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -48,11 +51,10 @@ Partial Class view
         Me.WindowToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
-        Me.CheckBox2 = New System.Windows.Forms.CheckBox()
         Me.Panel1 = New vCore.advancedPanel()
         Me.ToolBar1 = New Victor.ToolBar()
+        Me.MinimizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MaximizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel2.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -72,6 +74,36 @@ Partial Class view
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(731, 50)
         Me.Panel2.TabIndex = 1
+        '
+        'CheckBox2
+        '
+        Me.CheckBox2.AutoSize = True
+        Me.CheckBox2.Location = New System.Drawing.Point(388, 14)
+        Me.CheckBox2.Name = "CheckBox2"
+        Me.CheckBox2.Size = New System.Drawing.Size(57, 17)
+        Me.CheckBox2.TabIndex = 10
+        Me.CheckBox2.Text = "Stroke"
+        Me.CheckBox2.UseVisualStyleBackColor = True
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(346, 14)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(38, 17)
+        Me.CheckBox1.TabIndex = 9
+        Me.CheckBox1.Text = "Fill"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(206, 13)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(55, 21)
+        Me.Label3.TabIndex = 8
+        Me.Label3.Text = "Width:"
         '
         'ComboBox1
         '
@@ -227,6 +259,7 @@ Partial Class view
         '
         'WindowToolStripMenuItem
         '
+        Me.WindowToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MinimizeToolStripMenuItem, Me.MaximizeToolStripMenuItem})
         Me.WindowToolStripMenuItem.Name = "WindowToolStripMenuItem"
         Me.WindowToolStripMenuItem.Size = New System.Drawing.Size(63, 20)
         Me.WindowToolStripMenuItem.Text = "Window"
@@ -243,36 +276,6 @@ Partial Class view
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
         Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(107, 22)
         Me.AboutToolStripMenuItem.Text = "About"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(206, 13)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(55, 21)
-        Me.Label3.TabIndex = 8
-        Me.Label3.Text = "Width:"
-        '
-        'CheckBox1
-        '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(346, 14)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(38, 17)
-        Me.CheckBox1.TabIndex = 9
-        Me.CheckBox1.Text = "Fill"
-        Me.CheckBox1.UseVisualStyleBackColor = True
-        '
-        'CheckBox2
-        '
-        Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Location = New System.Drawing.Point(388, 14)
-        Me.CheckBox2.Name = "CheckBox2"
-        Me.CheckBox2.Size = New System.Drawing.Size(57, 17)
-        Me.CheckBox2.TabIndex = 10
-        Me.CheckBox2.Text = "Stroke"
-        Me.CheckBox2.UseVisualStyleBackColor = True
         '
         'Panel1
         '
@@ -293,6 +296,18 @@ Partial Class view
         Me.ToolBar1.Size = New System.Drawing.Size(66, 459)
         Me.ToolBar1.TabIndex = 0
         '
+        'MinimizeToolStripMenuItem
+        '
+        Me.MinimizeToolStripMenuItem.Name = "MinimizeToolStripMenuItem"
+        Me.MinimizeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.MinimizeToolStripMenuItem.Text = "Minimize"
+        '
+        'MaximizeToolStripMenuItem
+        '
+        Me.MaximizeToolStripMenuItem.Name = "MaximizeToolStripMenuItem"
+        Me.MaximizeToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.MaximizeToolStripMenuItem.Text = "Maximize"
+        '
         'view
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -304,6 +319,7 @@ Partial Class view
         Me.Controls.Add(Me.MenuStrip1)
         Me.Name = "view"
         Me.Text = "view"
+        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
         Me.MenuStrip1.ResumeLayout(False)
@@ -343,4 +359,6 @@ Partial Class view
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents CheckBox2 As System.Windows.Forms.CheckBox
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
+    Friend WithEvents MinimizeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MaximizeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

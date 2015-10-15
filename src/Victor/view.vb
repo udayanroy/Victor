@@ -132,4 +132,12 @@ Public Class view
     Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox2.CheckedChanged
         core.Editor.isStroke = CheckBox2.Checked
     End Sub
+
+    Private Sub MinimizeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MinimizeToolStripMenuItem.Click
+        Me.WindowState = FormWindowState.Minimized
+    End Sub
+
+    Private Sub MaximizeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MaximizeToolStripMenuItem.Click
+        Me.WindowState = FormWindowState.Maximized
+    End Sub
 End Class
