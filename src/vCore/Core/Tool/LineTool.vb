@@ -31,6 +31,7 @@ Public Class LineTool
     Private Sub dc_MouseDown(sender As Object, e As Windows.Forms.MouseEventArgs) Handles dc.MouseDown
         primaryLocation = e.Location
         Core.View.BufferGraphics.Initialize()
+        dc.ActiveScroll = False
     End Sub
 
     Private Sub dc_MouseMove(sender As Object, e As Windows.Forms.MouseEventArgs) Handles dc.MouseMove
@@ -64,5 +65,6 @@ Public Class LineTool
         Core.View.Memory.Layers(0).Item.Add(vp)
 
         Core.View.Refresh()
+        dc.ActiveScroll = True
     End Sub
 End Class
