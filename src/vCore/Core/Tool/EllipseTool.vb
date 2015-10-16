@@ -24,6 +24,7 @@ Public Class EllipseTool
     Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
         mdl = e.Location
         v.View.BufferGraphics.Initialize()
+        dc.ActiveScroll = False
     End Sub
 
     Private Sub dc_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseMove
@@ -62,6 +63,7 @@ Public Class EllipseTool
         v.View.Memory.Layers(0).Item.Add(vp)
 
         v.View.Refresh()
+        dc.ActiveScroll = True
     End Sub
     Public Sub DeSelectTool() Implements Itool.DeSelectTool
         dc = Nothing

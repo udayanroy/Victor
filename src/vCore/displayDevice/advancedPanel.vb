@@ -46,4 +46,13 @@ Public Class advancedPanel
     Private Sub advancedPanel_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
         Me.Focus()
     End Sub
+
+    Protected Overrides Sub OnMouseWheel(e As MouseEventArgs)
+
+        If Me.ActiveScroll Then MyBase.OnMouseWheel(e)
+    End Sub
+    '  If Me.ActiveScroll Then MyBase.OnScroll(se)
+ 
+
+    Public Property ActiveScroll As Boolean = True
 End Class
