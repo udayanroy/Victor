@@ -85,6 +85,7 @@ Public Class SelectionTool
                 svp = Core.Editor.getSelectionPath.GraphicsPath.Clone
                 Core.Editor.View.mem2DcGPath(svp)
                 Core.Editor.View.BufferGraphics.Initialize()
+                dc.ActiveScroll = False
             End If
         Else
             hit = Me.hittest(e.Location, bound)
@@ -94,6 +95,7 @@ Public Class SelectionTool
                 svp = Core.Editor.getSelectionPath.GraphicsPath.Clone
                 Core.Editor.View.mem2DcGPath(svp)
                 Core.Editor.View.BufferGraphics.Initialize()
+                dc.ActiveScroll = False
             Else
 
                 sizing = False
@@ -104,6 +106,7 @@ Public Class SelectionTool
                     svp = Core.Editor.getSelectionPath.GraphicsPath.Clone
                     Core.Editor.View.mem2DcGPath(svp)
                     Core.Editor.View.BufferGraphics.Initialize()
+                    dc.ActiveScroll = False
                 End If
 
 
@@ -169,6 +172,7 @@ Public Class SelectionTool
         End If
 
         Core.Editor.View.Refresh()
+        dc.ActiveScroll = True
     End Sub
 
     Public Sub DeSelectTool() Implements Itool.DeSelectTool
