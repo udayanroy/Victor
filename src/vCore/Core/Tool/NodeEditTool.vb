@@ -91,6 +91,7 @@ Public Class NodeEditTool
             nodesel = GetSelectPoint(MouseLocation)
             If nodesel.selectednode IsNot Nothing Then
                 v.View.BufferGraphics.Initialize()
+                dc.ActiveScroll = False
             Else
                 Dim s = v.Editor.SelectAt(MouseLocation)
                 If s <> 0 Then
@@ -127,6 +128,7 @@ Public Class NodeEditTool
         v.View.Dc2MemGPath(editablepath)
         spath.setPath(editablepath)
         v.View.Refresh()
+        dc.ActiveScroll = True
     End Sub
     Private Sub DrawEllipses(ByVal g As Graphics, ByVal pts() As PointF)
         Dim wh As Integer = b * 2
