@@ -73,6 +73,7 @@ Public Class PenTool
             startnode = CurrentNode
             DrawingStarted = True
             BufferGraphics.Initialize()
+            dc.ActiveScroll = False
         Else
             Dim nodeBound = getNodeptBound(startnode.M)
             If nodeBound.Contains(e.Location) Then
@@ -95,6 +96,9 @@ Public Class PenTool
                 DrawingStarted = False
                 CurrentNode = Nothing
                 startnode = Nothing
+
+                dc.ActiveScroll = True
+
                 initCurrentPath()
 
                 core.View.Refresh()
