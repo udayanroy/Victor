@@ -96,6 +96,8 @@ Public Class ResizeTool
                 svp = Core.Editor.getSelectionPath.GraphicsPath.Clone
                 Core.Editor.View.mem2DcGPath(svp)
                 Core.Editor.View.BufferGraphics.Initialize()
+
+                dc.ActiveScroll = False
             Else
 
                 sizing = False
@@ -132,6 +134,7 @@ Public Class ResizeTool
 
             ScaleGPath(Core.Editor.getSelectionPath.GraphicsPath, tr)
 
+            dc.ActiveScroll = True
             'svp.Dispose()
         End If
 
