@@ -94,9 +94,9 @@ Public Class NodeEditTool
                 dc.ActiveScroll = False
             Else
                 Dim s = v.Editor.SelectAt(MouseLocation)
-                If s <> 0 Then
-                    v.View.Refresh()
-                End If
+                ' If s <> 0 Then
+                v.View.Refresh()
+                'End If
             End If
 
         End If
