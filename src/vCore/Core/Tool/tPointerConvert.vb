@@ -72,9 +72,12 @@ Public Class tPointerConvert
 
     Public Sub mouse_Down(ByRef e As MouseEventArgs) Implements Iedtr.mouse_Down
         Dim md = e.Location
+        If Core.Editor.selection.isEmty Then Exit Sub
+
         nodesel = GetSelectPoint(md)
         If nodesel.selectednode IsNot Nothing Then
             Core.View.BufferGraphics.Initialize()
+            dc.ActiveScroll = False  ' disable Scroll 
 
             If nodesel.typeid = 1 Then
                 nodesel.selectednode.Type = PathPointType.None
@@ -90,6 +93,7 @@ Public Class tPointerConvert
     End Sub
 
     Public Sub mouse_Move(ByRef e As MouseEventArgs) Implements Iedtr.mouse_Move
+        If Core.Editor.selection.isEmty Then Exit Sub
         If nodesel.selectednode Is Nothing Then Exit Sub
 
         If e.Button = Windows.Forms.MouseButtons.Left Then
@@ -123,6 +127,8 @@ Public Class tPointerConvert
     End Sub
 
     Public Sub mouse_Up(ByRef e As MouseEventArgs) Implements Iedtr.mouse_Up
+        If Core.Editor.selection.isEmty Then Exit Sub
+        dc.ActiveScroll = True  ' enable Scroll 
 
         Core.View.Dc2MemGPath(editablepath)
         spath.setPath(editablepath)
