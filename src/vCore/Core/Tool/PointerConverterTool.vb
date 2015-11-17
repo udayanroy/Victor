@@ -2,7 +2,7 @@
 Imports System.Windows.Forms
 Imports System.Drawing.Drawing2D
 
-Public Class tPointerConvert
+Public Class PointerConverterTool
     Implements Itool, Iedtr
 
 
