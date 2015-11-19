@@ -2,7 +2,7 @@
 
 Public Class view
     Dim core As vCore.vCore
-    Dim pagesz As New Size(500, 500)
+    Dim pagesz As New Size(1000, 500)
 
     Public Property FileName As String
 
@@ -149,8 +149,15 @@ Public Class view
     End Sub
 
     Private Sub NewToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewToolStripMenuItem.Click
-        Dim newwindow As New view
-        newwindow.Show()
+        Using ndlg As New NewDlg
+            If ndlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                Dim newwindow As New view
+                newwindow.pagesz = New Size(ndlg.PageWidth, ndlg.PageHeight)
+                newwindow.Show()
+            End If
+        End Using
+
+
     End Sub
 
     Private Sub SaveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveToolStripMenuItem.Click
