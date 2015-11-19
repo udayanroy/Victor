@@ -83,6 +83,9 @@ Public Class View
         End Set
     End Property
     Public Sub setZoom(ByVal z As Integer, ByVal p As Point)
+        If z < 20 Then Exit Sub
+
+
         Dim mp = DCpointToMemory(p)
         ' Dim pz As Single = zom
         zom = z / 100

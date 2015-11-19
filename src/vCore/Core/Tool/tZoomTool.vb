@@ -21,6 +21,8 @@ Public Class tZoomTool
     Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
         If e.Button = MouseButtons.Left Then
             v.setZoom(v.Zoom + 10, e.Location)
+        ElseIf e.Button = MouseButtons.Right Then
+            v.setZoom(v.Zoom - 10, e.Location)
         End If
     End Sub
 
