@@ -3,9 +3,9 @@
 Public Class ToolBar
     Inherits Panel
 
-    Dim toolwidth = 16
-    Dim selectionIndex = 5
-    Dim mouseOveron = 0
+    Dim toolwidth As Integer = 16
+    Dim selectionIndex As Integer = 5
+    Dim mouseOveron As Integer = 0
 
     Public core As vCore.vCore
 
@@ -16,6 +16,7 @@ Public Class ToolBar
         Me.DoubleBuffered = True
 
         InitTools()
+
     End Sub
 
     Private Sub InitTools()
@@ -30,7 +31,7 @@ Public Class ToolBar
         Tiles.Add(New ToolTile(My.Resources.Pen_tool, 10))
         Tiles.Add(New ToolTile(My.Resources.Transform_2_icon__1_, 17))
         Tiles.Add(New ToolTile(My.Resources.Rotate_icon, 7))
-        Tiles.Add(New ToolTile(My.Resources.Transform_2_icon__1_, 18))
+        ' Tiles.Add(New ToolTile(My.Resources.Transform_2_icon__1_, 18))
         Tiles.Add(New ToolTile(My.Resources.Hand_tool, 1))
         Tiles.Add(New ToolTile(My.Resources.Connect_point_tool, 9))
         Tiles.Add(New ToolTile(My.Resources.Add_anchor_point_tool, 12))
@@ -79,23 +80,25 @@ Public Class ToolBar
         Dim y = 5
 
         Dim count = 1
+        Dim clm As Integer = 1
 
-        For i As Integer = 1 To row
-            For j As Integer = 1 To collum
-                If count > totalTools Then Exit For
+        For i As Integer = 0 To totalTools - 1
+            Dim rect As New Rectangle(x, y, toolwidth, toolwidth)
+            If rect.Contains(loc) Then
+                Return i + 1
+            End If
 
-                Dim rect As New Rectangle(x, y, toolwidth, toolwidth)
-                If rect.Contains(loc) Then
-                    Return count
-                End If
+            x += toolwidth + 5
+            clm += 1
+            If clm > collum Then
+                x = 5
+                clm = 1
+                y += toolwidth + 5
+            End If
 
-                x += toolwidth + 5
-                count += 1
-            Next
-            x = 5
-            y += toolwidth + 5
+
         Next
-
+        
         Return index
 
     End Function
@@ -109,6 +112,11 @@ Public Class ToolBar
     End Sub
 
     Private Sub ToolBar_Paint(sender As Object, e As PaintEventArgs) Handles Me.Paint
+        AlternetPaint(e.Graphics)
+       
+    End Sub
+
+    Private Sub AlternetPaint(g As Graphics)
         Dim totalTools = GetTotalCount()
 
         Dim width = Me.Width
@@ -120,29 +128,34 @@ Public Class ToolBar
         Dim y = 5
 
         Dim count = 1
+        Dim clm As Integer = 1
 
-        For i As Integer = 1 To row
-            For j As Integer = 1 To collum
-                If count > totalTools Then Exit For
+        For i As Integer = 0 To totalTools - 1
+            If selectionIndex = i + 1 Then
+                g.FillRectangle(Brushes.SkyBlue, x - 2, y - 2, toolwidth + 4, toolwidth + 4)
+            ElseIf i = mouseOveron - 1 Then
+                g.DrawRectangle(Pens.Green, x - 2, y - 2, toolwidth + 4, toolwidth + 4)
+            End If
+            If Tiles(i).Icon IsNot Nothing Then
+                g.DrawImage(Tiles(i).Icon, x, y, 16, 16)
+            End If
 
-                If selectionIndex = count Then
-                    e.Graphics.FillRectangle(Brushes.SkyBlue, x - 2, y - 2, toolwidth + 4, toolwidth + 4)
-                ElseIf count = mouseOveron Then
-                    e.Graphics.DrawRectangle(Pens.Green, x - 2, y - 2, toolwidth + 4, toolwidth + 4)
-                End If
-                If Tiles(count - 1).Icon IsNot Nothing Then
-                    e.Graphics.DrawImage(Tiles(count - 1).Icon, x, y, 16, 16)
-                End If
+            x += toolwidth + 5
+            clm += 1
+            If clm > collum Then
+                x = 5
+                clm = 1
+                y += toolwidth + 5
+            End If
 
 
-                x += toolwidth + 5
-                count += 1
-            Next
-            x = 5
-            y += toolwidth + 5
         Next
+
+
+        
     End Sub
 
+    
     Private Class ToolTile
 
         Public Sub New(url As String, id As Integer)
@@ -160,5 +173,7 @@ Public Class ToolBar
         Public Property iconUrl As String
         Public Property ToolId As Integer
         Public Property Icon As Image
+
+         
     End Class
 End Class
