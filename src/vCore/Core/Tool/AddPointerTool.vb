@@ -62,6 +62,8 @@ Public Class AddPointerTool
     End Sub
 
     Public Sub mouse_Down(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Down
+        If Core.Editor.selection.isEmty Then Exit Sub
+
         Dim mouseLocation = e.Location
 
         Dim Mindistance = Double.MaxValue
