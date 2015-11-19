@@ -181,7 +181,7 @@ Public Class RotateTool
 
     Private Function Angle(ByVal o As Point, ByVal p As Point) As Single
         Dim angl As Single
-        angl = Math.Atan((p.Y - o.Y) / (p.X - o.X)) * 180 / Math.PI
+        angl = Math.Atan2((p.Y - o.Y), (p.X - o.X)) * 180 / Math.PI
         Return angl
     End Function
     Private Function MiddlePoint(ByRef rect As Rectangle)
