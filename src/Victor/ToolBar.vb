@@ -35,7 +35,7 @@ Public Class ToolBar
         Tiles.Add(New ToolTile(My.Resources.Connect_point_tool, 9))
         Tiles.Add(New ToolTile(My.Resources.Add_anchor_point_tool, 12))
         Tiles.Add(New ToolTile(My.Resources.Delete_anchor_point_tool, 11))
-        Tiles.Add(New ToolTile(My.Resources.Transform_2_icon__1_, 6))
+        ' Tiles.Add(New ToolTile(My.Resources.Transform_2_icon__1_, 6))
 
     End Sub
 
