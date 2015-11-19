@@ -63,7 +63,8 @@ Public Class PointerRemoveTool
     End Sub
 
     Public Sub mouse_Down(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Down
-        
+        If Core.Editor.selection.isEmty Then Exit Sub
+
         Dim selNode As PathPoint = Nothing
         Dim selFigure As SubPath = Nothing
 
