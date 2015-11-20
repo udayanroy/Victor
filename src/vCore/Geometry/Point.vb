@@ -95,9 +95,6 @@ Namespace Geometry
         End Operator
 
 
-
-
-
         Public Shared Function lerp(ByVal p1 As Point, ByVal p2 As Point, ByVal t As Double) As Point
             Return New Point(p1.X + (p2.X - p1.X) * t, p1.Y + (p2.Y - p1.Y) * t)
         End Function
@@ -129,12 +126,13 @@ Namespace Geometry
             Return Me.X + Me.Y
         End Function
 
-        'Public Sub Transformation(ByVal mat As GMatrix)
-        '    Dim tempP As New Point
-        '    tempP = Me
-        '    mat.map(tempP)
-        '    Me.SetValue(tempP)
-        'End Sub
+        Public Sub Transformation(ByVal mat As Matrix)
+            Dim tempP As New Point
+            tempP = Me
+            mat.map(tempP)
+            Me.X = tempP.X
+            Me.Y = tempP.Y
+        End Sub
 
     End Structure
 End Namespace
