@@ -120,6 +120,7 @@
     <Compile Include="Geometry\Point.vb" />
     <Compile Include="Geometry\Rect.vb" />
     <Compile Include="Geometry\Size.vb" />
+    <Compile Include="Math\Polynomial.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
