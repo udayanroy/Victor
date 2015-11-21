@@ -118,6 +118,7 @@
     <Compile Include="Geometry\GeometryConverter.vb" />
     <Compile Include="Geometry\GPath.vb" />
     <Compile Include="Geometry\Matrix.vb" />
+    <Compile Include="Geometry\MatrixTransform.vb" />
     <Compile Include="Geometry\Point.vb" />
     <Compile Include="Geometry\Rect.vb" />
     <Compile Include="Geometry\Size.vb" />
