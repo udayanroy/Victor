@@ -37,7 +37,7 @@ Imports System.Drawing
     End Sub
 
     Public Function GetBound() As System.Drawing.RectangleF Implements vItem.GetBound
-        Return pth.GetBound()
+        Return pth.GetTightBound()
     End Function
 
 

@@ -125,10 +125,11 @@ Public Class SelectionTool
                 If sizing Then
                     If hit <> -1 Then
 
-                        Using gp = Me.DoAction(e.Location, hit)
-                            Core.Editor.View.BufferGraphics.Graphics.DrawPath(Pens.Red, gp)
-                            Core.Editor.View.BufferGraphics.Render()
-                        End Using
+                        Dim gp = Me.DoAction(e.Location, hit)
+                        Dim g = Core.Editor.View.BufferGraphics.Graphics
+                        gp.drawPath(g, Pens.Red)
+                        Core.Editor.View.BufferGraphics.Render()
+
 
                     End If
                 Else
@@ -137,7 +138,8 @@ Public Class SelectionTool
                         svp.Transform(mat)
                     End Using
 
-                    Core.Editor.View.BufferGraphics.Graphics.DrawPath(Pens.Black, svp.ToGraphicsPath)
+                    Dim g = Core.Editor.View.BufferGraphics.Graphics
+                    svp.drawPath(g, Pens.Red)
                     Core.Editor.View.BufferGraphics.Render()
 
                 End If
@@ -243,12 +245,12 @@ Public Class SelectionTool
     End Function
 
 
-    Private Function DoAction(ByVal point As Point, ByVal hit As Integer) As GraphicsPath
+    Private Function DoAction(ByVal point As Point, ByVal hit As Integer) As GPath
 
         If hit = 0 Then
             Dim p1 = point
 
-            Dim bnd = svp.GetBound
+            Dim bnd = svp.GetTightBound
             Dim p2 = New Point(bnd.Right, bnd.Bottom) 'New Point(bnd.X + bnd.Width, bnd.Y + bnd.Height)
 
             Dim n = bnd.Height / bnd.Width
@@ -258,30 +260,30 @@ Public Class SelectionTool
 
             Dim rtn As RectangleF
             rtn = rd
-             
 
 
-            Dim gp As GraphicsPath = svp.ToGraphicsPath
-            ScalePath(gp, rtn)
+
+            Dim gp As GPath = svp.Clone
+            ScaleGPath(gp, rtn)
             nrect = rtn
             Return gp
         ElseIf hit = 1 Then
 
-            Dim bnd = svp.GetBound
+            Dim bnd = svp.GetTightBound
             Dim l = (point.Y - bnd.Y)
 
-            Dim gp As GraphicsPath = svp.ToGraphicsPath
+            Dim gp As GPath = svp.Clone
 
             Dim trect As New RectangleF(point.X, bnd.Y, (bnd.X - point.X) + bnd.Width, bnd.Height)
 
-            ScalePath(gp, trect)
+            ScaleGPath(gp, trect)
 
             nrect = trect
             Return gp
         ElseIf hit = 2 Then
 
 
-            Dim bnd = svp.GetBound
+            Dim bnd = svp.GetTightBound
             Dim p1 = point
             Dim p2 = New Point(bnd.Right, bnd.Top)
 
@@ -296,32 +298,32 @@ Public Class SelectionTool
 
 
 
-            Dim gp As GraphicsPath = svp.ToGraphicsPath
-            ScalePath(gp, rtn)
+            Dim gp As GPath = svp.Clone
+            ScaleGPath(gp, rtn)
             nrect = rtn
             Return gp
         ElseIf hit = 3 Then
 
-            Dim bnd = svp.GetBound
+            Dim bnd = svp.GetTightBound
             Dim l = (point.Y - bnd.Y)
 
-            Dim gp As GraphicsPath = svp.ToGraphicsPath
+            Dim gp As GPath = svp.Clone
 
             Dim trect As New RectangleF(bnd.X, point.Y, bnd.Width, (bnd.Y - point.Y) + bnd.Height)
-            ScalePath(gp, trect)
+            ScaleGPath(gp, trect)
             nrect = trect
             Return gp
 
         ElseIf hit = 4 Then
 
 
-            Dim bnd = svp.GetBound
+            Dim bnd = svp.GetTightBound
             Dim l = (point.Y - bnd.Y)
 
-            Dim gp As GraphicsPath = svp.ToGraphicsPath
+            Dim gp As GPath = svp.Clone
 
             Dim trect As New RectangleF(bnd.X, bnd.Y, bnd.Width, l)
-            ScalePath(gp, trect)
+            ScaleGPath(gp, trect)
             nrect = trect
             Return gp
 
@@ -329,7 +331,7 @@ Public Class SelectionTool
 
             Dim p1 = point
 
-            Dim bnd = svp.GetBound
+            Dim bnd = svp.GetTightBound
             Dim p2 = New Point(bnd.Left, bnd.Bottom) 'New Point(bnd.X + bnd.Width, bnd.Y + bnd.Height)
 
             Dim n = bnd.Height / bnd.Width
@@ -339,16 +341,16 @@ Public Class SelectionTool
 
             Dim rtn As RectangleF
 
-             rtn = rd
+            rtn = rd
 
 
-            Dim gp As GraphicsPath = svp.ToGraphicsPath
-            ScalePath(gp, rtn)
+            Dim gp = svp.Clone
+            ScaleGPath(gp, rtn)
             nrect = rtn
             Return gp
         ElseIf hit = 6 Then
 
-            Dim bnd = svp.GetBound
+            Dim bnd = svp.GetTightBound
             Dim l = (point.X - bnd.X)
             ' Dim s = l / bnd.Width
             'Debug.Print(s)
@@ -358,17 +360,17 @@ Public Class SelectionTool
             'mat.Reset()
             'mat.Translate(-k, 0)
             ' svp.Transform(mat)
-            Dim gp As GraphicsPath = svp.ToGraphicsPath
+            Dim gp = svp.Clone
 
             Dim trect As New RectangleF(bnd.X, bnd.Y, l, bnd.Height)
-            ScalePath(gp, trect)
+            ScaleGPath(gp, trect)
             nrect = trect
             Return gp
 
 
         ElseIf hit = 7 Then
 
-            Dim bnd = svp.GetBound
+            Dim bnd = svp.GetTightBound
             Dim p1 = bnd.Location
 
             Dim p2 = point  'New Point(bnd.X + bnd.Width, bnd.Y + bnd.Height)
@@ -385,8 +387,8 @@ Public Class SelectionTool
 
 
 
-            Dim gp As GraphicsPath = svp.ToGraphicsPath
-            ScalePath(gp, rtn)
+            Dim gp As GPath = svp.Clone
+            ScaleGPath(gp, rtn)
             nrect = rtn
             Return gp
 
@@ -421,7 +423,7 @@ Public Class SelectionTool
     End Sub
 
     Private Sub ScaleGPath(ByRef gp As GPath, ByVal Torect As RectangleF)
-        Dim bnd = gp.GetBound
+        Dim bnd = gp.GetTightBound
         Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
         Dim yinvert As Boolean = IIf(Torect.Height < 0, True, False)
 
