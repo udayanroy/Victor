@@ -122,6 +122,7 @@
     <Compile Include="Geometry\Point.vb" />
     <Compile Include="Geometry\Rect.vb" />
     <Compile Include="Geometry\RotateTransform.vb" />
+    <Compile Include="Geometry\ScaleTransform.vb" />
     <Compile Include="Geometry\Size.vb" />
     <Compile Include="Geometry\Transform.vb" />
     <Compile Include="Geometry\TranslateTransform.vb" />
