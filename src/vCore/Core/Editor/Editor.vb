@@ -186,6 +186,12 @@ Public Class Editor
     Public Function getSelectionPath() As vPath
         Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
     End Function
+
+    Public Function getSelection() As vItem
+        Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
+    End Function
+
+
     Public Sub paint(ByVal g As Graphics)
 
         If Me.type <> selectionType.None Then
