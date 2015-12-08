@@ -2,7 +2,7 @@
 
 Namespace Geometry
     Public Structure CubicBezier
-        Private _p1, _p2, _c1, _c2 As Point
+
 
 
 
@@ -13,60 +13,12 @@ Namespace Geometry
             _c1 = c1
             _c2 = c2
         End Sub
+
         Public Property P1() As Point
-            Get
-                Return _p1
-            End Get
-            Set(ByVal value As Point)
-                _p1 = value
-            End Set
-        End Property
-
         Public Property P2() As Point
-            Get
-                Return _p2
-            End Get
-            Set(ByVal value As Point)
-                _p2 = value
-            End Set
-        End Property
-
         Public Property C1() As Point
-            Get
-                Return _c1
-            End Get
-            Set(ByVal value As Point)
-                _c1 = value
-            End Set
-        End Property
         Public Property C2() As Point
-            Get
-                Return _c2
-            End Get
-            Set(ByVal value As Point)
-                _c2 = value
-            End Set
-        End Property
-        Default Public ReadOnly Property Points(ByVal i As Integer) As Point
 
-            Get
-                If i = 0 Then
-                    Return P1
-                ElseIf i = 1 Then
-                    Return C1
-                ElseIf i = 2 Then
-                    Return C2
-                ElseIf i = 3 Then
-                    Return P2
-                Else
-                    Return Nothing
-                End If
-            End Get
-
-
-
-
-        End Property
 
         Public Sub Transform(ByVal mat As Matrix)
             mat.map(Me._p1)
