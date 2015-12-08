@@ -55,6 +55,7 @@ Partial Class view
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel1 = New vCore.advancedPanel()
         Me.ToolBar1 = New Victor.ToolBar()
+        Me.ImportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel2.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -161,7 +162,7 @@ Partial Class view
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewToolStripMenuItem, Me.OpenToolStripMenuItem, Me.ToolStripSeparator2, Me.SaveToolStripMenuItem, Me.SaveAsToolStripMenuItem, Me.ExportToolStripMenuItem, Me.ToolStripSeparator1, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewToolStripMenuItem, Me.OpenToolStripMenuItem, Me.ToolStripSeparator2, Me.SaveToolStripMenuItem, Me.SaveAsToolStripMenuItem, Me.ImportToolStripMenuItem, Me.ExportToolStripMenuItem, Me.ToolStripSeparator1, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "File"
@@ -291,6 +292,7 @@ Partial Class view
         '
         'Panel1
         '
+        Me.Panel1.ActiveScroll = True
         Me.Panel1.AutoScroll = True
         Me.Panel1.BackColor = System.Drawing.Color.FromArgb(CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Fill
@@ -307,6 +309,12 @@ Partial Class view
         Me.ToolBar1.Name = "ToolBar1"
         Me.ToolBar1.Size = New System.Drawing.Size(66, 459)
         Me.ToolBar1.TabIndex = 0
+        '
+        'ImportToolStripMenuItem
+        '
+        Me.ImportToolStripMenuItem.Name = "ImportToolStripMenuItem"
+        Me.ImportToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ImportToolStripMenuItem.Text = "Import"
         '
         'view
         '
@@ -361,4 +369,5 @@ Partial Class view
     Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
     Friend WithEvents MinimizeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents MaximizeToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ImportToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

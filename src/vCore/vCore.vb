@@ -90,4 +90,9 @@ Public Class vCore
         End Using
     End Sub
 
+    Public Sub Import(file As String)
+        Dim imgitem As New ImageItem(file)
+        View.Memory.Layers(0).Item.Add(imgitem)
+        View.Refresh()
+    End Sub
 End Class

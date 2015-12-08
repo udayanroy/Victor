@@ -200,4 +200,16 @@ Public Class view
 
         End Using
     End Sub
+
+    Private Sub ImportToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportToolStripMenuItem.Click
+        Using opendlg As New OpenFileDialog
+            opendlg.Filter = "Image File|*.png;*.jpg;*.BMP;*.gif"
+            opendlg.Title = "Import File"
+
+            If opendlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
+                core.Import(opendlg.FileName)
+            End If
+
+        End Using
+    End Sub
 End Class
