@@ -115,21 +115,6 @@
     <Compile Include="Core\Tool\Tool.vb" />
     <Compile Include="Core\Tool\tPanTool.vb" />
     <Compile Include="Core\View.vb" />
-    <Compile Include="Geometry\CubicBezier.vb" />
-    <Compile Include="Geometry\GeometryConverter.vb" />
-    <Compile Include="Geometry\GPath.vb" />
-    <Compile Include="Geometry\Matrix.vb" />
-    <Compile Include="Geometry\MatrixTransform.vb" />
-    <Compile Include="Geometry\Point.vb" />
-    <Compile Include="Geometry\Rect.vb" />
-    <Compile Include="Geometry\RotateTransform.vb" />
-    <Compile Include="Geometry\ScaleTransform.vb" />
-    <Compile Include="Geometry\Size.vb" />
-    <Compile Include="Geometry\SkewTransform.vb" />
-    <Compile Include="Geometry\Transform.vb" />
-    <Compile Include="Geometry\TransformGroup.vb" />
-    <Compile Include="Geometry\TranslateTransform.vb" />
-    <Compile Include="Math\Polynomial.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -184,7 +169,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Geometry\Geometry.vbproj">
+      <Project>{3d9fdbe8-276a-4548-830e-055eef919788}</Project>
+      <Name>Geometry</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
