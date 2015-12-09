@@ -42,7 +42,7 @@ Imports Geometry
     End Function
 
 
-    Public Function HitTest(ByVal location As System.Drawing.PointF) As Boolean Implements DrawingElement.HitTest
+    Public Function HitTest(ByVal location As System.Drawing.PointF) As Boolean Implements DrawingElement.isVisible
         Dim isbodyvisible, isOutline As Boolean
 
         Dim bound = Me.GraphicsPath.GetBound

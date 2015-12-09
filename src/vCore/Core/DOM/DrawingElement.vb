@@ -4,7 +4,10 @@ Public Interface DrawingElement
     Inherits IDisposable
 
     Sub Draw(g As Graphics)
-    Function HitTest(ByVal p As PointF) As Boolean
+    Function isVisible(ByVal p As PointF) As Boolean
+    Function isVisible(ByVal rect As RectangleF) As Boolean
+    Function isBoundVisible(ByVal rect As RectangleF) As Boolean
+    Function isBoundVisible(ByVal p As PointF) As Boolean
     Function GetElementType() As ElementType
 
     'TransForm Function

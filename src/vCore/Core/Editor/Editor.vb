@@ -52,7 +52,7 @@ Public Class Editor
         For l As Integer = 0 To len - 1
             lobj = vcor.View.Memory.Layers(l).Item.Count
             For k As Integer = 0 To lobj - 1
-                If vcor.View.Memory.Layers(l).Item(k).HitTest(mp) Then
+                If vcor.View.Memory.Layers(l).Item(k).isVisible(mp) Then
                     memloc.create(l, k)
 
                     flage = True
@@ -85,7 +85,7 @@ Public Class Editor
         For l As Integer = 0 To len - 1
             lobj = vcor.View.Memory.Layers(l).Item.Count
             For k As Integer = 0 To lobj - 1
-                If vcor.View.Memory.Layers(l).Item(k).HitTest(mp) Then
+                If vcor.View.Memory.Layers(l).Item(k).isVisible(mp) Then
                     memloc.create(l, k)
 
                     flage = True

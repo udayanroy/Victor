@@ -27,7 +27,7 @@ Public Class ImageItem
         Return bound
     End Function
 
-    Public Function HitTest(p As Drawing.PointF) As Boolean Implements DrawingElement.HitTest
+    Public Function HitTest(p As Drawing.PointF) As Boolean Implements DrawingElement.isVisible
         Return bound.Contains(p)
     End Function
 
