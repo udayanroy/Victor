@@ -1,6 +1,6 @@
 ﻿Imports System.Drawing
 
-Public Interface vItem
+Public Interface DrawingElement
     Inherits IDisposable
 
     Sub Draw(ByRef g As Graphics)

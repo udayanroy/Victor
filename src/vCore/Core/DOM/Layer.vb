@@ -8,7 +8,7 @@
     Private nme As String
 
     '/////////////////////
-    Private _items As List(Of vItem)
+    Private _items As List(Of DrawingElement)
 
     Public Sub New()
 
@@ -18,7 +18,7 @@
 
         Visible = True
         Lock = True
-        _items = New List(Of vItem)
+        _items = New List(Of DrawingElement)
     End Sub
 
 
@@ -60,7 +60,7 @@
     End Property
 
 
-    Public ReadOnly Property Item() As List(Of vItem)
+    Public ReadOnly Property Item() As List(Of DrawingElement)
         Get
             Return _items
         End Get
@@ -69,7 +69,7 @@
 
 
     Public Sub Draw(ByVal g As Graphics)
-        For Each i As vItem In _items
+        For Each i As DrawingElement In _items
             i.Draw(g)
         Next
     End Sub

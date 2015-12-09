@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing
 
 Public Class ImageItem
-    Implements vItem
+    Implements DrawingElement
 
 
     Dim _img As Image
@@ -19,19 +19,19 @@ Public Class ImageItem
     Public Property bound As RectangleF
 
 
-    Public Sub Draw(ByRef g As Drawing.Graphics) Implements vItem.Draw
+    Public Sub Draw(ByRef g As Drawing.Graphics) Implements DrawingElement.Draw
         g.DrawImage(_img, bound)
     End Sub
 
-    Public Function GetBound() As Drawing.RectangleF Implements vItem.GetBound
+    Public Function GetBound() As Drawing.RectangleF Implements DrawingElement.GetBound
         Return bound
     End Function
 
-    Public Function HitTest(p As Drawing.PointF) As Boolean Implements vItem.HitTest
+    Public Function HitTest(p As Drawing.PointF) As Boolean Implements DrawingElement.HitTest
         Return bound.Contains(p)
     End Function
 
-    Public Sub Translate(x As Single, y As Single) Implements vItem.Translate
+    Public Sub Translate(x As Single, y As Single) Implements DrawingElement.Translate
 
     End Sub
 

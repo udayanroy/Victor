@@ -187,7 +187,7 @@ Public Class Editor
         Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
     End Function
 
-    Public Function getSelection() As vItem
+    Public Function getSelection() As DrawingElement
         Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
     End Function
 

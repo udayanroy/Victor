@@ -111,7 +111,7 @@
     <Compile Include="Core\DOM\DOM.vb" />
     <Compile Include="Core\DOM\items\vPath.vb" />
     <Compile Include="Core\DOM\Layer.vb" />
-    <Compile Include="Core\DOM\vItem.vb" />
+    <Compile Include="Core\DOM\DrawingElement.vb" />
     <Compile Include="Core\Tool\Tool.vb" />
     <Compile Include="Core\Tool\tPanTool.vb" />
     <Compile Include="Core\View.vb" />

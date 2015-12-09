@@ -3,7 +3,7 @@ Imports System.Drawing
 Imports Geometry
 
 <Serializable()> Public Class vPath
-    Implements vItem
+    Implements DrawingElement
 
 
 
@@ -22,7 +22,7 @@ Imports Geometry
     Public Property isStroke As Boolean = True
 
 
-    Public Sub Draw(ByRef g As System.Drawing.Graphics) Implements vItem.Draw
+    Public Sub Draw(ByRef g As System.Drawing.Graphics) Implements DrawingElement.Draw
         'g.FillPath(Drawing.Brushes.Blue, pth)
         Dim brush As Brush = Nothing
         Dim pen As Pen = Nothing
@@ -37,12 +37,12 @@ Imports Geometry
 
     End Sub
 
-    Public Function GetBound() As System.Drawing.RectangleF Implements vItem.GetBound
+    Public Function GetBound() As System.Drawing.RectangleF Implements DrawingElement.GetBound
         Return pth.GetTightBound()
     End Function
 
 
-    Public Function HitTest(ByVal location As System.Drawing.PointF) As Boolean Implements vItem.HitTest
+    Public Function HitTest(ByVal location As System.Drawing.PointF) As Boolean Implements DrawingElement.HitTest
         Dim isbodyvisible, isOutline As Boolean
 
         Dim bound = Me.GraphicsPath.GetBound
@@ -74,7 +74,7 @@ Imports Geometry
         pth = path
     End Sub
 
-    Public Sub Translate(ByVal x As Single, ByVal y As Single) Implements vItem.Translate
+    Public Sub Translate(ByVal x As Single, ByVal y As Single) Implements DrawingElement.Translate
         Using mat As New Drawing2D.Matrix
             mat.Translate(x, y)
 
