@@ -43,9 +43,6 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Geom">
-      <HintPath>..\lib\Geom.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -83,6 +80,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="NodePath\Node.vb" />
+    <Compile Include="NodePath\NodeFigure.vb" />
+    <Compile Include="NodePath\NodePath.vb" />
     <Compile Include="Point.vb" />
     <Compile Include="Polynomial.vb" />
     <Compile Include="Rect.vb" />
