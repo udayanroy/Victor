@@ -78,8 +78,8 @@
   <ItemGroup>
     <Compile Include="Core\BufferPaint.vb" />
     <Compile Include="Core\DOM\Export.vb" />
-    <Compile Include="Core\DOM\items\EditableGraphicsPath.vb" />
-    <Compile Include="Core\DOM\items\ImageItem.vb" />
+    <Compile Include="Core\DOM\Elements\EditableGraphicsPath.vb" />
+    <Compile Include="Core\DOM\Elements\ImageItem.vb" />
     <Compile Include="Core\Editor\eMove.vb" />
     <Compile Include="Core\Editor\ePointerConvert.vb" />
     <Compile Include="Core\Editor\eRotate.vb" />
@@ -109,7 +109,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Core\DOM\DOM.vb" />
-    <Compile Include="Core\DOM\items\vPath.vb" />
+    <Compile Include="Core\DOM\Elements\vPath.vb" />
     <Compile Include="Core\DOM\Layer.vb" />
     <Compile Include="Core\DOM\DrawingElement.vb" />
     <Compile Include="Core\Tool\Tool.vb" />
