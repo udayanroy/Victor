@@ -102,7 +102,7 @@ Public Class NodePath
         Me._FigureList.Add(path)
     End Sub
 
-    Public Function Points() As Node()
+    Public Function Nodes() As IList(Of Node)
 
         Dim np As Integer = 0
 
@@ -111,12 +111,17 @@ Public Class NodePath
         Next
 
         Dim parray As New List(Of Node)(np)
-
         For Each sp As NodeFigure In Me._FigureList
             parray.AddRange(sp.Points)
         Next
-        Return Nothing
+        Return parray
     End Function
+
+    Public ReadOnly Property Figures As List(Of NodeFigure)
+        Get
+            Return Me._FigureList
+        End Get
+    End Property
 
     Public ReadOnly Property Items(ByVal index As Integer) As NodeFigure
         Get
