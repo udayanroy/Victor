@@ -115,6 +115,8 @@
     <Compile Include="Core\Tool\Tool.vb" />
     <Compile Include="Core\Tool\tPanTool.vb" />
     <Compile Include="Core\View.vb" />
+    <Compile Include="Geometry\GeometryConverter.vb" />
+    <Compile Include="Geometry\GPath.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -174,6 +176,9 @@
       <Project>{3d9fdbe8-276a-4548-830e-055eef919788}</Project>
       <Name>Geometry</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Graphics\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

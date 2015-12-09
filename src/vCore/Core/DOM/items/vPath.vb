@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing.Drawing2D
 Imports System.Drawing
+Imports Geometry
 
 <Serializable()> Public Class vPath
     Implements vItem
@@ -31,7 +32,7 @@ Imports System.Drawing
             pen = New Pen(penBrush, StrokWidth)
         End If
 
-        pth.drawPath(g, Pen, brush)
+        pth.drawPath(g, pen, brush)
 
 
     End Sub
@@ -74,7 +75,7 @@ Imports System.Drawing
     End Sub
 
     Public Sub Translate(ByVal x As Single, ByVal y As Single) Implements vItem.Translate
-        Using mat As New Matrix
+        Using mat As New Drawing2D.Matrix
             mat.Translate(x, y)
 
             pth.Transform(mat)

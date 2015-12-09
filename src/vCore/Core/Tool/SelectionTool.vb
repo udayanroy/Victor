@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing.Drawing2D
 Imports System.Drawing
 
+
 Public Class SelectionTool
     Implements Itool, Iedtr
 
@@ -114,8 +115,8 @@ Public Class SelectionTool
 
         End If
 
-         
-       
+
+
     End Sub
 
     Public Sub mouse_Move(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Move

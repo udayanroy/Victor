@@ -151,7 +151,7 @@ Public Class eSize
         Return New Rectangle(x - b, y - b, wh, wh)
     End Function
 
-    
+
     Private Function hittest(ByRef p As Point, ByRef b As Rectangle) As Integer
 
         ' Sequence of Points..
@@ -241,7 +241,7 @@ Public Class eSize
             Dim trect As New RectangleF(point.X, bnd.Y, (bnd.X - point.X) + bnd.Width, bnd.Height)
 
             ScalePath(gp, trect)
-            
+
             nrect = trect
             Return gp
         ElseIf hit = 2 Then

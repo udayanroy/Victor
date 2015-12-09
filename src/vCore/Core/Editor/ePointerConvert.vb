@@ -2,6 +2,7 @@
 Imports System.Drawing
 
 
+
 Public Class ePointerConvert
     Implements Iedtr
 
@@ -18,7 +19,7 @@ Public Class ePointerConvert
 
     Public Sub Draw(ByRef g As Graphics) Implements Iedtr.Draw
         If v.selection.isEmty = False Then
-            g.SmoothingMode = SmoothingMode.AntiAlias
+            g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
             Using p As New Pen(Color.SkyBlue)
                 spath = v.getSelectionPath()
                 editablepath = spath.GraphicsPath.Clone

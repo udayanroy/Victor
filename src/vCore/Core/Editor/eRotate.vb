@@ -2,6 +2,7 @@
 Imports System.Windows.Forms
 Imports System.Drawing.Drawing2D
 
+
 Public Class eRotate
     Implements Iedtr
 

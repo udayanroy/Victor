@@ -1,6 +1,7 @@
 ﻿Imports System.Drawing.Drawing2D
 Imports System.Drawing
 
+
 Public Class eMove
     Implements Iedtr
 
@@ -46,7 +47,7 @@ Public Class eMove
         If e.Button = Windows.Forms.MouseButtons.Left Then
             If s <> 0 Then
                 v.View.BufferGraphics.Clear()
-               
+
                 Using mat As New Matrix
                     mat.Translate((e.Location.X - mdl.X), (e.Location.Y - mdl.Y))
                     svp.Transform(mat)
