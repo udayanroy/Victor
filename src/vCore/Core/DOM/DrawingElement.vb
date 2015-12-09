@@ -3,12 +3,25 @@
 Public Interface DrawingElement
     Inherits IDisposable
 
-    Sub Draw(ByRef g As Graphics)
-    Function GetBound() As RectangleF
+    Sub Draw(g As Graphics)
     Function HitTest(ByVal p As PointF) As Boolean
+    Function GetElementType() As ElementType
+
+    'TransForm Function
+    Function GetBound() As RectangleF
     Sub Translate(ByVal x As Single, ByVal y As Single)
+    Sub Resize(width As Single, height As Single)
+    Property Rotation As Single
+    Function GetSkeliton() As GPath
 End Interface
 
+
+Public Enum ElementType
+    PathElement
+    ImageElement
+    Textelement
+    GroupElement
+End Enum
 
 
 Public Class vPen
