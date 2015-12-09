@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CubicBezier.vb" />
+    <Compile Include="Intersection.vb" />
     <Compile Include="Matrix.vb" />
     <Compile Include="MatrixTransform.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
