@@ -50,9 +50,15 @@ Public Class Canvas
     End Sub
 
     Public Sub RotateAt(angle As Single, center As Point)
-
         _graphics.TranslateTransform(center.X, center.Y)
         _graphics.RotateTransform(angle)
         _graphics.TranslateTransform(-center.X, -center.Y)
+    End Sub
+
+    Public Sub Smooth()
+        _graphics.SmoothingMode = Drawing.Drawing2D.SmoothingMode.AntiAlias
+    End Sub
+    Public Sub NoSmooth()
+        _graphics.SmoothingMode = Drawing.Drawing2D.SmoothingMode.None
     End Sub
 End Class
