@@ -33,9 +33,26 @@ Public Class Canvas
         _states.Push(_graphics.Save())
     End Sub
 
-
-
     Public Sub Restore()
         _graphics.Restore(_states.Pop)
+    End Sub
+
+    Public Sub Translate(dx As Double, dy As Double)
+        _graphics.TranslateTransform(dx, dy)
+    End Sub
+
+    Public Sub Scale(s As Double)
+        _graphics.ScaleTransform(s, s)
+    End Sub
+
+    Public Sub Rotate(angle As Single)
+        _graphics.RotateTransform(angle)
+    End Sub
+
+    Public Sub RotateAt(angle As Single, center As Point)
+
+        _graphics.TranslateTransform(center.X, center.Y)
+        _graphics.RotateTransform(angle)
+        _graphics.TranslateTransform(-center.X, -center.Y)
     End Sub
 End Class
