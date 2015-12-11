@@ -15,18 +15,21 @@ Public Class Canvas
         drawing.Draw(Me)
     End Sub
 
-    Public Sub DrawPath(path As NodePath)
-
-        Using gp As Drawing.Drawing2D.GraphicsPath = path.ToGraphicsPath
-
-            _graphics.FillPath(Drawing.Brushes.Red, gp)
-
-
-
-            _graphics.DrawPath(Drawing.Pens.Black, gp)
-
-        End Using
-
+    Public Sub DrawPath(path As NodePath, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
+        If (Pen IsNot Nothing) Or (Brush IsNot Nothing) Then
+            Using gp As Drawing.Drawing2D.GraphicsPath = path.ToGraphicsPath
+                If Brush IsNot Nothing Then
+                    Using nb = Brush.GetNativeBrush
+                        _graphics.FillPath(nb, gp)
+                    End Using
+                End If
+                If Pen IsNot Nothing Then
+                    Using np = Pen.getNative
+                        _graphics.DrawPath(np, gp)
+                    End Using
+                End If
+            End Using
+        End If
     End Sub
 
     Public Sub Save()
