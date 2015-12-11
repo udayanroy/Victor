@@ -67,6 +67,7 @@
     <Compile Include="Canvas.vb" />
     <Compile Include="Color.vb" />
     <Compile Include="IDrawable.vb" />
+    <Compile Include="Image.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

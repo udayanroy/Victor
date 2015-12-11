@@ -5,7 +5,7 @@ Imports System.Runtime.CompilerServices
 Public Module Utils
 
     <Extension()>
-    Public Function ToGpoint(pt As Drawing.PointF) As Point
+    Public Function Topoint(pt As Drawing.PointF) As Point
         Return New Point(pt.X, pt.Y)
     End Function
 
@@ -14,7 +14,8 @@ Public Module Utils
         Return New Drawing.PointF(pt.X, pt.Y)
     End Function
 
-    Public Function Grect2Rectanglef(pt As Rect) As Drawing.RectangleF
+    <Extension()>
+    Public Function ToRectanglef(pt As Rect) As Drawing.RectangleF
         Return New Drawing.RectangleF(pt.X, pt.Y, pt.Width, pt.Height)
     End Function
 

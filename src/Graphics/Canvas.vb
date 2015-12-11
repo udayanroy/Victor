@@ -14,7 +14,21 @@ Public Class Canvas
     Public Sub Draw(drawing As IDrawable)
         drawing.Draw(Me)
     End Sub
-
+    Public Sub drawRect(rect As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
+        If (Pen IsNot Nothing) Or (Brush IsNot Nothing) Then
+            Dim rct As Drawing.RectangleF = rect.ToRectanglef
+            If Brush IsNot Nothing Then
+                Using nb = Brush.GetNativeBrush
+                    _graphics.FillRectangle(nb, rct)
+                End Using
+            End If
+            If Pen IsNot Nothing Then
+                Using np = Pen.getNative
+                    _graphics.DrawRectangle(np, rct.X, rct.Y, rct.Width, rct.Height)
+                End Using
+            End If
+        End If
+    End Sub
     Public Sub DrawPath(path As NodePath, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
         If (Pen IsNot Nothing) Or (Brush IsNot Nothing) Then
             Using gp As Drawing.Drawing2D.GraphicsPath = path.ToGraphicsPath
@@ -30,6 +44,10 @@ Public Class Canvas
                 End If
             End Using
         End If
+    End Sub
+
+    Public Sub DrawImage(image As Image)
+        _graphics.DrawImage(image.GetBitmap, image.bound)
     End Sub
 
     Public Sub Save()
