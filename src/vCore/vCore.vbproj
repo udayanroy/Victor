@@ -105,6 +105,7 @@
     <Compile Include="Core\Tool\tsel.vb" />
     <Compile Include="Core\Tool\tSizeTool.vb" />
     <Compile Include="Core\Tool\tZoomTool.vb" />
+    <Compile Include="Core\Visual\ScrollVisual.vb" />
     <Compile Include="Core\Visual\ZoomVisual.vb" />
     <Compile Include="displayDevice\advancedPanel.vb">
       <SubType>Component</SubType>
