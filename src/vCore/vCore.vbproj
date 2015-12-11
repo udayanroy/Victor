@@ -105,6 +105,7 @@
     <Compile Include="Core\Tool\tsel.vb" />
     <Compile Include="Core\Tool\tSizeTool.vb" />
     <Compile Include="Core\Tool\tZoomTool.vb" />
+    <Compile Include="Core\Visual\ZoomVisual.vb" />
     <Compile Include="displayDevice\advancedPanel.vb">
       <SubType>Component</SubType>
     </Compile>
@@ -175,6 +176,10 @@
     <ProjectReference Include="..\Geometry\Geometry.vbproj">
       <Project>{3d9fdbe8-276a-4548-830e-055eef919788}</Project>
       <Name>Geometry</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Graphics\Graphics.vbproj">
+      <Project>{92af7d0a-add1-48ba-8e60-e87a608d14d8}</Project>
+      <Name>Graphics</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
