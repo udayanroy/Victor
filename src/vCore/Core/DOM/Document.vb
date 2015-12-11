@@ -1,16 +1,10 @@
 ﻿Imports System.Drawing.Drawing2D
 Imports System.Drawing
 
-<Serializable()> Public Class DOM
+<Serializable()> Public Class Document
     Implements IDisposable
 
-
     Private memlist As List(Of Layer)
-
-
-
-
-
 
 
     Friend Sub New()

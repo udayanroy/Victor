@@ -5,7 +5,7 @@ Imports System.Runtime.Serialization.Formatters.Binary
 
 Public Class vCore
 
-    Friend mem As DOM
+    Friend mem As Document
     Private vu As View
     Private edtr As Editor
     Private WithEvents device As advancedPanel
@@ -15,9 +15,9 @@ Public Class vCore
     Public Sub New(ByVal dc As advancedPanel, ByVal pagesize As Size)
 
         device = dc
-        mem = New DOM()
+        mem = New Document()
         mem.PageSize = pagesize
- 
+
         vu = New View(mem, device, pagesize)
         edtr = New Editor(Me)
 

@@ -108,7 +108,7 @@
     <Compile Include="displayDevice\advancedPanel.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Core\DOM\DOM.vb" />
+    <Compile Include="Core\DOM\Document.vb" />
     <Compile Include="Core\DOM\Elements\vPath.vb" />
     <Compile Include="Core\DOM\Layer.vb" />
     <Compile Include="Core\DOM\DrawingElement.vb" />

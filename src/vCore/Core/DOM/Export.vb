@@ -4,7 +4,7 @@ Imports System.Drawing.Imaging
 Public Class Export
 
 
-    Public Shared Sub ExportImage(filename As String, doc As DOM, size As Size, imgtype As ImageFormat, Optional background As Boolean = False)
+    Public Shared Sub ExportImage(filename As String, doc As Document, size As Size, imgtype As ImageFormat, Optional background As Boolean = False)
 
         Using bmp As New Bitmap(size.Width, size.Height), gp = Graphics.FromImage(bmp)
             If background Then

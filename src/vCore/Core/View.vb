@@ -6,7 +6,7 @@ Public Class View
     Implements IDisposable
 
 
-    Private mem As DOM
+    Private mem As Document
     Private device As advancedPanel
     Private zom As Single = 1.0
 
@@ -20,7 +20,7 @@ Public Class View
 
 
 
-    Friend Sub New(ByRef Dom As DOM, ByRef dc As advancedPanel, ByVal pageSize As Size)
+    Friend Sub New(ByRef Dom As Document, ByRef dc As advancedPanel, ByVal pageSize As Size)
         page_size = pageSize
         mem = Dom
         device = dc
@@ -33,7 +33,7 @@ Public Class View
     Public Sub Refresh()
         device.Invalidate()
     End Sub
-    Public ReadOnly Property Memory() As DOM
+    Public ReadOnly Property Memory() As Document
         Get
             Return mem
         End Get
