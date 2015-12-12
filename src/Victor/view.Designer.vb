@@ -53,7 +53,7 @@ Partial Class view
         Me.MaximizeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Panel1 = New vCore.advancedPanel()
+        Me.Panel1 = New Core.advancedPanel()
         Me.ToolBar1 = New Victor.ToolBar()
         Me.ImportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel2.SuspendLayout()
@@ -336,7 +336,7 @@ Partial Class view
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents Panel1 As vCore.advancedPanel
+    Friend WithEvents Panel1 As Core.advancedPanel
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Friend WithEvents ToolBar1 As Victor.ToolBar
     Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip

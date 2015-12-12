@@ -165,9 +165,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\vCore\vCore.vbproj">
+    <ProjectReference Include="..\vCore\Core.vbproj">
       <Project>{0D4B482E-6F86-4E6E-9690-9CD43CBF2F4D}</Project>
-      <Name>vCore</Name>
+      <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

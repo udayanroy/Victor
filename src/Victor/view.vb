@@ -1,7 +1,7 @@
 ﻿Imports System.Drawing.Imaging
 
 Public Class view
-    Dim core As vCore.vCore
+    Dim core As Core.vCore
     Dim pagesz As New Size(1000, 500)
 
     Public Property FileName As String
@@ -12,9 +12,9 @@ Public Class view
 
     Private Sub view_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If FileName = "" Then
-            core = New vCore.vCore(Panel1, pagesz)
+            core = New Core.vCore(Panel1, pagesz)
         Else
-            core = New vCore.vCore(Panel1, FileName)
+            core = New Core.vCore(Panel1, FileName)
         End If
 
         ToolBar1.core = core

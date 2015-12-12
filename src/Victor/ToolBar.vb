@@ -7,7 +7,7 @@ Public Class ToolBar
     Dim selectionIndex As Integer = 5
     Dim mouseOveron As Integer = 0
 
-    Public core As vCore.vCore
+    Public core As Core.vCore
 
     Private Tiles As List(Of ToolTile)
 
