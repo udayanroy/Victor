@@ -4,7 +4,7 @@ Imports System.Drawing
 
 
 Public Class ePointerConvert
-    Implements Iedtr
+    Implements IEditor
 
     Dim v As Editor
     Dim spath As vPath

@@ -4,7 +4,7 @@
 
 
 Public Class PenTool
-    Implements Itool, Iedtr
+    Implements Itool, IEditor
 
 
 

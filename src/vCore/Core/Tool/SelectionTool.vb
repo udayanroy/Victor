@@ -3,7 +3,7 @@ Imports System.Drawing
 
 
 Public Class SelectionTool
-    Implements Itool, Iedtr
+    Implements Itool, IEditor
 
 
 

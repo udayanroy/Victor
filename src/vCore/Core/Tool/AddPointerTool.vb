@@ -5,7 +5,7 @@ Imports Geom.Geometry
 
 
 Public Class AddPointerTool
-    Implements Itool, Iedtr
+    Implements Itool, IEditor
 
 
     Dim Core As vCore

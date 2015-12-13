@@ -3,7 +3,7 @@ Imports System.Windows.Forms
 Imports System.Drawing.Drawing2D
 
 Public Class RotateTool
-    Implements Itool, Iedtr
+    Implements Itool, IEditor
 
     Private b As Integer = 3
     Private wh As Integer = b * 2

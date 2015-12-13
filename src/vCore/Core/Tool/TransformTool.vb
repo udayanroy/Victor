@@ -2,7 +2,7 @@
 Imports System.Drawing
 
 Public Class TransformTool
-    Implements Itool, Iedtr
+    Implements Itool, IEditor
 
 
 

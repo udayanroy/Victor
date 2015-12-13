@@ -4,7 +4,7 @@ Imports System.Drawing.Drawing2D
 
 
 Public Class eRotate
-    Implements Iedtr
+    Implements IEditor
 
     Private b As Integer = 3
     Private wh As Integer = b * 2

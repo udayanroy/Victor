@@ -3,7 +3,7 @@ Imports System.Windows.Forms
 Imports System.Drawing.Drawing2D
 
 Public Class ShearTool
-    Implements Itool, Iedtr
+    Implements Itool, IEditor
 
 
     Dim Core As vCore

@@ -1,12 +1,14 @@
-﻿Imports System.Drawing
-Imports System.Drawing.Drawing2D
+﻿Imports Geometry
+Imports Graphics
+
+
 
 Public Class Editor
 
 
     Dim vcor As vCore
     Dim slct As Selection
-    Dim iedt As Iedtr
+    Dim iedt As IEditor
 
     Dim move As eMove
     Dim size As eSize
@@ -16,8 +18,8 @@ Public Class Editor
     Dim type As selectionType
 
     'global DrwingElement propertys
-    Dim _fillcolor As Color = Color.Blue
-    Dim _strokecolor As Color = Color.Black
+    Dim _fillBrush As Brush
+    Dim _strokecolor As Pen
     Dim _strokewidth As Single = 1
     Dim _isfill As Boolean = True
     Dim _isstroke As Boolean = True
@@ -35,7 +37,7 @@ Public Class Editor
         rotate = New eRotate(Me)
         ptconvert = New ePointerConvert(Me)
 
-        type = SelectionType.None
+        type = selectionType.None
 
     End Sub
     Public Function HittestAt(ByVal p As Point) As Selection
@@ -175,10 +177,10 @@ Public Class Editor
 
         Refresh()
     End Sub
-    Public Sub setIEdit(ByVal Editor As Iedtr)
+    Public Sub setIEdit(ByVal Editor As IEditor)
 
         Me.iedt = Editor
-        type = selectionType.other
+        type = selectionType.Other
         Refresh()
 
     End Sub

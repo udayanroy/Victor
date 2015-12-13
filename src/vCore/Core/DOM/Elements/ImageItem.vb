@@ -4,6 +4,7 @@ Public Class ImageItem
     Implements DrawingElement
 
 
+
     Dim _img As Image
 
 
@@ -66,4 +67,59 @@ Public Class ImageItem
     End Sub
 #End Region
 
+    Public Sub ApplyTransform(mat As Geometry.Matrix) Implements DrawingElement.ApplyTransform
+
+    End Sub
+
+    Public Property Brush As Graphics.Brush Implements DrawingElement.Brush
+
+    Public Sub Draw(canvas As Graphics.Canvas) Implements DrawingElement.Draw
+
+    End Sub
+
+    Public Function GetElementBound() As Geometry.Rect Implements DrawingElement.GetElementBound
+
+    End Function
+
+    Public Function GetElementType() As ElementType Implements DrawingElement.GetElementType
+
+    End Function
+
+    Public Function GetItemBound() As Geometry.Rect Implements DrawingElement.GetItemBound
+
+    End Function
+
+    Public Function GetSkeliton() As Geometry.NodePath Implements DrawingElement.GetSkeliton
+
+    End Function
+
+    Public Function isBoundVisible(p As Geometry.Point) As Boolean Implements DrawingElement.isBoundVisible
+
+    End Function
+
+    Public Function isBoundVisible(rect As Geometry.Rect) As Boolean Implements DrawingElement.isBoundVisible
+
+    End Function
+
+    Public Function isVisible(p As Geometry.Point) As Boolean Implements DrawingElement.isVisible
+
+    End Function
+
+    Public Function isVisible(rect As Geometry.Rect) As Boolean Implements DrawingElement.isVisible
+
+    End Function
+
+    Public Property Opacity As Single Implements DrawingElement.Opacity
+
+    Public Property Pen As Graphics.Pen Implements DrawingElement.Pen
+
+    Public Sub ReArrange(x As Single, y As Single, width As Single, height As Single) Implements DrawingElement.ReArrange
+
+    End Sub
+
+    Public Sub Resize(width As Single, height As Single) Implements DrawingElement.Resize
+
+    End Sub
+
+    Public Property Rotation As Single Implements DrawingElement.Rotation
 End Class

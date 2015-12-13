@@ -2,7 +2,7 @@
 Imports System.Drawing.Drawing2D
 
 Public Class eSize
-    Implements Iedtr
+    Implements IEditor
 
     Dim v As Editor
 

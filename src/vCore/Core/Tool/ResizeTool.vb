@@ -4,7 +4,7 @@ Imports System.Drawing
 
 
 Public Class ResizeTool
-    Implements Itool, Iedtr
+    Implements Itool, IEditor
 
 
 

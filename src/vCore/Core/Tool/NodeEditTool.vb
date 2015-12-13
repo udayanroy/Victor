@@ -2,7 +2,7 @@
 Imports System.Drawing.Drawing2D
 
 Public Class NodeEditTool
-    Implements Itool, Iedtr
+    Implements Itool, IEditor
 
 
 

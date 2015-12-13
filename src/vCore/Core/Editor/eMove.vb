@@ -3,7 +3,7 @@ Imports System.Drawing
 
 
 Public Class eMove
-    Implements Iedtr
+    Implements IEditor
 
     Dim v As Editor
     Dim mdl As Point
