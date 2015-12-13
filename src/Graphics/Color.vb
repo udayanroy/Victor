@@ -43,6 +43,11 @@ Public Structure Color
             Return New Color(0, 0, 255)
         End Get
     End Property
+    Public Shared ReadOnly Property GreenColor As Color
+        Get
+            Return New Color(0, 255, 0)
+        End Get
+    End Property
     Public Shared ReadOnly Property TransparentColor As Color
         Get
             Return New Color(0, 0, 0, 0)
