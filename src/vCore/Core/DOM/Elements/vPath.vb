@@ -1,87 +1,27 @@
-﻿Imports System.Drawing.Drawing2D
-Imports System.Drawing
+﻿ 
 Imports Geometry
+Imports Graphics
 
 <Serializable()> Public Class vPath
     Implements DrawingElement
 
 
 
-    Friend pth As GPath
+
+    Private _Path As NodePath
 
 
     Public Sub New()
-        pth = New GPath
-        pth.AddEllipse(100, 100, 400, 200)
+        _Path = New NodePath
     End Sub
 
-    Public Property FillColor As Color = Color.Blue
-    Public Property StrokeColor As Color = Color.Black
-    Public Property StrokWidth As Single = 1
-    Public Property isFill As Boolean = True
-    Public Property isStroke As Boolean = True
-
-
-    Public Sub Draw(ByRef g As System.Drawing.Graphics) Implements DrawingElement.Draw
-        'g.FillPath(Drawing.Brushes.Blue, pth)
-        Dim brush As Brush = Nothing
-        Dim pen As Pen = Nothing
-        If isFill Then brush = New SolidBrush(FillColor)
-        If isStroke Then
-            Dim penBrush As New SolidBrush(StrokeColor)
-            pen = New Pen(penBrush, StrokWidth)
-        End If
-
-        pth.drawPath(g, pen, brush)
-
-
-    End Sub
-
-    Public Function GetBound() As System.Drawing.RectangleF Implements DrawingElement.GetBound
-        Return pth.GetTightBound()
-    End Function
-
-
-    Public Function HitTest(ByVal location As System.Drawing.PointF) As Boolean Implements DrawingElement.isVisible
-        Dim isbodyvisible, isOutline As Boolean
-
-        Dim bound = Me.GraphicsPath.GetBound
-        If bound.Contains(location) Then
-            Using gp As GraphicsPath = Me.pth.ToGraphicsPath
-                isbodyvisible = gp.IsVisible(location)
-                If Not isbodyvisible Then
-                    Dim penwidth = IIf(Me.isStroke, Me.StrokWidth, 1)
-                    Using Pen = New Pen(Brushes.Black, penwidth)
-                        isOutline = gp.IsOutlineVisible(location, Pen)
-                    End Using
-                End If
-            End Using
-        End If
-
-
-        Return isbodyvisible Or isOutline
-
-
-    End Function
-
-    Public ReadOnly Property GraphicsPath As GPath
+    Public ReadOnly Property Path As NodePath
         Get
-            Return pth
+            Return _Path
         End Get
     End Property
-    Public Sub setPath(ByRef path As GPath)
-        ' pth.Dispose()
-        pth = path
-    End Sub
-
-    Public Sub Translate(ByVal x As Single, ByVal y As Single) Implements DrawingElement.Translate
-        Using mat As New Drawing2D.Matrix
-            mat.Translate(x, y)
-
-            pth.Transform(mat)
-        End Using
-
-    End Sub
+     
+  
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' To detect redundant calls
 
@@ -114,6 +54,87 @@ Imports Geometry
         Dispose(True)
         GC.SuppressFinalize(Me)
     End Sub
+#End Region
+
+
+#Region "Element Drawing"
+
+    Public Property Brush As Graphics.Brush Implements DrawingElement.Brush
+    Public Property Pen As Graphics.Pen Implements DrawingElement.Pen
+    Public Property Opacity As Single Implements DrawingElement.Opacity
+
+    Public Sub Draw(canvas As Canvas) Implements DrawingElement.Draw
+
+        canvas.DrawPath(Me.Path, Pen, Brush)
+
+    End Sub
+
+    Public Function GetElementBound() As Rect Implements DrawingElement.GetElementBound
+        Dim mat As Matrix = Matrix.Identity
+        mat.Roatate(Me.Rotation)
+        Dim Duplicatepath = Me.Path.Clone
+        Duplicatepath.Transform(mat)
+        Return Duplicatepath.GetBound()
+    End Function
+
+    Public Function GetElementType() As ElementType Implements DrawingElement.GetElementType
+        Return ElementType.PathElement
+    End Function
+
+#End Region
+
+#Region "HitTesting"
+    Public Function isBoundVisible(p As Geometry.Point) As Boolean Implements DrawingElement.isBoundVisible
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function isBoundVisible(rect As Rect) As Boolean Implements DrawingElement.isBoundVisible
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function isVisible(p As Geometry.Point) As Boolean Implements DrawingElement.isVisible
+        Return Path.isVisible(p)
+    End Function
+
+    Public Function isVisible(rect As Rect) As Boolean Implements DrawingElement.isVisible
+        Throw New NotImplementedException()
+    End Function
+#End Region
+
+#Region "Transform Function"
+
+    Public Function GetItemBound() As Rect Implements DrawingElement.GetItemBound
+        Throw New NotImplementedException()
+    End Function
+
+    Public Function GetSkeliton() As NodePath Implements DrawingElement.GetSkeliton
+        Dim mat As Matrix = Matrix.Identity
+        mat.Roatate(Me.Rotation)
+        Dim Duplicatepath = Me.Path.Clone
+        Duplicatepath.Transform(mat)
+        Return Duplicatepath
+    End Function
+
+    Public Sub ReArrange(x As Single, y As Single, width As Single, height As Single) Implements DrawingElement.ReArrange
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Sub Resize(width As Single, height As Single) Implements DrawingElement.Resize
+        Throw New NotImplementedException()
+    End Sub
+
+    Public Property Rotation As Single Implements DrawingElement.Rotation
+
+    Public Sub Translate(ByVal x As Single, ByVal y As Single) Implements DrawingElement.Translate
+        Dim mat As Matrix = Matrix.Identity
+        mat.Translate(x, y)
+        ApplyTransform(mat)
+    End Sub
+
+    Public Sub ApplyTransform(mat As Geometry.Matrix) Implements DrawingElement.ApplyTransform
+        Path.Transform(mat)
+    End Sub
+
 #End Region
 
 
