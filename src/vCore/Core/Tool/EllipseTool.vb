@@ -1,6 +1,7 @@
-﻿Imports System.Drawing
-Imports System.Windows.Forms
-Imports System.Drawing.Drawing2D
+﻿Imports Geometry
+Imports Graphics
+
+
 
 Public Class EllipseTool
     Implements Itool
@@ -9,58 +10,58 @@ Public Class EllipseTool
 
 
     Dim v As vCore
-    Dim WithEvents dc As advancedPanel
+    Dim WithEvents dc As IDevice
     Dim mdl As Point
 
     Public Sub New(ByRef vcore As vCore)
         v = vcore
     End Sub
-    Public ReadOnly Property Device() As advancedPanel Implements Itool.Device
+    Public ReadOnly Property Device() As IDevice Implements Itool.Device
         Get
             Return dc
         End Get
     End Property
 
-    Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
+    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
         mdl = e.Location
         v.View.BufferGraphics.Initialize()
         dc.ActiveScroll = False
     End Sub
 
-    Private Sub dc_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseMove
-        If e.Button = MouseButtons.Left Then
+    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
+        If e.Button = MouseButton.Left Then
             v.View.BufferGraphics.Clear()
             Dim width As Integer = (e.Location.X - mdl.X)
             Dim height As Integer = (e.Location.Y - mdl.Y)
 
-            v.View.BufferGraphics.Graphics.DrawEllipse(Pens.Black, mdl.X, mdl.Y, width, height)
+            v.View.BufferGraphics.Graphics.DrawEllipse(New Pen(Color.BlackColor), mdl.X, mdl.Y, width, height)
             v.View.BufferGraphics.Render()
 
 
 
         End If
     End Sub
-    Private Sub dc_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseUp
+    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
 
 
 
         Dim vp As New vPath
-        vp.GraphicsPath.subpaths.clear()
-        vp.GraphicsPath.AddEllipse(mdl.X, mdl.Y, e.Location.X - mdl.X, e.Location.Y - mdl.Y)
+        vp.Path.Figures.Clear()
+        vp.Path.AddEllipse(mdl.X, mdl.Y, e.Location.X - mdl.X, e.Location.Y - mdl.Y)
 
         'Convert path to memory path
-        v.View.Dc2MemGPath(vp.GraphicsPath)
+        v.View.Screen2memory(vp.Path)
 
         'Add Active styles
         Dim edtr = v.Editor
-        vp.FillColor = edtr.FillColor
-        vp.StrokeColor = edtr.StrokeColor
-        vp.StrokWidth = edtr.strokeWidth
-        vp.isFill = edtr.isFill
-        vp.isStroke = edtr.isStroke
+        'vp.FillColor = edtr.FillColor
+        'vp.StrokeColor = edtr.StrokeColor
+        'vp.StrokWidth = edtr.strokeWidth
+        'vp.isFill = edtr.isFill
+        'vp.isStroke = edtr.isStroke
 
         'Add it to Memory
-        v.View.Memory.Layers(0).Item.Add(vp)
+        v.mem.Layers(0).Item.Add(vp)
 
         v.View.Refresh()
         dc.ActiveScroll = True
@@ -70,7 +71,7 @@ Public Class EllipseTool
 
     End Sub
 
-    Public Sub SelectTool(ByRef d As advancedPanel) Implements Itool.SelectTool
+    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
         dc = d
         v.Editor.setEditingType(selectionType.None)
     End Sub
