@@ -14,7 +14,15 @@ Public Class Canvas
     Public Sub Draw(drawing As IDrawable)
         drawing.Draw(Me)
     End Sub
-    Public Sub drawRect(rect As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
+
+    Public Sub DrawRects(rects() As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
+        For Each Rect As Rect In rects
+            Me.DrawRect(Rect, Pen, Brush)
+        Next
+    End Sub
+
+
+    Public Sub DrawRect(rect As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
         If (Pen IsNot Nothing) Or (Brush IsNot Nothing) Then
             Dim rct As Drawing.RectangleF = rect.ToRectanglef
             If Brush IsNot Nothing Then

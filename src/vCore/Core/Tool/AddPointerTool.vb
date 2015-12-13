@@ -1,6 +1,6 @@
-﻿Imports System.Drawing
-Imports System.Drawing.Drawing2D
-Imports Geom.Geometry
+﻿Imports Graphics
+Imports Geometry
+
 
 
 
@@ -9,10 +9,10 @@ Public Class AddPointerTool
 
 
     Dim Core As vCore
-    Dim WithEvents dc As advancedPanel
+    Dim WithEvents dc As IDevice
 
     Dim spath As vPath
-    Dim editablepath As GPath
+    Dim editablepath As NodePath
     Dim noderadious As Single = 3
 
     Public Sub New(ByRef vcore As vCore)
@@ -23,59 +23,59 @@ Public Class AddPointerTool
         dc = Nothing
     End Sub
 
-    Public ReadOnly Property Device As advancedPanel Implements Itool.Device
+    Public ReadOnly Property Device As IDevice Implements Itool.Device
         Get
             Return dc
         End Get
     End Property
 
-    Public Sub SelectTool(ByRef d As advancedPanel) Implements Itool.SelectTool
+    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
         dc = d
         Core.Editor.setIEdit(Me)
     End Sub
 
 
-    Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
+    Private Sub dc_MouseDown(ByVal e As MouseEvntArg) Handles dc.MouseDown
 
         Me.mouse_Down(e)
     End Sub
 
-    Private Sub dc_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseMove
+    Private Sub dc_MouseMove(ByVal e As MouseEvntArg) Handles dc.MouseMove
 
-        Me.mouse_Move(e)
+
     End Sub
-    Private Sub dc_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseUp
+    Private Sub dc_MouseUp(ByVal e As MouseEvntArg) Handles dc.MouseUp
 
-        Me.mouse_Up(e)
+
     End Sub
 
-    Public Sub Draw(ByRef g As Drawing.Graphics) Implements Iedtr.Draw
+    Public Sub Draw(canvas As Canvas) Implements IEditor.Draw
         If Core.Editor.selection.isEmty = False Then
-            g.SmoothingMode = SmoothingMode.AntiAlias
-            Using p As New Pen(Color.SkyBlue)
-                spath = Core.Editor.getSelectionPath()
-                editablepath = spath.GraphicsPath.Clone
-                Core.View.mem2DcGPath(editablepath)
-                editablepath.drawPath(g, p)
-                DrawNodes(g)
-            End Using
+            canvas.Smooth()
+            Dim p As New Pen(Color.RedColor)
+            spath = Core.Editor.getSelectionPath()
+            editablepath = spath.Path.Clone
+            Core.View.Screen2memory(editablepath)
+            canvas.DrawPath(editablepath, p)
+            DrawNodes(canvas)
+
         End If
     End Sub
 
-    Public Sub mouse_Down(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Down
+    Public Sub mouse_Down(e As MouseEvntArg)
         If Core.Editor.selection.isEmty Then Exit Sub
 
         Dim mouseLocation = e.Location
 
         Dim Mindistance = Double.MaxValue
-        Dim n1 As PathPoint = Nothing
-        Dim n2 As PathPoint = Nothing
-        Dim fig As SubPath = Nothing
+        Dim n1 As Node = Nothing
+        Dim n2 As Node = Nothing
+        Dim fig As NodeFigure = Nothing
 
-        For Each figure As SubPath In editablepath.subpaths
+        For Each figure As NodeFigure In editablepath.Figures
             If figure.Points.Count <= 1 Then Continue For
             For nodeIndex As Integer = 0 To figure.Points.Count - 1
-                Dim node1, node2 As PathPoint
+                Dim node1, node2 As Node
                 If nodeIndex = figure.Points.Count - 1 Then
                     If figure.Closed Then
                         node1 = figure.Points(nodeIndex)
@@ -89,14 +89,14 @@ Public Class AddPointerTool
                 End If
 
 
-                Dim bez As New GCubicBezier()
-                bez.P1 = New GPoint(node1.M.X, node1.M.Y)
-                bez.C1 = New GPoint(node1.C2.X, node1.C2.Y)
+                Dim bez As New CubicBezier()
+                bez.P1 = New Point(node1.M.X, node1.M.Y)
+                bez.C1 = New Point(node1.C2.X, node1.C2.Y)
 
-                bez.C2 = New GPoint(node2.C1.X, node2.C1.Y)
-                bez.P2 = New GPoint(node2.M.X, node2.M.Y)
+                bez.C2 = New Point(node2.C1.X, node2.C1.Y)
+                bez.P2 = New Point(node2.M.X, node2.M.Y)
 
-                Dim dist = bez.DistancefromPoint(New GPoint(mouseLocation.X, mouseLocation.Y))
+                Dim dist = bez.DistancefromPoint(New Point(mouseLocation.X, mouseLocation.Y))
 
                 If dist < Mindistance Then
                     Mindistance = dist
@@ -109,60 +109,55 @@ Public Class AddPointerTool
 
         If Mindistance <= 2 Then
             Dim pointerIndex = fig.Points.IndexOf(n1)
-            Dim nPointer As New PathPoint
+            Dim nPointer As New Node
 
-            Dim bez As New GCubicBezier()
-            bez.P1 = New GPoint(n1.M.X, n1.M.Y)
-            bez.C1 = New GPoint(n1.C2.X, n1.C2.Y)
-            bez.C2 = New GPoint(n2.C1.X, n2.C1.Y)
-            bez.P2 = New GPoint(n2.M.X, n2.M.Y)
+            Dim bez As New CubicBezier()
+            bez.P1 = New Point(n1.M.X, n1.M.Y)
+            bez.C1 = New Point(n1.C2.X, n1.C2.Y)
+            bez.C2 = New Point(n2.C1.X, n2.C1.Y)
+            bez.P2 = New Point(n2.M.X, n2.M.Y)
 
-            Dim closept = bez.closestPointToBezier(New GPoint(mouseLocation.X, mouseLocation.Y))
+            Dim closept = bez.closestPointToBezier(New Point(mouseLocation.X, mouseLocation.Y))
             Dim left = bez.divLeft(closept)
             Dim right = bez.divRight(closept)
 
-            n1.C2 = New PointF(left.C1.X, left.C1.Y)
-            nPointer.C1 = New PointF(left.C2.X, left.C2.Y)
-            nPointer.M = New PointF(left.P2.X, left.P2.Y)
-            nPointer.C2 = New PointF(right.C1.X, right.C1.Y)
-            n2.C1 = New PointF(right.C2.X, right.C2.Y)
+            n1.C2 = New Point(left.C1.X, left.C1.Y)
+            nPointer.C1 = New Point(left.C2.X, left.C2.Y)
+            nPointer.M = New Point(left.P2.X, left.P2.Y)
+            nPointer.C2 = New Point(right.C1.X, right.C1.Y)
+            n2.C1 = New Point(right.C2.X, right.C2.Y)
 
-            nPointer.Type = PathPointType.Smooth
+            nPointer.Type = NodeType.Smooth
 
             fig.Points.Insert(pointerIndex + 1, nPointer)
 
-            Core.View.Dc2MemGPath(editablepath)
+            Core.View.Screen2memory(editablepath)
             spath.setPath(editablepath)
             Core.View.Refresh()
         End If
 
     End Sub
 
-    Public Sub mouse_Move(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Move
-
-    End Sub
-
-    Public Sub mouse_Up(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Up
-
-    End Sub
+     
 
 
-    Private Sub DrawNodes(g As System.Drawing.Graphics)
-        Using Pen As New Pen(Brushes.Red, 1)
-            For Each sp As SubPath In editablepath.subpaths
-                For Each nd As PathPoint In sp.Points
-                    ' g.FillEllipse(Brushes.White, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
-                    ' g.DrawEllipse(Pen, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
-                    g.FillRectangle(Brushes.White, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
-                    g.DrawRectangle(Pen, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
-                Next
+    Private Sub DrawNodes(g As Canvas)
+        Dim Pen As New Pen(Color.RedColor, 1)
+        Dim brush As New SolidColorBrush(Color.RedColor)
+        For Each sp As NodeFigure In editablepath.Figures
+            For Each nd As Node In sp.Points
+                ' g.FillEllipse(Brushes.White, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                ' g.DrawEllipse(Pen, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                Dim rct As New Rect(nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                g.DrawRect(rct, Pen, brush)
             Next
-        End Using
+        Next
+
     End Sub
 
-    Private Function getNodeptBound(pt As PointF) As Rectangle
+    Private Function getNodeptBound(pt As Point) As Rect
         Dim l = New Point(pt.X - Me.noderadious, pt.Y - Me.noderadious)
         Dim w = Me.noderadious * 2
-        Return New Rectangle(l, New Size(w, w))
+        Return New Rect(l, New Size(w, w))
     End Function
 End Class

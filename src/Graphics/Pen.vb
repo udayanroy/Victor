@@ -6,7 +6,9 @@
         Me._brush = New SolidColorBrush()
         Me._width = width
     End Sub
-
+    Public Sub New(color As Color)
+        Me.New(color, 1)
+    End Sub
     Public Sub New(color As Color, width As Single)
         Me._brush = New SolidColorBrush(color)
         Me._width = width

@@ -2,11 +2,12 @@
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
 Imports System.Runtime.Serialization.Formatters.Binary
+Imports Graphics
 
 Public Class vCore
 
     Friend mem As Document
-    Private vu As View
+    Private vu As ControlVisual
     Private edtr As Editor
     Private WithEvents device As advancedPanel
 
@@ -18,7 +19,7 @@ Public Class vCore
         mem = New Document()
         mem.PageSize = pagesize
 
-        vu = New View(mem, device, pagesize)
+        vu = New ControlVisual(mem, device)
         edtr = New Editor(Me)
 
 
@@ -33,8 +34,8 @@ Public Class vCore
 
             device = dc
             mem = Formatter.Deserialize(strm)
- 
-            vu = New View(mem, device, mem.PageSize)
+
+            vu = New ControlVisual(mem, device)
             edtr = New Editor(Me)
 
 
@@ -46,7 +47,7 @@ Public Class vCore
 
     End Sub
 
-    Public ReadOnly Property View() As View
+    Public ReadOnly Property View() As ControlVisual
         Get
             Return vu
         End Get
@@ -69,8 +70,9 @@ Public Class vCore
     End Sub
 
     Private Sub device_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles device.Paint
-        vu.paint(e.Graphics)
-        edtr.paint(e.Graphics)
+        Dim canvas As New Canvas(e.Graphics)
+        vu.Draw(canvas)
+        edtr.paint(canvas)
     End Sub
 
     Public Sub SaveDocumentTo(file As String)
@@ -92,7 +94,7 @@ Public Class vCore
 
     Public Sub Import(file As String)
         Dim imgitem As New ImageItem(file)
-        View.Memory.Layers(0).Item.Add(imgitem)
+        mem.Layers(0).Item.Add(imgitem)
         View.Refresh()
     End Sub
 End Class

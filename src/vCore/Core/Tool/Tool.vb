@@ -2,9 +2,9 @@
 
 Public Interface Itool
 
-    ReadOnly Property Device() As advancedPanel
+    ReadOnly Property Device() As IDevice
     Sub DeSelectTool()
-    Sub SelectTool(ByRef d As advancedPanel)
+    Sub SelectTool(ByRef d As IDevice)
 End Interface
 
 

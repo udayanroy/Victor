@@ -137,5 +137,9 @@ Imports Graphics
 
 #End Region
 
+    Public Sub setPath(editablepath As NodePath)
+        Me._Path = editablepath
+    End Sub
+
 
 End Class

@@ -1,14 +1,13 @@
-﻿Imports System.Drawing
-Imports System.Windows.Forms
+﻿ 
 
 Public Class BufferPaint
     Implements IDisposable
 
     Dim bk, mn As BufferMemory
-    Dim dc As advancedPanel
+    Dim dc As IDevice
     Dim hdc As IntPtr
 
-    Friend Sub New(ByRef c As advancedPanel)
+    Friend Sub New(ByRef c As IDevice)
         dc = c
         hdc = GetDC(dc.Handle)
         bk = New BufferMemory(hdc, dc.Width, dc.Height)
@@ -88,9 +87,9 @@ Public Class BufferPaint
         Public Sub UpdateFrmScr(ByVal hdc As IntPtr)
             BitBlt(tdc, 0, 0, _width, _height, hdc, 0, 0, SRCCOPY)
         End Sub
-        Public ReadOnly Property Graphics() As Graphics
+        Public ReadOnly Property Graphics() As canvas
             Get
-                Return g
+                Return New canvas(g)
             End Get
         End Property
         Public ReadOnly Property HDC() As IntPtr

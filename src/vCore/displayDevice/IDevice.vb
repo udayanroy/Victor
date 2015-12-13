@@ -13,7 +13,8 @@ Public Interface IDevice
     Property ScrollPos As Point
     Property ScrollMinSize As Size
     Property size As Size
-    Property WheelScrollEnable As Boolean
+    Property ActiveScroll As Boolean
+
     Sub setCurser(id As Integer)
 
     Event Paint(e As PaintEvntArg)

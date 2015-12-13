@@ -1,5 +1,5 @@
-﻿Imports System.Drawing.Drawing2D
-Imports System.Drawing
+﻿Imports Geometry
+Imports Graphics
 
 
 Public Class SelectionTool
@@ -8,9 +8,9 @@ Public Class SelectionTool
 
 
     Dim Core As vCore
-    Dim WithEvents dc As advancedPanel
+    Dim WithEvents dc As IDevice
 
-    Private bound As Rectangle
+    Private bound As Rect
     Dim noderadious As Single = 3
     Private nodewidth As Integer = noderadious * 2
 
@@ -20,62 +20,63 @@ Public Class SelectionTool
     ' Dim md As Point
 
     Dim s As Integer = 0
-    Dim svp As GPath
+    Dim svp As NodePath
 
     Dim sizing As Boolean = False
     Dim hit As Integer = -1
 
-    Dim nrect As RectangleF
+    Dim nrect As Rect
 
     Public Sub New(ByRef vcore As vCore)
         Core = vcore
     End Sub
 
 
-    Public Sub Draw(ByRef g As Graphics) Implements Iedtr.Draw
+    Public Sub Draw(canvas As Canvas) Implements IEditor.Draw
         If Core.Editor.selection.isEmty = False Then
-            g.SmoothingMode = SmoothingMode.AntiAlias
-            Using p As New Pen(Color.Red), pth As New GraphicsPath
+            canvas.Smooth()
+            Dim p As New Pen(Color.RedColor)
+            Dim pth As NodePath
 
-                Dim rf As RectangleF = Core.Editor.getBoundRect()
-                pth.AddRectangle(rf)
-                Core.View.mem2DcPath(pth)
+            Dim rf As Rect = Core.Editor.getBoundRect()
+            pth.AddRectangle(rf)
+            Core.View.Memory2screen(pth)
 
-                bound = Rectangle.Round(pth.GetBounds)
+            bound = pth.GetBound
 
-                g.DrawPath(p, pth)
+            canvas.DrawPath(pth, p)
 
-                Dim pointers() As Rectangle = {getRect(bound.X, bound.Y), _
-                                      getRect(bound.X, bound.Y + bound.Height / 2), _
-                                      getRect(bound.X, bound.Y + bound.Height), _
-                                      getRect(bound.X + bound.Width / 2, bound.Y), _
-                                      getRect(bound.X + bound.Width / 2, bound.Y + bound.Height), _
-                                      getRect(bound.X + bound.Width, bound.Y), _
-                                      getRect(bound.X + bound.Width, bound.Y + bound.Height / 2), _
-                                      getRect(bound.X + bound.Width, bound.Y + bound.Height)}
-
-
-
-                'Draw resize pointers
-                g.FillRectangles(Brushes.White, pointers)
-                g.DrawRectangles(Pens.Brown, pointers)
+            Dim pointers() As Rect = {getRect(bound.X, bound.Y), _
+                                  getRect(bound.X, bound.Y + bound.Height / 2), _
+                                  getRect(bound.X, bound.Y + bound.Height), _
+                                  getRect(bound.X + bound.Width / 2, bound.Y), _
+                                  getRect(bound.X + bound.Width / 2, bound.Y + bound.Height), _
+                                  getRect(bound.X + bound.Width, bound.Y), _
+                                  getRect(bound.X + bound.Width, bound.Y + bound.Height / 2), _
+                                  getRect(bound.X + bound.Width, bound.Y + bound.Height)}
 
 
 
-            End Using
+            'Draw resize pointers
+            'canvas.FillRectangles('Brushes.White, pointers)
+            'canvas.DrawRectangles('Pens.Brown, pointers)
+            canvas.DrawRects(pointers, New Pen(Color.BrownColor), New SolidColorBrush(Color.WhiteColor))
+
+
+
 
         End If
     End Sub
 
-    Private Function getRect(ByVal x As Integer, ByVal y As Integer) As Rectangle
-        Return New Rectangle(x - noderadious, y - noderadious, nodewidth, nodewidth)
+    Private Function getRect(ByVal x As Integer, ByVal y As Integer) As Rect
+        Return New Rect(x - noderadious, y - noderadious, nodewidth, nodewidth)
     End Function
 
-    Private Function getRect(ByVal x As Integer, ByVal y As Integer, radious As Integer) As Rectangle
-        Return New Rectangle(x - radious, y - radious, radious * 2, radious * 2)
+    Private Function getRect(ByVal x As Integer, ByVal y As Integer, radious As Integer) As Rect
+        Return New Rect(x - radious, y - radious, radious * 2, radious * 2)
     End Function
 
-    Public Sub mouse_Down(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Down
+    Public Sub mouse_Down(e As MouseEvntArg)
         MouseDownLocation = e.Location
         MouseLocation = e.Location
 
@@ -83,8 +84,8 @@ Public Class SelectionTool
             s = Core.Editor.SelectAt(MouseLocation)
             If s <> 0 Then
 
-                svp = Core.Editor.getSelectionPath.GraphicsPath.Clone
-                Core.Editor.View.mem2DcGPath(svp)
+                svp = Core.Editor.getSelectionPath.Path.Clone
+                Core.View.Memory2screen(svp)
                 Core.Editor.View.BufferGraphics.Initialize()
                 dc.ActiveScroll = False
             End If
@@ -93,8 +94,8 @@ Public Class SelectionTool
             If hit <> -1 Then
                 sizing = True
 
-                svp = Core.Editor.getSelectionPath.GraphicsPath.Clone
-                Core.Editor.View.mem2DcGPath(svp)
+                svp = Core.Editor.getSelectionPath.Path.Clone
+                Core.View.Memory2screen(svp)
                 Core.Editor.View.BufferGraphics.Initialize()
                 dc.ActiveScroll = False
             Else
@@ -104,8 +105,8 @@ Public Class SelectionTool
 
                 If s <> 0 Then
 
-                    svp = Core.Editor.getSelectionPath.GraphicsPath.Clone
-                    Core.Editor.View.mem2DcGPath(svp)
+                    svp = Core.Editor.getSelectionPath.Path.Clone
+                    Core.View.Memory2screen(svp)
                     Core.Editor.View.BufferGraphics.Initialize()
                     dc.ActiveScroll = False
                 End If
@@ -119,28 +120,30 @@ Public Class SelectionTool
 
     End Sub
 
-    Public Sub mouse_Move(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Move
+    Public Sub mouse_Move(e As MouseEvntArg)
         If e.Button = Windows.Forms.MouseButtons.Left Then
             If s <> 0 Then
-                Core.Editor.View.BufferGraphics.Clear()
+                Core.View.BufferGraphics.Clear()
                 If sizing Then
                     If hit <> -1 Then
 
                         Dim gp = Me.DoAction(e.Location, hit)
                         Dim g = Core.Editor.View.BufferGraphics.Graphics
-                        gp.drawPath(g, Pens.Red)
+
+                        g.DrawPath(gp, New Pen(Color.RedColor))
                         Core.Editor.View.BufferGraphics.Render()
 
 
                     End If
                 Else
-                    Using mat As New Matrix
-                        mat.Translate((e.Location.X - MouseLocation.X), (e.Location.Y - MouseLocation.Y))
-                        svp.Transform(mat)
-                    End Using
+                    Dim mat As Matrix = Matrix.Identity
+                    mat.Translate((e.Location.X - MouseLocation.X), (e.Location.Y - MouseLocation.Y))
+                    svp.Transform(mat)
+
 
                     Dim g = Core.Editor.View.BufferGraphics.Graphics
-                    svp.drawPath(g, Pens.Red)
+                    Dim canvas As New Canvas(g)
+                    canvas.DrawPath(svp, New Pen(Color.RedColor))
                     Core.Editor.View.BufferGraphics.Render()
 
                 End If
@@ -151,23 +154,28 @@ Public Class SelectionTool
         End If
     End Sub
 
-    Public Sub mouse_Up(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Up
+    Public Sub mouse_Up(e As MouseEvntArg)
         If sizing Then
-            Dim tr As RectangleF
+            Dim tr As Rect
+            Dim nrctloc = nrect.Location
+            Core.View.Screen2memory(nrctloc)
+            tr.Location = nrctloc
 
-            tr.Location = Core.Editor.View.Dc2memPt(nrect.Location)
+            Dim pk As New Point(nrect.X + nrect.Width, nrect.Y + nrect.Height)
+            Core.View.Screen2memory(pk)
 
-            Dim pk = Core.View.Dc2memPt(New Point(nrect.X + nrect.Width, nrect.Y + nrect.Height))
             tr.Width = pk.X - tr.X
             tr.Height = pk.Y - tr.Y
 
-            ScaleGPath(Core.Editor.getSelectionPath.GraphicsPath, tr)
+            ScalePath(Core.Editor.getSelectionPath.Path, tr)
 
             'svp.Dispose()
         Else
             If s <> 0 Then
-                Dim p1 = Core.Editor.View.Dc2memPt(MouseDownLocation)
-                Dim p2 = Core.Editor.View.Dc2memPt(e.Location)
+                Dim p1 = MouseDownLocation
+                Core.View.Screen2memory(p1)
+                Dim p2 = e.Location
+                Core.View.Screen2memory(p2)
                 Core.Editor.getSelectionPath.Translate(p2.X - p1.X, p2.Y - p1.Y)
 
                 'svp.Dispose()
@@ -182,33 +190,33 @@ Public Class SelectionTool
         dc = Nothing
     End Sub
 
-    Public ReadOnly Property Device As advancedPanel Implements Itool.Device
+    Public ReadOnly Property Device As IDevice Implements Itool.Device
         Get
             Return dc
         End Get
     End Property
 
-    Public Sub SelectTool(ByRef d As advancedPanel) Implements Itool.SelectTool
+    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
         dc = d
         Core.Editor.setIEdit(Me)
     End Sub
 
-    Private Sub dc_MouseDown(sender As Object, e As Windows.Forms.MouseEventArgs) Handles dc.MouseDown
+    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
         Me.mouse_Down(e)
     End Sub
 
-    Private Sub dc_MouseMove(sender As Object, e As Windows.Forms.MouseEventArgs) Handles dc.MouseMove
+    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
         Me.mouse_Move(e)
     End Sub
 
-    Private Sub dc_MouseUp(sender As Object, e As Windows.Forms.MouseEventArgs) Handles dc.MouseUp
+    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
         Me.mouse_Up(e)
     End Sub
 
 
 
 
-    Private Function hittest(ByRef p As Point, ByRef b As Rectangle) As Integer
+    Private Function hittest(ByRef p As Point, ByRef b As Rect) As Integer
 
         ' Sequence of Points..
         '
@@ -223,7 +231,7 @@ Public Class SelectionTool
         '-------------------------------------------------
 
 
-        Dim pointers() As Rectangle = {getRect(bound.X, bound.Y), _
+        Dim pointers() As Rect = {getRect(bound.X, bound.Y), _
                                        getRect(bound.X, bound.Y + bound.Height / 2), _
                                        getRect(bound.X, bound.Y + bound.Height), _
                                        getRect(bound.X + bound.Width / 2, bound.Y), _
@@ -236,7 +244,7 @@ Public Class SelectionTool
         Dim rtn As Integer = -1
 
         For i As Integer = 8 To 0 Step -1
-            If pointers(i).Contains(p) Then
+            If pointers(i).Contain(p) Then
                 rtn = i
                 Exit For
             End If
@@ -246,7 +254,7 @@ Public Class SelectionTool
     End Function
 
 
-    Private Function DoAction(ByVal point As Point, ByVal hit As Integer) As GPath
+    Private Function DoAction(ByVal point As Point, ByVal hit As Integer) As NodePath
 
         If hit = 0 Then
             Dim p1 = point
@@ -256,16 +264,16 @@ Public Class SelectionTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New RectangleF(p1.X, p1.Y, _
+            Dim rd As New Rect(p1.X, p1.Y, _
                                       (p2.X - p1.X), (p2.Y - p1.Y))
 
-            Dim rtn As RectangleF
+            Dim rtn As Rect
             rtn = rd
 
 
 
-            Dim gp As GPath = svp.Clone
-            ScaleGPath(gp, rtn)
+            Dim gp = svp.Clone
+            ScalePath(gp, rtn)
             nrect = rtn
             Return gp
         ElseIf hit = 1 Then
@@ -273,11 +281,11 @@ Public Class SelectionTool
             Dim bnd = svp.GetTightBound
             Dim l = (point.Y - bnd.Y)
 
-            Dim gp As GPath = svp.Clone
+            Dim gp = svp.Clone
 
-            Dim trect As New RectangleF(point.X, bnd.Y, (bnd.X - point.X) + bnd.Width, bnd.Height)
+            Dim trect As New Rect(point.X, bnd.Y, (bnd.X - point.X) + bnd.Width, bnd.Height)
 
-            ScaleGPath(gp, trect)
+            ScalePath(gp, trect)
 
             nrect = trect
             Return gp
@@ -290,17 +298,17 @@ Public Class SelectionTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New RectangleF(p1.X, p2.Y, _
+            Dim rd As New Rect(p1.X, p2.Y, _
                                       (p2.X - p1.X), (p1.Y - p2.Y))
 
-            Dim rtn As RectangleF
+            Dim rtn As Rect
 
             rtn = rd
 
 
 
-            Dim gp As GPath = svp.Clone
-            ScaleGPath(gp, rtn)
+            Dim gp = svp.Clone
+            ScalePath(gp, rtn)
             nrect = rtn
             Return gp
         ElseIf hit = 3 Then
@@ -308,10 +316,10 @@ Public Class SelectionTool
             Dim bnd = svp.GetTightBound
             Dim l = (point.Y - bnd.Y)
 
-            Dim gp As GPath = svp.Clone
+            Dim gp = svp.Clone
 
-            Dim trect As New RectangleF(bnd.X, point.Y, bnd.Width, (bnd.Y - point.Y) + bnd.Height)
-            ScaleGPath(gp, trect)
+            Dim trect As New Rect(bnd.X, point.Y, bnd.Width, (bnd.Y - point.Y) + bnd.Height)
+            ScalePath(gp, trect)
             nrect = trect
             Return gp
 
@@ -321,10 +329,10 @@ Public Class SelectionTool
             Dim bnd = svp.GetTightBound
             Dim l = (point.Y - bnd.Y)
 
-            Dim gp As GPath = svp.Clone
+            Dim gp = svp.Clone
 
-            Dim trect As New RectangleF(bnd.X, bnd.Y, bnd.Width, l)
-            ScaleGPath(gp, trect)
+            Dim trect As New Rect(bnd.X, bnd.Y, bnd.Width, l)
+            ScalePath(gp, trect)
             nrect = trect
             Return gp
 
@@ -337,16 +345,16 @@ Public Class SelectionTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New RectangleF(p2.X, p1.Y, _
+            Dim rd As New Rect(p2.X, p1.Y, _
                                       (p1.X - p2.X), (p2.Y - p1.Y))
 
-            Dim rtn As RectangleF
+            Dim rtn As Rect
 
             rtn = rd
 
 
             Dim gp = svp.Clone
-            ScaleGPath(gp, rtn)
+            ScalePath(gp, rtn)
             nrect = rtn
             Return gp
         ElseIf hit = 6 Then
@@ -363,8 +371,8 @@ Public Class SelectionTool
             ' svp.Transform(mat)
             Dim gp = svp.Clone
 
-            Dim trect As New RectangleF(bnd.X, bnd.Y, l, bnd.Height)
-            ScaleGPath(gp, trect)
+            Dim trect As New Rect(bnd.X, bnd.Y, l, bnd.Height)
+            ScalePath(gp, trect)
             nrect = trect
             Return gp
 
@@ -378,18 +386,18 @@ Public Class SelectionTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New RectangleF(p1.X, p1.Y, _
+            Dim rd As New Rect(p1.X, p1.Y, _
                                       (p2.X - p1.X), (p2.Y - p1.Y))
 
-            Dim rtn As RectangleF
+            Dim rtn As Rect
 
             rtn.Location = p1
             rtn = rd
 
 
 
-            Dim gp As GPath = svp.Clone
-            ScaleGPath(gp, rtn)
+            Dim gp = svp.Clone
+            ScalePath(gp, rtn)
             nrect = rtn
             Return gp
 
@@ -399,51 +407,51 @@ Public Class SelectionTool
 
     End Function
 
-    Private Sub ScalePath(ByRef gp As GraphicsPath, ByVal Torect As RectangleF)
-        Dim bnd = gp.GetBounds
+    Private Sub ScalePath(gp As NodePath, ByVal Torect As Rect)
+        Dim bnd = gp.GetBound
         Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
         Dim yinvert As Boolean = IIf(Torect.Height < 0, True, False)
 
 
-        Using mat As New Matrix
-            mat.Translate(-bnd.X, -bnd.Y)
-            gp.Transform(mat)
+        Dim mat As Matrix = Matrix.Identity
+        mat.Translate(-bnd.X, -bnd.Y)
+        gp.Transform(mat)
 
-            mat.Reset()
-            Dim sx = Torect.Width / bnd.Width
-            Dim sy = Torect.Height / bnd.Height
-            mat.Scale(sx, sy)
-            gp.Transform(mat)
+        mat.reset()
+        Dim sx = Torect.Width / bnd.Width
+        Dim sy = Torect.Height / bnd.Height
+        mat.Scale(sx, sy)
+        gp.Transform(mat)
 
-            mat.Reset()
-            mat.Translate(Torect.X, Torect.Y)
-            gp.Transform(mat)
+        mat.reset()
+        mat.Translate(Torect.X, Torect.Y)
+        gp.Transform(mat)
 
 
-        End Using
+
     End Sub
 
-    Private Sub ScaleGPath(ByRef gp As GPath, ByVal Torect As RectangleF)
-        Dim bnd = gp.GetTightBound
-        Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
-        Dim yinvert As Boolean = IIf(Torect.Height < 0, True, False)
+    'Private Sub ScaleGPath(ByRef gp As GPath, ByVal Torect As Rect)
+    '    Dim bnd = gp.GetTightBound
+    '    Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
+    '    Dim yinvert As Boolean = IIf(Torect.Height < 0, True, False)
 
 
-        Using mat As New Matrix
-            mat.Translate(-bnd.X, -bnd.Y)
-            gp.Transform(mat)
+    '    Using mat As New Matrix
+    '        mat.Translate(-bnd.X, -bnd.Y)
+    '        gp.Transform(mat)
 
-            mat.Reset()
-            Dim sx = Torect.Width / bnd.Width
-            Dim sy = Torect.Height / bnd.Height
-            mat.Scale(sx, sy)
-            gp.Transform(mat)
+    '        mat.reset()
+    '        Dim sx = Torect.Width / bnd.Width
+    '        Dim sy = Torect.Height / bnd.Height
+    '        mat.Scale(sx, sy)
+    '        gp.Transform(mat)
 
-            mat.Reset()
-            mat.Translate(Torect.X, Torect.Y)
-            gp.Transform(mat)
+    '        mat.reset()
+    '        mat.Translate(Torect.X, Torect.Y)
+    '        gp.Transform(mat)
 
 
-        End Using
-    End Sub
+    '    End Using
+    'End Sub
 End Class

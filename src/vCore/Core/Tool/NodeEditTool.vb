@@ -9,7 +9,7 @@ Public Class NodeEditTool
 
 
     Dim v As vCore
-    Dim WithEvents dc As advancedPanel
+    Dim WithEvents dc As IDevice
     Dim MouseLocation As Point
     Private b As Integer = 3
 

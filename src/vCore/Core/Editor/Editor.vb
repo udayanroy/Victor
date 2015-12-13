@@ -134,7 +134,7 @@ Public Class Editor
         End Get
     End Property
 
-    Public ReadOnly Property View As View
+    Public ReadOnly Property View As ControlVisual
         Get
             Return vcor.View
         End Get
@@ -194,10 +194,10 @@ Public Class Editor
     End Function
 
 
-    Public Sub paint(ByVal g As Graphics)
+    Public Sub paint(canvas As Canvas)
 
         If Me.type <> selectionType.None Then
-            Me.iedt.Draw(g)
+            Me.iedt.Draw(canvas)
         End If
 
     End Sub

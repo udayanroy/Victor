@@ -12,6 +12,8 @@ Public Class ControlVisual
     Dim marginvisual As MarginVisual
     Dim scrollvisual As ScrollVisual
 
+    Dim bffgraphics As BufferPaint
+
     Public Sub New(Dom As Document, dc As IDevice)
         _document = Dom
         _dc = dc
@@ -29,7 +31,15 @@ Public Class ControlVisual
         scrollvisual.ScrollPos = Device.ScrollPos
 
         Device.ScrollMinSize = scrollvisual.GetArea.Size
+
+        bffgraphics = New BufferPaint(dc)
     End Sub
+
+    Public ReadOnly Property BufferGraphics As BufferPaint
+        Get
+            Return Me.bffgraphics
+        End Get
+    End Property
 
     Public Sub Draw(canvas As Canvas) Implements IDrawable.Draw
         'canvas.clear(BackGroundColor)  ' Draw control background
