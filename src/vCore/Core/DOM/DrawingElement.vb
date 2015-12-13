@@ -1,56 +1,39 @@
-﻿Imports System.Drawing
+﻿Imports Graphics
+Imports Geometry
 
 Public Interface DrawingElement
     Inherits IDisposable
 
-    Sub Draw(g As Graphics)
-    Function isVisible(ByVal p As PointF) As Boolean
-    Function isVisible(ByVal rect As RectangleF) As Boolean
-    Function isBoundVisible(ByVal rect As RectangleF) As Boolean
-    Function isBoundVisible(ByVal p As PointF) As Boolean
+    Sub Draw(canvas As Canvas)
+    Property Brush As Brush
+    Property Pen As Pen
+    Property Opacity As Single
+
+
+    Function isVisible(ByVal p As Point) As Boolean
+    Function isVisible(ByVal rect As Rect) As Boolean
+    Function isBoundVisible(ByVal rect As Rect) As Boolean
+    Function isBoundVisible(ByVal p As Point) As Boolean
     Function GetElementType() As ElementType
 
     'Get loosly claculated ElementBound
-    Function GetElementBound() As RectangleF
+    Function GetElementBound() As Rect
 
     'Transform Function
-    Function GetItemBound() As RectangleF
+    Function GetItemBound() As Rect
     Sub Translate(ByVal x As Single, ByVal y As Single)
     Sub Resize(width As Single, height As Single)
     Sub ReArrange(ByVal x As Single, ByVal y As Single, ByVal width As Single, ByVal height As Single)
     Property Rotation As Single
-    Function GetSkeliton() As GPath
-    Sub ApplyTransform(mat As Drawing2D.Matrix)
+    Function GetSkeliton() As NodePath
+    Sub ApplyTransform(mat As Matrix)
 End Interface
 
 
 Public Enum ElementType
     PathElement
     ImageElement
-    Textelement
+    TextElement
     GroupElement
 End Enum
-
-
-Public Class vPen
-    Dim c As Color
-
-    Public Sub New()
-        c = color.Black
-
-    End Sub
-    Public Property color() As Color
-        Get
-            Return c
-        End Get
-        Set(ByVal value As Color)
-            c = value
-        End Set
-    End Property
-End Class
-
-Public MustInherit Class vBrush
-
-
-End Class
-
+ 
