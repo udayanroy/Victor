@@ -53,7 +53,7 @@ Public Class BufferPaint
         mn.Render(_hdc)
 
     End Sub
-    Public ReadOnly Property Graphics() As Graphics
+    Public ReadOnly Property Graphics() As Graphics.Canvas
         Get
             Return mn.Graphics
         End Get

@@ -62,6 +62,11 @@ Public Class vCore
             Return edtr
         End Get
     End Property
+    Public ReadOnly Property Memory As Document
+        Get
+            Return mem
+        End Get
+    End Property
 
     Public Property AsociateFile As String
 

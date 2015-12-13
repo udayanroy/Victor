@@ -34,7 +34,7 @@ Public Class EllipseTool
             Dim width As Integer = (e.Location.X - mdl.X)
             Dim height As Integer = (e.Location.Y - mdl.Y)
 
-            v.View.BufferGraphics.Graphics.DrawEllipse(New Pen(Color.BlackColor), mdl.X, mdl.Y, width, height)
+            v.View.BufferGraphics.Graphics.DrawEllipse(mdl.X, mdl.Y, width, height, New Pen(Color.BlackColor))
             v.View.BufferGraphics.Render()
 
 
