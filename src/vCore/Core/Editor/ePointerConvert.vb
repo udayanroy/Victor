@@ -1,5 +1,5 @@
-﻿Imports System.Drawing.Drawing2D
-Imports System.Drawing
+﻿Imports Geometry
+Imports Graphics
 
 
 
@@ -8,7 +8,7 @@ Public Class ePointerConvert
 
     Dim v As Editor
     Dim spath As vPath
-    Dim editablepath As GPath
+    Dim editablepath As NodePath
     Dim noderadious As Single = 3
 
     Dim nodesel As nodeselection
@@ -17,24 +17,24 @@ Public Class ePointerConvert
         v = edtr
     End Sub
 
-    Public Sub Draw(ByRef g As Graphics) Implements Iedtr.Draw
+    Public Sub Draw(g As Canvas) Implements IEditor.Draw
         If v.selection.isEmty = False Then
-            g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
-            Using p As New Pen(Color.SkyBlue)
-                spath = v.getSelectionPath()
-                editablepath = spath.GraphicsPath.Clone
-                v.View.mem2DcGPath(editablepath)
+            g.Smooth()
+            Dim p As New Pen(Color.BlueColor)
+            spath = v.getSelectionPath()
+            editablepath = spath.Path.Clone
+            v.View.Memory2screen(editablepath)
 
-                editablepath.drawPath(g, p)
+            g.DrawPath(editablepath, p)
 
-                DrawNodes(g)
+            DrawNodes(g)
 
-            End Using
+
 
         End If
     End Sub
 
-    Public Sub mouse_Down(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Down
+    Public Sub mouse_Down(e As MouseEvntArg)
         Dim md = e.Location
         nodesel = GetSelectPoint(md)
         If nodesel.selectednode IsNot Nothing Then
@@ -45,7 +45,8 @@ Public Class ePointerConvert
                 nodesel.selectednode.C1 = nodesel.selectednode.M
                 nodesel.selectednode.C2 = nodesel.selectednode.M
                 v.View.BufferGraphics.Clear()
-                editablepath.drawPath(v.View.BufferGraphics.Graphics, Pens.Black)
+                Dim g = v.View.BufferGraphics.Graphics
+                g.drawPath(editablepath, New Pen(Color.BlackColor))
                 DrawNodes(v.View.BufferGraphics.Graphics)
                 v.View.BufferGraphics.Render()
             End If
@@ -54,7 +55,7 @@ Public Class ePointerConvert
 
     End Sub
 
-    Public Sub mouse_Move(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Move
+    Public Sub mouse_Move(ByRef e As MouseEvntArg)
         If nodesel.selectednode Is Nothing Then Exit Sub
 
         If e.Button = Windows.Forms.MouseButtons.Left Then
@@ -66,9 +67,9 @@ Public Class ePointerConvert
 
                 Dim m = nodesel.selectednode.M
 
-                Dim v1 = New PointF(ml.X - m.X,
+                Dim v1 = New Point(ml.X - m.X,
                                   ml.Y - m.Y)
-                nodesel.selectednode.C1 = New PointF(-v1.X + m.X, -v1.Y + m.Y)
+                nodesel.selectednode.C1 = New Point(-v1.X + m.X, -v1.Y + m.Y)
 
             ElseIf nodesel.typeid = 2 Then
                 nodesel.selectednode.Type = PathPointType.Sharp
@@ -81,38 +82,43 @@ Public Class ePointerConvert
 
 
             v.View.BufferGraphics.Clear()
-            editablepath.drawPath(v.View.BufferGraphics.Graphics, Pens.Black)
+            Dim g = v.View.BufferGraphics.Graphics
+            g.drawPath(editablepath, New Pen(Color.BlackColor))
             DrawNodes(v.View.BufferGraphics.Graphics)
             v.View.BufferGraphics.Render()
         End If
 
     End Sub
 
-    Public Sub mouse_Up(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Up
+    Public Sub mouse_Up(e As MouseEvntArg)
 
-        v.View.Dc2MemGPath(editablepath)
+        v.View.Screen2memory(editablepath)
         spath.setPath(editablepath)
 
         v.View.Refresh()
     End Sub
 
 
-    Private Sub DrawNodes(g As System.Drawing.Graphics)
-        For Each sp As SubPath In editablepath.subpaths
-            For Each nd As PathPoint In sp.Points
+    Private Sub DrawNodes(g As Canvas)
+        For Each sp As NodeFigure In editablepath.Figures
+            For Each nd As Node In sp.Points
                 If nd.Type = PathPointType.None Then
-                    g.FillEllipse(Brushes.Red, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+
+                    g.DrawEllipse(nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2, , New SolidColorBrush(Color.RedColor))
 
                 Else
-                    g.DrawLine(New Pen(Brushes.Red, 1), nd.M, nd.C1)
-                    g.DrawLine(New Pen(Brushes.Red, 1), nd.M, nd.C2)
+                    g.DrawLine(nd.M, nd.C1, New Pen(Color.RedColor))
+                    g.DrawLine(nd.M, nd.C2, New Pen(Color.RedColor))
 
-                    g.FillEllipse(Brushes.Red, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
+                    g.DrawEllipse(nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2,
+                                    , New SolidColorBrush(Color.RedColor))
 
-                    g.DrawEllipse(New Pen(Brushes.Red, 2), nd.C1.X - noderadious, nd.C1.Y - noderadious, noderadious * 2, noderadious * 2)
-                    g.FillEllipse(Brushes.White, nd.C1.X - noderadious, nd.C1.Y - noderadious, noderadious * 2, noderadious * 2)
-                    g.DrawEllipse(New Pen(Brushes.Red, 2), nd.C2.X - noderadious, nd.C2.Y - noderadious, noderadious * 2, noderadious * 2)
-                    g.FillEllipse(Brushes.White, nd.C2.X - noderadious, nd.C2.Y - noderadious, noderadious * 2, noderadious * 2)
+                    g.DrawEllipse(nd.C1.X - noderadious, nd.C1.Y - noderadious, noderadious * 2, noderadious * 2,
+                                  New Pen(Color.RedColor, 2), New SolidColorBrush(Color.WhiteColor))
+
+                    g.DrawEllipse(nd.C2.X - noderadious, nd.C2.Y - noderadious, noderadious * 2, noderadious * 2,
+                                 New Pen(Color.RedColor, 2), New SolidColorBrush(Color.WhiteColor))
+
 
                 End If
 
@@ -128,14 +134,14 @@ Public Class ePointerConvert
         Dim ndIndex = 0
         Dim figIndex = 0
 
-        For Each subpth As SubPath In editablepath.subpaths
+        For Each subpth As NodeFigure In editablepath.Figures
             ndIndex = 0
-            For Each nd As PathPoint In subpth.Points
-                Dim bnd As Rectangle
+            For Each nd As Node In subpth.Points
+                Dim bnd As Rect
 
-                If nd.Type <> PathPointType.None Then
+                If nd.Type <> NodeType.None Then
                     bnd = getNodeptBound(nd.C2)
-                    If bnd.Contains(location) Then
+                    If bnd.Contain(location) Then
                         nds.selectednode = nd
                         nds.typeid = 3
                         nds.nodeIndex = ndIndex
@@ -144,7 +150,7 @@ Public Class ePointerConvert
                     End If
 
                     bnd = getNodeptBound(nd.C1)
-                    If bnd.Contains(location) Then
+                    If bnd.Contain(location) Then
                         nds.selectednode = nd
                         nds.typeid = 2
                         nds.nodeIndex = ndIndex
@@ -154,7 +160,7 @@ Public Class ePointerConvert
                 End If
 
                 bnd = getNodeptBound(nd.M)
-                If bnd.Contains(location) Then
+                If bnd.Contain(location) Then
                     nds.selectednode = nd
                     nds.typeid = 1
                     nds.nodeIndex = ndIndex
@@ -169,14 +175,14 @@ Public Class ePointerConvert
         Return nds
     End Function
 
-    Private Function getNodeptBound(pt As PointF) As Rectangle
+    Private Function getNodeptBound(pt As Point) As Rect
         Dim l = New Point(pt.X - Me.noderadious, pt.Y - Me.noderadious)
         Dim w = Me.noderadious * 2
-        Return New Rectangle(l, New Size(w, w))
+        Return New Rect(l, New Size(w, w))
     End Function
 
     Private Structure nodeselection
-        Public selectednode As PathPoint
+        Public selectednode As Node
         Public figureIndex As Integer
         Public nodeIndex As Integer
         Public typeid As Integer

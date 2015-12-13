@@ -11,6 +11,11 @@ Public Class Canvas
         _graphics = graphics
     End Sub
 
+    Public ReadOnly Property g As Drawing.Graphics
+        Get
+            Return _graphics
+        End Get
+    End Property
     Public Sub Draw(drawing As IDrawable)
         drawing.Draw(Me)
     End Sub
@@ -20,7 +25,16 @@ Public Class Canvas
             Me.DrawRect(Rect, Pen, Brush)
         Next
     End Sub
+    Public Sub DrawLine(p1 As Point, p2 As Point, Pen As Pen)
 
+    End Sub
+    Public Sub DrawEllipse(rect As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
+        Throw New NotImplementedException
+    End Sub
+
+    Public Sub DrawEllipse(x As Double, y As Double, width As Double, height As Double, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
+        Throw New NotImplementedException
+    End Sub
 
     Public Sub DrawRect(rect As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
         If (Pen IsNot Nothing) Or (Brush IsNot Nothing) Then
@@ -90,4 +104,7 @@ Public Class Canvas
     Public Sub NoSmooth()
         _graphics.SmoothingMode = Drawing.Drawing2D.SmoothingMode.None
     End Sub
+
+   
+
 End Class
