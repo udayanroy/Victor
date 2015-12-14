@@ -30,7 +30,7 @@ Public Class Tools
     'Dim TransformTool As TransformTool
     Dim SelectionTool As SelectionTool
     Dim ResizeTool As ResizeTool
-    Dim ShearTool As ShearTool
+    ' Dim ShearTool As ShearTool
 
     Public Sub New(ByRef vc As vCore)
         vcor = vc
@@ -52,7 +52,7 @@ Public Class Tools
         'TransformTool = New TransformTool(vcor)
         SelectionTool = New SelectionTool(vcor)
         ResizeTool = New ResizeTool(vcor)
-        ShearTool = New ShearTool(vcor)
+        ' ShearTool = New ShearTool(vcor)
 
         itl = pantool
         itl.SelectTool(vcor.pDevice)
@@ -103,7 +103,7 @@ Public Class Tools
             Case 17
                 itl = ResizeTool
             Case 18
-                itl = ShearTool
+                'itl = ShearTool
         End Select
                 itl.SelectTool(vcor.pDevice)
     End Sub
