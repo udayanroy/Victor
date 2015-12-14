@@ -10,19 +10,19 @@ Public Class Editor
     Dim slct As Selection
     Dim iedt As IEditor
 
-    Dim move As eMove
-    Dim size As eSize
-    Dim rotate As eRotate
+    'Dim move As eMove
+    'Dim size As eSize
+    'Dim rotate As eRotate
     Dim ptconvert As ePointerConvert
 
     Dim type As selectionType
 
     'global DrwingElement propertys
-    Dim _fillBrush As Brush
-    Dim _strokecolor As Pen
-    Dim _strokewidth As Single = 1
-    Dim _isfill As Boolean = True
-    Dim _isstroke As Boolean = True
+    'Dim _fillBrush As Brush
+    'Dim _strokecolor As Pen
+    'Dim _strokewidth As Single = 1
+    'Dim _isfill As Boolean = True
+    'Dim _isstroke As Boolean = True
 
 
     Public Event PropertyChanged()
@@ -32,9 +32,9 @@ Public Class Editor
 
         vcor = v
         slct = New Selection
-        move = New eMove(Me)
-        size = New eSize(Me)
-        rotate = New eRotate(Me)
+        'move = New eMove(Me)
+        'size = New eSize(Me)
+        'rotate = New eRotate(Me)
         ptconvert = New ePointerConvert(Me)
 
         type = selectionType.None
@@ -46,15 +46,16 @@ Public Class Editor
         Dim memloc As memLoc
         Dim flage As Boolean = False
 
-        Dim mp = vcor.View.Dc2memPt(p)
+        Dim mp = p
+        vcor.View.Screen2memory(mp)
 
         Dim len, lobj As Integer
-        len = vcor.View.Memory.Layers.Count
+        len = vcor.Memory.Layers.Count
 
         For l As Integer = 0 To len - 1
-            lobj = vcor.View.Memory.Layers(l).Item.Count
+            lobj = vcor.Memory.Layers(l).Item.Count
             For k As Integer = 0 To lobj - 1
-                If vcor.View.Memory.Layers(l).Item(k).isVisible(mp) Then
+                If vcor.Memory.Layers(l).Item(k).isVisible(mp) Then
                     memloc.create(l, k)
 
                     flage = True
@@ -79,15 +80,16 @@ Public Class Editor
 
         'Dim m As PointF = vcor.View.DCpointToMemory(p)
         'Dim mp As New PointF(m.X - vcor.View.getpagerctOrg.X, m.Y - vcor.View.getpagerctOrg.Y)
-        Dim mp = vcor.View.Dc2memPt(p)
+        Dim mp = p
+        vcor.View.Screen2memory(mp)
 
         Dim len, lobj As Integer
-        len = vcor.View.Memory.Layers.Count
+        len = vcor.Memory.Layers.Count
 
         For l As Integer = 0 To len - 1
-            lobj = vcor.View.Memory.Layers(l).Item.Count
+            lobj = vcor.Memory.Layers(l).Item.Count
             For k As Integer = 0 To lobj - 1
-                If vcor.View.Memory.Layers(l).Item(k).isVisible(mp) Then
+                If vcor.Memory.Layers(l).Item(k).isVisible(mp) Then
                     memloc.create(l, k)
 
                     flage = True
@@ -116,11 +118,11 @@ Public Class Editor
 
     Private Sub OnSelectionChanged()
         Dim path = Me.getSelectionPath
-        Me._fillcolor = path.FillColor
-        Me._strokecolor = path.StrokeColor
-        Me._strokewidth = path.StrokWidth
-        Me._isfill = path.isFill
-        Me._isstroke = path.isStroke
+        'Me._fillcolor = path.FillColor
+        'Me._strokecolor = path.StrokeColor
+        'Me._strokewidth = path.StrokWidth
+        'Me._isfill = path.isFill
+        'Me._isstroke = path.isStroke
         RaiseEvent PropertyChanged()
     End Sub
 
@@ -154,7 +156,7 @@ Public Class Editor
                 Case selectionType.None
                     Me.iedt = Nothing
                 Case selectionType.Move
-                    Me.iedt = move
+                    ' Me.iedt = move
             End Select
         End Set
     End Property
@@ -164,12 +166,12 @@ Public Class Editor
         Select Case typ
             Case selectionType.None
                 Me.iedt = Nothing
-            Case selectionType.Move
-                Me.iedt = move
-            Case selectionType.Size
-                Me.iedt = size
-            Case selectionType.Rotate
-                Me.iedt = rotate
+                'Case selectionType.Move
+                '    Me.iedt = move
+                'Case selectionType.Size
+                '    Me.iedt = size
+                'Case selectionType.Rotate
+                '    Me.iedt = rotate
             Case selectionType.PointerConvert
                 Me.iedt = ptconvert
         End Select
@@ -201,23 +203,23 @@ Public Class Editor
         End If
 
     End Sub
-    Public Sub mouse_Down(ByRef e As System.Windows.Forms.MouseEventArgs)
-        If Me.type <> selectionType.None Then
-            Me.iedt.mouse_Down(e)
-        End If
-    End Sub
-    Public Sub mouse_Move(ByRef e As System.Windows.Forms.MouseEventArgs)
-        If Me.type <> selectionType.None Then
-            Me.iedt.mouse_Move(e)
-        End If
-    End Sub
-    Public Sub mouse_Up(ByRef e As System.Windows.Forms.MouseEventArgs)
-        If Me.type <> selectionType.None Then
-            Me.iedt.mouse_Up(e)
-        End If
-    End Sub
-    Public Function getBoundRect() As RectangleF
-        Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj).GetBound
+    'Public Sub mouse_Down(ByRef e As System.Windows.Forms.MouseEventArgs)
+    '    If Me.type <> selectionType.None Then
+    '        'Me.iedt.mouse_Down(e)
+    '    End If
+    'End Sub
+    'Public Sub mouse_Move(ByRef e As System.Windows.Forms.MouseEventArgs)
+    '    If Me.type <> selectionType.None Then
+    '        Me.iedt.mouse_Move(e)
+    '    End If
+    'End Sub
+    'Public Sub mouse_Up(ByRef e As System.Windows.Forms.MouseEventArgs)
+    '    If Me.type <> selectionType.None Then
+    '        Me.iedt.mouse_Up(e)
+    '    End If
+    'End Sub
+    Public Function getBoundRect() As Rect
+        Return vcor.Memory.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj).GetElementBound
     End Function
 
     Public Sub Cut()
@@ -242,7 +244,7 @@ Public Class Editor
 
         If Windows.Forms.Clipboard.ContainsData("vcimg") Then
             Dim path As vPath = Windows.Forms.Clipboard.GetData("vcimg")
-            View.Memory.Layers(0).Item.Add(path)
+            vcor.Memory.Layers(0).Item.Add(path)
             Me.Refresh()
         End If
 
@@ -265,75 +267,75 @@ Public Class Editor
         Me.Refresh()
     End Sub
 
-    Public Property FillColor As Color
-        Get
-            Return Me._fillcolor
-        End Get
-        Set(value As Color)
-            Me._fillcolor = value
-            If Not Me.selection.isEmty Then
-                Dim path = Me.getSelectionPath
-                path.FillColor = value
-                Me.Refresh()
-            End If
-        End Set
-    End Property
+    'Public Property FillColor As Color
+    '    Get
+    '        Return Me._fillcolor
+    '    End Get
+    '    Set(value As Color)
+    '        Me._fillcolor = value
+    '        If Not Me.selection.isEmty Then
+    '            Dim path = Me.getSelectionPath
+    '            path.FillColor = value
+    '            Me.Refresh()
+    '        End If
+    '    End Set
+    'End Property
 
-    Public Property StrokeColor As Color
-        Get
-            Return Me._strokecolor
-        End Get
-        Set(value As Color)
-            Me._strokecolor = value
+    'Public Property StrokeColor As Color
+    '    Get
+    '        Return Me._strokecolor
+    '    End Get
+    '    Set(value As Color)
+    '        Me._strokecolor = value
 
-            If Not Me.selection.isEmty Then
-                Dim path = Me.getSelectionPath
-                path.StrokeColor = value
-                Me.Refresh()
-            End If
-        End Set
-    End Property
+    '        If Not Me.selection.isEmty Then
+    '            Dim path = Me.getSelectionPath
+    '            path.StrokeColor = value
+    '            Me.Refresh()
+    '        End If
+    '    End Set
+    'End Property
 
-    Public Property strokeWidth As Single
-        Get
-            Return Me._strokewidth
-        End Get
-        Set(value As Single)
-            Me._strokewidth = value
-            If Not Me.selection.isEmty Then
-                Dim path = Me.getSelectionPath
-                path.StrokWidth = value
-                Me.Refresh()
-            End If
-        End Set
-    End Property
+    'Public Property strokeWidth As Single
+    '    Get
+    '        Return Me._strokewidth
+    '    End Get
+    '    Set(value As Single)
+    '        Me._strokewidth = value
+    '        If Not Me.selection.isEmty Then
+    '            Dim path = Me.getSelectionPath
+    '            path.StrokWidth = value
+    '            Me.Refresh()
+    '        End If
+    '    End Set
+    'End Property
 
-    Public Property isFill As Boolean
-        Get
-            Return Me._isfill
-        End Get
-        Set(value As Boolean)
-            Me._isfill = value
-            If Not Me.selection.isEmty Then
-                Dim path = Me.getSelectionPath
-                path.isFill = value
-                Me.Refresh()
-            End If
-        End Set
-    End Property
+    'Public Property isFill As Boolean
+    '    Get
+    '        Return Me._isfill
+    '    End Get
+    '    Set(value As Boolean)
+    '        Me._isfill = value
+    '        If Not Me.selection.isEmty Then
+    '            Dim path = Me.getSelectionPath
+    '            path.isFill = value
+    '            Me.Refresh()
+    '        End If
+    '    End Set
+    'End Property
 
-    Public Property isStroke As Boolean
-        Get
-            Return Me._isstroke
-        End Get
-        Set(value As Boolean)
-            Me._isstroke = value
-            If Not Me.selection.isEmty Then
-                Dim path = Me.getSelectionPath
-                path.isStroke = value
-                Me.Refresh()
-            End If
-        End Set
-    End Property
+    'Public Property isStroke As Boolean
+    '    Get
+    '        Return Me._isstroke
+    '    End Get
+    '    Set(value As Boolean)
+    '        Me._isstroke = value
+    '        If Not Me.selection.isEmty Then
+    '            Dim path = Me.getSelectionPath
+    '            path.isStroke = value
+    '            Me.Refresh()
+    '        End If
+    '    End Set
+    'End Property
 End Class
 
