@@ -52,6 +52,7 @@ Public Class Node
     Public Function Clone() As Node
         Dim rp As New Node()
         rp.setValue(Me.M, Me.C1, Me.C2)
+        rp.Type = Me.Type
         Return rp
     End Function
 
