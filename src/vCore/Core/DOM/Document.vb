@@ -1,5 +1,6 @@
-﻿Imports System.Drawing.Drawing2D
-Imports System.Drawing
+﻿
+Imports Graphics
+Imports Geometry
 
 <Serializable()> Public Class Document
     Implements IDisposable
@@ -20,15 +21,15 @@ Imports System.Drawing
 
     Public Property PageSize As Size
 
-    Public Sub Draw(ByRef g As Graphics, ByVal page_loc As Point)
-        Dim gcon As GraphicsContainer = g.BeginContainer
-        g.TranslateTransform(page_loc.X, page_loc.Y)
-        g.SmoothingMode = SmoothingMode.AntiAlias
+    Public Sub Draw(g As Canvas, ByVal page_loc As Point)
+        g.Save()
+        g.Translate(page_loc.X, page_loc.Y)
+        g.Smooth()
         For Each l As Layer In memlist
             l.Draw(g)
         Next
 
-        g.EndContainer(gcon)
+        g.Restore()
 
     End Sub
 
