@@ -20,7 +20,7 @@ Public Class Canvas
         drawing.Draw(Me)
     End Sub
     Public Sub Clear(color As Color)
-        Throw New NotImplementedException
+        g.Clear(color.toDColor)
     End Sub
 
     Public Sub DrawRects(rects() As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
@@ -29,14 +29,40 @@ Public Class Canvas
         Next
     End Sub
     Public Sub DrawLine(p1 As Point, p2 As Point, Pen As Pen)
-
+        Using np = Pen.getNative
+            _graphics.DrawLine(np, CSng(p1.X), CSng(p1.Y), CSng(p2.X), CSng(p2.Y))
+        End Using
     End Sub
     Public Sub DrawEllipse(rect As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
-        Throw New NotImplementedException
+        If (Pen IsNot Nothing) Or (Brush IsNot Nothing) Then
+            If Brush IsNot Nothing Then
+                Using nb = Brush.GetNativeBrush
+                    _graphics.FillEllipse(nb, CSng(rect.Left), CSng(rect.Top), CSng(rect.Width), CSng(rect.Height))
+                End Using
+            End If
+            If Pen IsNot Nothing Then
+                Using np = Pen.getNative
+                    _graphics.DrawEllipse(np, CSng(rect.Left), CSng(rect.Top), CSng(rect.Width), CSng(rect.Height))
+                End Using
+            End If
+
+        End If
     End Sub
 
     Public Sub DrawEllipse(x As Double, y As Double, width As Double, height As Double, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
-        Throw New NotImplementedException
+        If (Pen IsNot Nothing) Or (Brush IsNot Nothing) Then
+            If Brush IsNot Nothing Then
+                Using nb = Brush.GetNativeBrush
+                    _graphics.FillEllipse(nb, CSng(x), CSng(y), CSng(width), CSng(height))
+                End Using
+            End If
+            If Pen IsNot Nothing Then
+                Using np = Pen.getNative
+                    _graphics.DrawEllipse(np, CSng(x), CSng(y), CSng(width), CSng(height))
+                End Using
+            End If
+
+        End If
     End Sub
 
     Public Sub DrawRect(rect As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
