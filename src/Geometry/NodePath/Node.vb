@@ -15,8 +15,8 @@ Public Class Node
 
     Public Sub New(ByVal p As Point)
         _m = p
-        _c1 = New Point
-        _c2 = New Point
+        _C1 = p
+        _C2 = p
         Me.Type = NodeType.None
     End Sub
 

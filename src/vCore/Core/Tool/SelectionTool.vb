@@ -60,7 +60,7 @@ Public Class SelectionTool
             'Draw resize pointers
             'canvas.FillRectangles('Brushes.White, pointers)
             'canvas.DrawRectangles('Pens.Brown, pointers)
-            canvas.DrawRects(pointers, New Pen(Color.BrownColor), New SolidColorBrush(Color.WhiteColor))
+            canvas.DrawRects(pointers, New Pen(Color.BlackColor), New SolidColorBrush(Color.WhiteColor))
 
 
 
@@ -69,11 +69,11 @@ Public Class SelectionTool
     End Sub
 
     Private Function getRect(ByVal x As Integer, ByVal y As Integer) As Rect
-        Return New Rect(x - noderadious, y - noderadious, nodewidth, nodewidth)
+        Return New Rect(New Point(x - noderadious, y - noderadious), nodewidth, nodewidth)
     End Function
 
     Private Function getRect(ByVal x As Integer, ByVal y As Integer, radious As Integer) As Rect
-        Return New Rect(x - radious, y - radious, radious * 2, radious * 2)
+        Return New Rect(New Point(x - radious, y - radious), radious * 2, radious * 2)
     End Function
 
     Public Sub mouse_Down(e As MouseEvntArg)

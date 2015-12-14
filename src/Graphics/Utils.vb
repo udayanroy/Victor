@@ -16,7 +16,7 @@ Public Module Utils
 
     <Extension()>
     Public Function ToRectanglef(pt As Rect) As Drawing.RectangleF
-        Return Drawing.Rectangle.FromLTRB(pt.Top, pt.Left, pt.Right, pt.Bottom)
+        Return Drawing.Rectangle.FromLTRB(pt.Left, pt.Top, pt.Right, pt.Bottom)
     End Function
 
     <Extension()>
