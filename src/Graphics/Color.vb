@@ -32,7 +32,14 @@ Public Structure Color
         c.Alpha = 255
         Return c
     End Function
-
+    Public Shared Function FromArgb(r As Byte, g As Byte, b As Byte, a As Byte) As Color
+        Dim c As Color
+        c.Red = r
+        c.Green = g
+        c.Blue = b
+        c.Alpha = a
+        Return c
+    End Function
 
     Public Shared ReadOnly Property RedColor As Color
         Get
@@ -61,7 +68,7 @@ Public Structure Color
     End Property
     Public Shared ReadOnly Property TransparentColor As Color
         Get
-            Throw New NotImplementedException
+            Return Color.FromArgb(0, 0, 0, 0)
         End Get
     End Property
     Public Shared ReadOnly Property BrownColor As Color
@@ -72,18 +79,18 @@ Public Structure Color
 
     Public Shared ReadOnly Property MagentaColor() As Color
         Get
-            Throw New NotImplementedException
+            Return Color.FromArgb(255, 0, 255)
         End Get
     End Property
 
     Public Shared ReadOnly Property DarkMagentaColor() As Color
         Get
-            Throw New NotImplementedException
+            Return Color.FromArgb(139, 0, 139)
         End Get
     End Property
     Public Shared ReadOnly Property SkyBlueColor() As Color
         Get
-            Throw New NotImplementedException
+            Return Color.FromArgb(135, 206, 250)
         End Get
     End Property
 End Structure
