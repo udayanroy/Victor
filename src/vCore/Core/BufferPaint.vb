@@ -1,4 +1,5 @@
-﻿ 
+﻿Imports Geometry
+
 
 Public Class BufferPaint
     Implements IDisposable
@@ -9,27 +10,27 @@ Public Class BufferPaint
 
     Friend Sub New(ByRef c As IDevice)
         dc = c
-        hdc = GetDC(dc.Handle)
-        bk = New BufferMemory(hdc, dc.Width, dc.Height)
-        bk.Graphics.Clear(Color.White)
-        mn = New BufferMemory(hdc, dc.Width, dc.Height)
-        mn.Graphics.Clear(Color.White)
+        hdc = dc.GetHDC
+        bk = New BufferMemory(hdc, dc.size.Width, dc.size.Height)
+        bk.Graphics.Clear(Global.Graphics.Color.WhiteColor)
+        mn = New BufferMemory(hdc, dc.size.Width, dc.size.Height)
+        mn.Graphics.Clear(Global.Graphics.Color.WhiteColor)
     End Sub
 
     Public Sub Initialize()
-        If bk.size <> dc.Size Then
+        If bk.size <> dc.size Then
             '// delete memory device
             bk.Dispose()
             '// create Memory device.
-            bk = New BufferMemory(hdc, dc.Width, dc.Height)
+            bk = New BufferMemory(hdc, dc.size.Width, dc.size.Height)
         End If
-        If mn.size <> dc.Size Then
+        If mn.size <> dc.size Then
             '// delete memory device
             mn.Dispose()
             '// create Memory device.
-            mn = New BufferMemory(hdc, dc.Width, dc.Height)
+            mn = New BufferMemory(hdc, dc.size.Width, dc.size.Height)
         End If
-       
+
 
         '// update back memory device.
         Me.Update()
@@ -67,7 +68,7 @@ Public Class BufferPaint
 
         Dim tdc, obj, bmp As IntPtr
         Dim _width, _height As Integer
-        Dim g As Graphics
+        Dim g As Drawing.Graphics
 
         Public Sub New(ByVal hdc As IntPtr, ByVal Width As Integer, ByVal Height As Integer)
 
@@ -78,8 +79,8 @@ Public Class BufferPaint
             _width = Width
             _height = Height
 
-            g = Graphics.FromHdcInternal(tdc)
-            g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
+            g = Drawing.Graphics.FromHdcInternal(tdc)
+            g.SmoothingMode = Drawing.Drawing2D.SmoothingMode.AntiAlias
         End Sub
         Public Sub Render(ByVal hdc As IntPtr)
             BitBlt(hdc, 0, 0, _width, _height, tdc, 0, 0, SRCCOPY)
@@ -87,9 +88,9 @@ Public Class BufferPaint
         Public Sub UpdateFrmScr(ByVal hdc As IntPtr)
             BitBlt(tdc, 0, 0, _width, _height, hdc, 0, 0, SRCCOPY)
         End Sub
-        Public ReadOnly Property Graphics() As canvas
+        Public ReadOnly Property Graphics() As Graphics.Canvas
             Get
-                Return New canvas(g)
+                Return New Graphics.Canvas(g)
             End Get
         End Property
         Public ReadOnly Property HDC() As IntPtr
@@ -153,7 +154,7 @@ Public Class BufferPaint
             ' TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
             If bk IsNot Nothing Then bk.Dispose()
             If mn IsNot Nothing Then mn.Dispose()
-            NativeFunction.ReleaseDC(dc.Handle, hdc)
+            NativeFunction.ReleaseDC(dc.GetHWND, hdc)
             ' TODO: set large fields to null.
         End If
         Me.disposedValue = True

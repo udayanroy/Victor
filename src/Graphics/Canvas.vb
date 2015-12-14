@@ -19,6 +19,9 @@ Public Class Canvas
     Public Sub Draw(drawing As IDrawable)
         drawing.Draw(Me)
     End Sub
+    Public Sub Clear(color As Color)
+        Throw New NotImplementedException
+    End Sub
 
     Public Sub DrawRects(rects() As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
         For Each Rect As Rect In rects
@@ -105,6 +108,6 @@ Public Class Canvas
         _graphics.SmoothingMode = Drawing.Drawing2D.SmoothingMode.None
     End Sub
 
-   
+
 
 End Class

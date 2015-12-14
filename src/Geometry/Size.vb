@@ -20,7 +20,12 @@ Public Structure Size
 
     Public Property Width As Double
     Public Property Height As Double
-
+    Public Shared Operator =(ByVal p1 As Size, ByVal p2 As Size) As Boolean
+        Return (p1.Width = p2.Width And p1.Width = p2.Width)
+    End Operator
+    Public Shared Operator <>(ByVal p1 As Size, ByVal p2 As Size) As Boolean
+        Return (p1.Width <> p2.Width And p1.Width <> p2.Width)
+    End Operator
 End Structure
 
 
