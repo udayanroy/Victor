@@ -37,7 +37,7 @@ Public Class ZoomVisual
     End Function
 
     Public Function Outer2Inner() As Matrix
-        Dim mat As New Matrix
+        Dim mat As Matrix = Matrix.Identity
         mat.Scale(ZoomFraction, ZoomFraction)
         mat.Invert()
         Return mat
@@ -48,7 +48,7 @@ Public Class ZoomVisual
     End Function
 
     Public Function Inner2Outer() As Matrix
-        Dim mat As New Matrix
+        Dim mat As Matrix = Matrix.Identity
         mat.Scale(ZoomFraction, ZoomFraction)
         Return mat
     End Function

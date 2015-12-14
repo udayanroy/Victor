@@ -24,7 +24,7 @@ Public Class ControlVisual
 
         marginvisual = New MarginVisual
         marginvisual.Children = zoomvisual
-        marginvisual.Margin = 100
+        marginvisual.Margin = 2000
 
         scrollvisual = New ScrollVisual
         scrollvisual.Children = marginvisual
@@ -33,6 +33,7 @@ Public Class ControlVisual
         Device.ScrollMinSize = scrollvisual.GetArea.Size
 
         bffgraphics = New BufferPaint(dc)
+        Device.ScrollPos = New Point(2000 - 50, 2000 - 50)
     End Sub
 
     Public ReadOnly Property BufferGraphics As BufferPaint
@@ -43,7 +44,6 @@ Public Class ControlVisual
 
     Public Sub Draw(canvas As Canvas) Implements IDrawable.Draw
         'canvas.clear(BackGroundColor)  ' Draw control background
-
         scrollvisual.ScrollPos = Device.ScrollPos
         scrollvisual.Draw(canvas)
     End Sub

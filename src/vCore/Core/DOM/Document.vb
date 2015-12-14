@@ -26,6 +26,8 @@ Public Class Document
         canvas.Save()
         'canvas.Translate(page_loc.X, page_loc.Y)
         canvas.Smooth()
+         
+        canvas.DrawRect(Me.GetArea, , New SolidColorBrush(Color.WhiteColor))
         For Each l As Layer In memlist
             l.Draw(canvas)
         Next

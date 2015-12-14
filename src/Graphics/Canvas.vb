@@ -134,6 +134,8 @@ Public Class Canvas
         _graphics.SmoothingMode = Drawing.Drawing2D.SmoothingMode.None
     End Sub
 
-
+    Public Sub drawDummy()
+        _graphics.DrawRectangle(Drawing.Pens.Green, 0, 0, 50, 50)
+    End Sub
 
 End Class

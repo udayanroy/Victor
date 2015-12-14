@@ -24,7 +24,7 @@ Public Class MarginVisual
     End Function
 
     Public Function Outer2Inner() As Matrix
-        Dim mat As New Matrix
+        Dim mat As Matrix = Matrix.Identity
         mat.Translate(Margin, Margin)
         mat.Invert()
         Return mat
@@ -35,7 +35,7 @@ Public Class MarginVisual
     End Function
 
     Public Function Inner2Outer() As Matrix
-        Dim mat As New Matrix
+        Dim mat As Matrix = Matrix.Identity
         mat.Translate(Margin, Margin)
         Return mat
     End Function

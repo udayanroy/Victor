@@ -20,42 +20,53 @@ Public Structure Color
     Public Property Alpha As Byte
 
     Friend Function toDColor() As Drawing.Color
-        Return Drawing.Color.FromArgb(Alpha, Red, Green, Blue)
+        Dim c = Drawing.Color.FromArgb(CInt(Me.Red), CInt(Me.Green), CInt(Me.Blue))
+        Return c
     End Function
+
+    Public Shared Function FromArgb(r As Byte, g As Byte, b As Byte) As Color
+        Dim c As Color
+        c.Red = r
+        c.Green = g
+        c.Blue = b
+        c.Alpha = 255
+        Return c
+    End Function
+
 
     Public Shared ReadOnly Property RedColor As Color
         Get
-            Return New Color(255, 0, 0)
+            Return Color.FromArgb(255, 0, 0)
         End Get
     End Property
     Public Shared ReadOnly Property BlackColor As Color
         Get
-            Return New Color(0, 0, 0)
+            Return Color.FromArgb(0, 0, 0)
         End Get
     End Property
     Public Shared ReadOnly Property WhiteColor As Color
         Get
-            Return New Color(255, 255, 255)
+            Return Color.FromArgb(255, 255, 255)
         End Get
     End Property
     Public Shared ReadOnly Property BlueColor As Color
         Get
-            Return New Color(0, 0, 255)
+            Return Color.FromArgb(0, 0, 255)
         End Get
     End Property
     Public Shared ReadOnly Property GreenColor As Color
         Get
-            Return New Color(0, 255, 0)
+            Return Color.FromArgb(0, 255, 0)
         End Get
     End Property
     Public Shared ReadOnly Property TransparentColor As Color
         Get
-            Return New Color(0, 0, 0, 0)
+            Throw New NotImplementedException
         End Get
     End Property
     Public Shared ReadOnly Property BrownColor As Color
         Get
-            Return New Color(150, 75, 0)
+            Return Color.FromArgb(150, 75, 0)
         End Get
     End Property
 

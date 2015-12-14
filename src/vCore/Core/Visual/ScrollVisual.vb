@@ -30,7 +30,7 @@ Public Class ScrollVisual
     End Function
 
     Public Function Outer2Inner() As Matrix
-        Dim mat As New Matrix
+        Dim mat As Matrix = Matrix.Identity
         mat.Translate(ScrollPos.X, ScrollPos.Y)
         mat.Invert()
         Return mat
@@ -41,7 +41,7 @@ Public Class ScrollVisual
     End Function
 
     Public Function Inner2Outer() As Matrix
-        Dim mat As New Matrix
+        Dim mat As Matrix = Matrix.Identity
         mat.Translate(ScrollPos.X, ScrollPos.Y)
         Return mat
     End Function
