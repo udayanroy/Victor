@@ -35,8 +35,8 @@ Public Class Tools
     Public Sub New(ByRef vc As vCore)
         vcor = vc
 
-        pantool = New tPanTool(vcor.View)
-        zoomtool = New tZoomTool(vcor.View)
+        pantool = New tPanTool(vcor)
+        zoomtool = New tZoomTool(vcor)
         seltool = New tsel(vcor)
         ellipsetool = New EllipseTool(vcor)
         moveTool = New tMoveTool(vcor)

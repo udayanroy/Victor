@@ -1,5 +1,5 @@
-﻿Imports System.Windows.Forms
-Imports System.Drawing
+﻿Imports Geometry
+Imports Graphics
 
 Public Class tPanTool
     Implements Itool
@@ -7,27 +7,27 @@ Public Class tPanTool
 
 
 
-    Dim v As View
-    Dim WithEvents dc As advancedPanel
+    Dim core As vCore
+    Dim WithEvents dc As IDevice
     Dim mdl As Point
 
-    Public Sub New(ByRef vew As View)
-        v = vew
+    Public Sub New(core As vCore)
+        Me.core = core
     End Sub
-    Public ReadOnly Property Device() As advancedPanel Implements Itool.Device
+    Public ReadOnly Property Device() As IDevice Implements Itool.Device
         Get
             Return dc
         End Get
     End Property
 
-    Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
+    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
         mdl = e.Location
     End Sub
 
-    Private Sub dc_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseMove
-        If e.Button = MouseButtons.Left Then
+    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
+        If e.Button = MouseButton.Left Then
 
-            v.panmove(New Point(mdl.X - e.Location.X, mdl.Y - e.Location.Y))
+            core.View.panmove(New Point(mdl.X - e.Location.X, mdl.Y - e.Location.Y))
             mdl = e.Location
 
         End If
@@ -37,7 +37,7 @@ Public Class tPanTool
         dc = Nothing
     End Sub
 
-    Public Sub SelectTool(ByRef d As advancedPanel) Implements Itool.SelectTool
+    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
         dc = d
     End Sub
 End Class
