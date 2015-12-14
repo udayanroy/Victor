@@ -27,7 +27,7 @@ Public Class Tools
     Dim AddPointerTool As AddPointerTool
     Dim RectangleTool As RectangleTool
     Dim LineTool As LineTool
-    Dim TransformTool As TransformTool
+    'Dim TransformTool As TransformTool
     Dim SelectionTool As SelectionTool
     Dim ResizeTool As ResizeTool
     Dim ShearTool As ShearTool
@@ -49,7 +49,7 @@ Public Class Tools
         AddPointerTool = New AddPointerTool(vcor)
         RectangleTool = New RectangleTool(vcor)
         LineTool = New LineTool(vcor)
-        TransformTool = New TransformTool(vcor)
+        'TransformTool = New TransformTool(vcor)
         SelectionTool = New SelectionTool(vcor)
         ResizeTool = New ResizeTool(vcor)
         ShearTool = New ShearTool(vcor)
@@ -97,7 +97,7 @@ Public Class Tools
             Case 14
                 itl = LineTool
             Case 15
-                itl = TransformTool
+                'itl = TransformTool
             Case 16
                 itl = SelectionTool
             Case 17
