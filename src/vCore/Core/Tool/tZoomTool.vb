@@ -6,23 +6,23 @@ Public Class tZoomTool
     Implements Itool
 
 
-    Dim v As View
-    Dim WithEvents dc As advancedPanel
+    Dim v As vCore
+    Dim WithEvents dc As IDevice
 
-    Public Sub New(ByRef vew As View)
-        v = vew
+    Public Sub New(core As vCore)
+        v = core
     End Sub
-    Public ReadOnly Property Device() As advancedPanel Implements Itool.Device
+    Public ReadOnly Property Device() As IDevice Implements Itool.Device
         Get
             Return dc
         End Get
     End Property
 
-    Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
+    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
         If e.Button = MouseButtons.Left Then
-            v.setZoom(v.Zoom + 10, e.Location)
+            v.View.setZoom(v.View.ZoomPercentage + 10, e.Location)
         ElseIf e.Button = MouseButtons.Right Then
-            v.setZoom(v.Zoom - 10, e.Location)
+            v.View.setZoom(v.View.ZoomPercentage - 10, e.Location)
         End If
     End Sub
 
@@ -30,7 +30,7 @@ Public Class tZoomTool
         dc = Nothing
     End Sub
 
-    Public Sub SelectTool(ByRef d As advancedPanel) Implements Itool.SelectTool
+    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
         dc = d
     End Sub
 End Class
