@@ -70,5 +70,9 @@ Public Structure Color
             Throw New NotImplementedException
         End Get
     End Property
-
+    Public Shared ReadOnly Property SkyBlueColor() As Color
+        Get
+            Throw New NotImplementedException
+        End Get
+    End Property
 End Structure
