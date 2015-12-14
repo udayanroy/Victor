@@ -2,8 +2,9 @@
 Imports Graphics
 Imports Geometry
 
-<Serializable()> Public Class Document
-    Implements IDisposable
+Public Class Document
+    Implements IDrawable
+
 
     Private memlist As List(Of Layer)
 
@@ -21,51 +22,19 @@ Imports Geometry
 
     Public Property PageSize As Size
 
-    Public Sub Draw(g As Canvas, ByVal page_loc As Point)
-        g.Save()
-        g.Translate(page_loc.X, page_loc.Y)
-        g.Smooth()
+    Public Sub Draw(canvas As Canvas) Implements IDrawable.Draw
+        canvas.Save()
+        'canvas.Translate(page_loc.X, page_loc.Y)
+        canvas.Smooth()
         For Each l As Layer In memlist
-            l.Draw(g)
+            l.Draw(canvas)
         Next
 
-        g.Restore()
+        canvas.Restore()
 
     End Sub
 
-
-
-#Region "IDisposable Support"
-    Private disposedValue As Boolean ' To detect redundant calls
-
-    ' IDisposable
-    Protected Overridable Sub Dispose(ByVal disposing As Boolean)
-        If Not Me.disposedValue Then
-            If disposing Then
-                ' TODO: dispose managed state (managed objects).
-            End If
-            For Each itm As IDisposable In memlist
-                itm.Dispose()
-            Next
-            ' TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
-            ' TODO: set large fields to null.
-        End If
-        Me.disposedValue = True
-    End Sub
-
-    ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
-    'Protected Overrides Sub Finalize()
-    '    ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-    '    Dispose(False)
-    '    MyBase.Finalize()
-    'End Sub
-
-    ' This code added by Visual Basic to correctly implement the disposable pattern.
-    Public Sub Dispose() Implements IDisposable.Dispose
-        ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-        Dispose(True)
-        GC.SuppressFinalize(Me)
-    End Sub
-#End Region
-
+    Public Function GetArea() As Rect Implements IDrawable.GetArea
+        Return New Rect(New Point(0, 0), PageSize)
+    End Function
 End Class

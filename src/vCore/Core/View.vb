@@ -48,7 +48,7 @@ Public Class View
         Return Me.page_size
     End Function
 
-    Public Sub paint(ByVal g As Graphics)
+    Public Sub paint(ByVal g As Drawing.Graphics)
 
         Dim gc As GraphicsContainer
         gc = g.BeginContainer
@@ -64,7 +64,7 @@ Public Class View
         g.FillRectangle(Brushes.White, page_rect)
         ' draw DOM
 
-        mem.Draw(g, page_location)
+        ' mem.Draw(g, page_location)
 
         '/////////////////////////////////
         g.EndContainer(gc)

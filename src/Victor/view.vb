@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing.Imaging
+Imports Core
 
 Public Class view
     Dim core As Core.vCore
@@ -30,7 +31,7 @@ Public Class view
 
 
 
-    
+
 
     Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
         Application.Exit()
@@ -83,7 +84,7 @@ Public Class view
                             Imgformat = ImageFormat.Jpeg
                             bg = True
                     End Select
-                    Export.ExportImage(savedlg.FileName, core.View.Memory, core.View.GetPageSize, Imgformat, bg)
+                    ' Export.ExportImage(savedlg.FileName, core.Memory, core.View.GetPageSize, Imgformat, bg)
                 End If
 
             End If
@@ -96,17 +97,17 @@ Public Class view
             If clrDlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 Dim color = clrDlg.Color
                 Panel3.BackColor = color
-                core.Editor.FillColor = color
+                'core.Editor.FillColor = color
             End If
         End Using
     End Sub
 
     Private Sub SelectionPropertyChanged()
-        Panel3.BackColor = core.Editor.FillColor
-        Panel4.BackColor = core.Editor.StrokeColor
-        ComboBox1.SelectedIndex = CInt(core.Editor.strokeWidth)
-        CheckBox1.Checked = core.Editor.isFill
-        CheckBox2.Checked = core.Editor.isStroke
+        'Panel3.BackColor = core.Editor.FillColor
+        'Panel4.BackColor = core.Editor.StrokeColor
+        'ComboBox1.SelectedIndex = CInt(core.Editor.strokeWidth)
+        'CheckBox1.Checked = core.Editor.isFill
+        'CheckBox2.Checked = core.Editor.isStroke
     End Sub
 
     Private Sub SelectionChanged()
@@ -117,27 +118,27 @@ Public Class view
 
     End Sub
 
-    
+
     Private Sub Panel4_Click(sender As Object, e As EventArgs) Handles Panel4.Click
         Using clrDlg As New ColorDialog
             If clrDlg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
                 Dim color = clrDlg.Color
                 Panel4.BackColor = color
-                core.Editor.StrokeColor = color
+                'core.Editor.StrokeColor = color
             End If
         End Using
     End Sub
 
     Private Sub ComboBox1_SelectionChangeCommitted(sender As Object, e As EventArgs) Handles ComboBox1.SelectionChangeCommitted
-        core.Editor.strokeWidth = ComboBox1.SelectedIndex
+        ' core.Editor.strokeWidth = ComboBox1.SelectedIndex
     End Sub
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
-        core.Editor.isFill = CheckBox1.Checked
+        'core.Editor.isFill = CheckBox1.Checked
     End Sub
 
     Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox2.CheckedChanged
-        core.Editor.isStroke = CheckBox2.Checked
+        ' core.Editor.isStroke = CheckBox2.Checked
     End Sub
 
     Private Sub MinimizeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles MinimizeToolStripMenuItem.Click

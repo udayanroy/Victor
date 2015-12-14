@@ -5,6 +5,7 @@ Public Class ImageItem
 
 
 
+
     Dim _img As Image
 
 
@@ -19,19 +20,7 @@ Public Class ImageItem
     Public Property url As String
     Public Property bound As RectangleF
 
-
-    Public Sub Draw(ByRef g As Drawing.Graphics) Implements DrawingElement.Draw
-        g.DrawImage(_img, bound)
-    End Sub
-
-    Public Function GetBound() As Drawing.RectangleF Implements DrawingElement.GetBound
-        Return bound
-    End Function
-
-    Public Function HitTest(p As Drawing.PointF) As Boolean Implements DrawingElement.isVisible
-        Return bound.Contains(p)
-    End Function
-
+     
     Public Sub Translate(x As Single, y As Single) Implements DrawingElement.Translate
 
     End Sub
@@ -90,7 +79,7 @@ Public Class ImageItem
     End Function
 
     Public Function GetSkeliton() As Geometry.NodePath Implements DrawingElement.GetSkeliton
-
+        Return Nothing
     End Function
 
     Public Function isBoundVisible(p As Geometry.Point) As Boolean Implements DrawingElement.isBoundVisible

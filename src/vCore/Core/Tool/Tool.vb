@@ -15,10 +15,10 @@ Public Class Tools
 
     Dim pantool As tPanTool
     Dim zoomtool As tZoomTool
-    Dim seltool As tsel
+    'Dim seltool As tsel
     Dim ellipsetool As EllipseTool
-    Dim moveTool As tMoveTool
-    Dim sizeTool As tSizeTool
+    'Dim moveTool As tMoveTool
+    'Dim sizeTool As tSizeTool
     Dim rotateTool As RotateTool
     Dim pathptTool As NodeEditTool
     Dim ptconvTool As PointerConverterTool
@@ -37,10 +37,10 @@ Public Class Tools
 
         pantool = New tPanTool(vcor)
         zoomtool = New tZoomTool(vcor)
-        seltool = New tsel(vcor)
+        'seltool = New tsel(vcor)
         ellipsetool = New EllipseTool(vcor)
-        moveTool = New tMoveTool(vcor)
-        sizeTool = New tSizeTool(vcor)
+        'moveTool = New tMoveTool(vcor)
+        'sizeTool = New tSizeTool(vcor)
         rotateTool = New RotateTool(vcor)
         pathptTool = New NodeEditTool(vcor)
         ptconvTool = New PointerConverterTool(vcor)
@@ -73,13 +73,13 @@ Public Class Tools
             Case 2
                 itl = zoomtool
             Case 3
-                itl = seltool
+                'itl = seltool
             Case 4
                 itl = ellipsetool
             Case 5
-                itl = moveTool
+                'itl = moveTool
             Case 6
-                itl = sizeTool
+                'itl = sizeTool
             Case 7
                 itl = rotateTool
             Case 8

@@ -1,7 +1,7 @@
 ﻿Imports System.Windows.Forms
 Imports System.Drawing
 Imports System.Drawing.Drawing2D
-Imports System.Runtime.Serialization.Formatters.Binary
+'Imports System.Runtime.Serialization.Formatters.Binary
 Imports Graphics
 
 Public Class vCore
@@ -17,7 +17,7 @@ Public Class vCore
 
         device = dc
         mem = New Document()
-        mem.PageSize = pagesize
+        mem.PageSize = New Geometry.Size(pagesize.Width, pagesize.Height)
 
         vu = New ControlVisual(mem, device)
         edtr = New Editor(Me)
@@ -30,10 +30,10 @@ Public Class vCore
     Public Sub New(ByVal dc As advancedPanel, ByVal file As String)
 
         Using strm As IO.FileStream = New IO.FileStream(file, IO.FileMode.Open, IO.FileAccess.ReadWrite, IO.FileShare.None)
-            Dim Formatter = New BinaryFormatter()
+            ' Dim Formatter = New BinaryFormatter()
 
             device = dc
-            mem = Formatter.Deserialize(strm)
+            ' mem = Formatter.Deserialize(strm)
 
             vu = New ControlVisual(mem, device)
             edtr = New Editor(Me)
@@ -84,16 +84,16 @@ Public Class vCore
         AsociateFile = file
         Using strm As IO.FileStream = New IO.FileStream(file, IO.FileMode.OpenOrCreate, IO.FileAccess.ReadWrite, IO.FileShare.None)
             strm.SetLength(0)
-            Dim Formatter = New BinaryFormatter()
-            Formatter.Serialize(strm, Me.mem)
+            ' Dim Formatter = New BinaryFormatter()
+            ' Formatter.Serialize(strm, Me.mem)
         End Using
     End Sub
 
     Public Sub save()
         Using strm As IO.FileStream = New IO.FileStream(AsociateFile, IO.FileMode.OpenOrCreate, IO.FileAccess.ReadWrite, IO.FileShare.None)
             strm.SetLength(0)
-            Dim Formatter = New BinaryFormatter()
-            Formatter.Serialize(strm, Me.mem)
+            ' Dim Formatter = New BinaryFormatter()
+            'Formatter.Serialize(strm, Me.mem)
         End Using
     End Sub
 
