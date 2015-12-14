@@ -1,4 +1,5 @@
-﻿Imports System.Drawing
+﻿Imports Geometry
+Imports Graphics
 
 
 
@@ -9,13 +10,13 @@ Public Class PenTool
 
 
     Dim core As vCore
-    Dim WithEvents dc As advancedPanel
+    Dim WithEvents dc As IDevice
     Dim BufferGraphics As BufferPaint
     Dim MouseLocation As Point
-    Dim Path As GPath
-    Dim PathFigure As SubPath
-    Dim startnode As PathPoint
-    Dim CurrentNode As PathPoint
+    Dim Path As NodePath
+    Dim PathFigure As NodeFigure
+    Dim startnode As Node
+    Dim CurrentNode As Node
     Dim DrawingStarted As Boolean = False
 
     Dim noderadious As Single = 3
@@ -28,20 +29,20 @@ Public Class PenTool
 
 
 #Region "Tool Methode"
-    Public ReadOnly Property Device() As advancedPanel Implements Itool.Device
+    Public ReadOnly Property Device() As IDevice Implements Itool.Device
         Get
             Return dc
         End Get
     End Property
 
-    Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
+    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
         Me.mouse_Down(e)
     End Sub
 
-    Private Sub dc_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseMove
+    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
         Me.mouse_Move(e)
     End Sub
-    Private Sub dc_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseUp
+    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
         Me.mouse_Up(e)
     End Sub
 
@@ -49,7 +50,7 @@ Public Class PenTool
         dc = Nothing
     End Sub
 
-    Public Sub SelectTool(ByRef d As advancedPanel) Implements Itool.SelectTool
+    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
         dc = d
         core.Editor.setIEdit(Me)
         initCurrentPath()
@@ -60,15 +61,15 @@ Public Class PenTool
 
 
 
-    Public Sub Draw(ByRef g As Drawing.Graphics) Implements Iedtr.Draw
+    Public Sub Draw(g As Canvas) Implements IEditor.Draw
 
     End Sub
 
-    Public Sub mouse_Down(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Down
+    Public Sub mouse_Down(e As MouseEvntArg)
 
         If Not DrawingStarted Then
             MouseLocation = e.Location
-            CurrentNode = New PathPoint(MouseLocation)
+            CurrentNode = New Node(MouseLocation)
             PathFigure.Points.Add(CurrentNode)
             startnode = CurrentNode
             DrawingStarted = True
@@ -76,21 +77,21 @@ Public Class PenTool
             dc.ActiveScroll = False
         Else
             Dim nodeBound = getNodeptBound(startnode.M)
-            If nodeBound.Contains(e.Location) Then
+            If nodeBound.Contain(e.Location) Then
                 PathFigure.Points.Remove(CurrentNode)
                 PathFigure.Closed = True
-                core.View.Dc2MemGPath(Path)
+                core.View.Screen2memory(Path)
                 Dim vpath As New vPath()
                 vpath.setPath(Path)
-                core.View.Memory.Layers(0).Item.Add(vpath)
+                core.Memory.Layers(0).Item.Add(vpath)
 
                 'Add Active styles
                 Dim edtr = core.Editor
-                vpath.FillColor = edtr.FillColor
-                vpath.StrokeColor = edtr.StrokeColor
-                vpath.StrokWidth = edtr.strokeWidth
-                vpath.isFill = edtr.isFill
-                vpath.isStroke = edtr.isStroke
+                'vpath.FillColor = edtr.FillColor
+                'vpath.StrokeColor = edtr.StrokeColor
+                'vpath.StrokWidth = edtr.strokeWidth
+                'vpath.isFill = edtr.isFill
+                'vpath.isStroke = edtr.isStroke
 
                 'Set global states
                 DrawingStarted = False
@@ -107,7 +108,7 @@ Public Class PenTool
 
     End Sub
 
-    Public Sub mouse_Move(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Move
+    Public Sub mouse_Move(e As MouseEvntArg)
         If DrawingStarted Then
             If e.Button = Windows.Forms.MouseButtons.Left Then
 
@@ -117,34 +118,29 @@ Public Class PenTool
                 CurrentNode.C2 = e.Location
                 Dim m = CurrentNode.M
 
-                Dim v1 = New PointF(ml.X - m.X,
+                Dim v1 = New Point(ml.X - m.X,
                                   ml.Y - m.Y)
-                CurrentNode.C1 = New PointF(-v1.X + m.X, -v1.Y + m.Y)
+                CurrentNode.C1 = New Point(-v1.X + m.X, -v1.Y + m.Y)
 
-                CurrentNode.Type = PathPointType.Smooth
-                Path.drawPath(BufferGraphics.Graphics, Pens.Magenta)
+                CurrentNode.Type = NodeType.Smooth
+                BufferGraphics.Graphics.DrawPath(Path, New Pen(Color.MagentaColor))
 
-                BufferGraphics.Graphics.FillEllipse(Brushes.White,
-                                                   startnode.M.X - noderadious, startnode.M.Y - noderadious,
-                                                   noderadious * 2, noderadious * 2)
-                BufferGraphics.Graphics.DrawEllipse(Pens.DarkMagenta,
-                                                  startnode.M.X - noderadious, startnode.M.Y - noderadious,
-                                                  noderadious * 2, noderadious * 2)
+                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(startnode.M.X - noderadious, startnode.M.Y - noderadious),
+                                                   noderadious * 2, noderadious * 2), , New SolidColorBrush(Color.WhiteColor))
+                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(startnode.M.X - noderadious, startnode.M.Y - noderadious),
+                                                  noderadious * 2, noderadious * 2), New Pen(Color.DarkMagentaColor))
 
-                BufferGraphics.Graphics.DrawLine(Pens.DarkMagenta, m.X, m.Y, ml.X, ml.Y)
-                BufferGraphics.Graphics.DrawLine(Pens.DarkMagenta, m.X, m.Y,
-                                                 CurrentNode.C1.X, CurrentNode.C1.Y)
+                BufferGraphics.Graphics.DrawLine(m, ml, New Pen(Color.DarkMagentaColor))
+                BufferGraphics.Graphics.DrawLine(m, CurrentNode.C1, New Pen(Color.DarkMagentaColor))
 
-                BufferGraphics.Graphics.FillEllipse(Brushes.DarkMagenta,
-                                                    m.X - noderadious, m.Y - noderadious,
-                                                    noderadious * 2, noderadious * 2)
-                BufferGraphics.Graphics.FillEllipse(Brushes.DarkMagenta,
-                                                   CurrentNode.C1.X - noderadious,
-                                                   CurrentNode.C1.Y - noderadious,
-                                                   noderadious * 2, noderadious * 2)
-                BufferGraphics.Graphics.FillEllipse(Brushes.DarkMagenta,
-                                                   ml.X - noderadious, ml.Y - noderadious,
-                                                   noderadious * 2, noderadious * 2)
+                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(m.X - noderadious, m.Y - noderadious),
+                                                  noderadious * 2, noderadious * 2), , New SolidColorBrush(Color.DarkMagentaColor))
+                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(CurrentNode.C1.X - noderadious,
+                                                   CurrentNode.C1.Y - noderadious),
+                                                 noderadious * 2, noderadious * 2), , New SolidColorBrush(Color.DarkMagentaColor))
+                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(ml.X - noderadious, ml.Y - noderadious),
+                                                 noderadious * 2, noderadious * 2), , New SolidColorBrush(Color.DarkMagentaColor))
+ 
                 BufferGraphics.Render()
 
             ElseIf e.Button = Windows.Forms.MouseButtons.None Then
@@ -153,14 +149,11 @@ Public Class PenTool
                 CurrentNode.C1 = e.Location
                 CurrentNode.C2 = e.Location
 
-                Path.drawPath(BufferGraphics.Graphics, Pens.Magenta)
+                BufferGraphics.Graphics.DrawPath(Path, New Pen(Color.MagentaColor))
 
-                BufferGraphics.Graphics.FillEllipse(Brushes.White,
-                                                 startnode.M.X - noderadious, startnode.M.Y - noderadious,
-                                                 noderadious * 2, noderadious * 2)
-                BufferGraphics.Graphics.DrawEllipse(Pens.DarkMagenta,
-                                                  startnode.M.X - noderadious, startnode.M.Y - noderadious,
-                                                  noderadious * 2, noderadious * 2)
+                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(startnode.M.X - noderadious, startnode.M.Y - noderadious),
+                                                noderadious * 2, noderadious * 2), New Pen(Color.WhiteColor), New SolidColorBrush(Color.WhiteColor))
+
 
                 BufferGraphics.Render()
             End If
@@ -169,9 +162,9 @@ Public Class PenTool
 
     End Sub
 
-    Public Sub mouse_Up(ByRef e As Windows.Forms.MouseEventArgs) Implements Iedtr.mouse_Up
+    Public Sub mouse_Up(e As MouseEvntArg)
         If DrawingStarted Then
-            CurrentNode = New PathPoint(e.Location)
+            CurrentNode = New Node(e.Location)
             PathFigure.Points.Add(CurrentNode)
         End If
 
@@ -180,14 +173,14 @@ Public Class PenTool
 
 
     Private Sub initCurrentPath()
-        Path = New GPath
-        PathFigure = New SubPath
-        Path.AddSubPath(PathFigure)
+        Path = New NodePath
+        PathFigure = New NodeFigure
+        Path.Figures.Add(PathFigure)
     End Sub
 
-    Private Function getNodeptBound(pt As PointF) As Rectangle
+    Private Function getNodeptBound(pt As Point) As Rect
         Dim l = New Point(pt.X - Me.noderadious, pt.Y - Me.noderadious)
         Dim w = Me.noderadious * 2
-        Return New Rectangle(l, New Size(w, w))
+        Return New Rect(l, New Size(w, w))
     End Function
 End Class

@@ -59,4 +59,16 @@ Public Structure Color
         End Get
     End Property
 
+    Public Shared ReadOnly Property MagentaColor() As Color
+        Get
+            Throw New NotImplementedException
+        End Get
+    End Property
+
+    Public Shared ReadOnly Property DarkMagentaColor() As Color
+        Get
+            Throw New NotImplementedException
+        End Get
+    End Property
+
 End Structure
