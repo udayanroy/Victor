@@ -36,7 +36,7 @@ Public Class SelectionTool
         If Core.Editor.selection.isEmty = False Then
             canvas.Smooth()
             Dim p As New Pen(Color.RedColor)
-            Dim pth As NodePath
+            Dim pth As New NodePath
 
             Dim rf As Rect = Core.Editor.getBoundRect()
             pth.AddRectangle(rf)
@@ -142,8 +142,8 @@ Public Class SelectionTool
 
 
                     Dim g = Core.Editor.View.BufferGraphics.Graphics
-                    Dim canvas As New Canvas(g)
-                    canvas.DrawPath(svp, New Pen(Color.RedColor))
+
+                    g.DrawPath(svp, New Pen(Color.RedColor))
                     Core.Editor.View.BufferGraphics.Render()
 
                 End If

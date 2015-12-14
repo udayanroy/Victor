@@ -1,4 +1,5 @@
-﻿Imports System.Drawing
+﻿Imports Graphics
+
 
 <Serializable()> Public Class Layer
     Implements IDisposable
@@ -68,7 +69,7 @@
 
 
 
-    Public Sub Draw(ByVal g As Graphics)
+    Public Sub Draw(g As Canvas)
         For Each i As DrawingElement In _items
             i.Draw(g)
         Next

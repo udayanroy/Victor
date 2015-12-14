@@ -1,6 +1,5 @@
-﻿Imports System.Drawing
-Imports System.Windows.Forms
-Imports System.Drawing.Drawing2D
+﻿Imports Geometry
+Imports Graphics
 
 Public Class RotateTool
     Implements Itool, IEditor
@@ -11,38 +10,38 @@ Public Class RotateTool
 
 
     Dim Core As vCore
-    Dim WithEvents dc As advancedPanel
+    Dim WithEvents dc As IDevice
     Dim mdl As Point
     Dim md As Point
 
     Dim s As Integer = 0
-    Dim svp As GPath
+    Dim svp As NodePath
     Dim mda As Single
     Dim mdp As Point
     Dim rotating As Boolean = False
-    Dim mainpathBound As RectangleF
+    Dim mainpathBound As Rect
 
 
     Public Sub New(ByRef vew As vCore)
         Core = vew
     End Sub
-    Public ReadOnly Property Device() As advancedPanel Implements Itool.Device
+    Public ReadOnly Property Device() As IDevice Implements Itool.Device
         Get
             Return dc
         End Get
     End Property
    
 
-    Private Sub dc_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseDown
+    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
 
         Me.mouse_Down(e)
     End Sub
 
-    Private Sub dc_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseMove
+    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
 
         Me.mouse_Move(e)
     End Sub
-    Private Sub dc_MouseUp(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles dc.MouseUp
+    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
 
         Me.mouse_Up(e)
     End Sub
@@ -50,67 +49,68 @@ Public Class RotateTool
         dc = Nothing
     End Sub
 
-    Public Sub SelectTool(ByRef d As advancedPanel) Implements Itool.SelectTool
+    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
         dc = d
 
         Core.Editor.setIEdit(Me)
     End Sub
 
-    Public Sub Draw(ByRef g As Graphics) Implements Iedtr.Draw
+    Public Sub Draw(g As Canvas) Implements IEditor.Draw
         If Core.Editor.selection.isEmty = False Then
 
-            Using p As New Pen(Color.Red), pth As New GraphicsPath
+            Dim p As New Pen(Color.RedColor)
+            Dim pth As New NodePath
 
-                mainpathBound = Core.Editor.getBoundRect()
-                pth.AddRectangle(mainpathBound)
-                Core.Editor.View.mem2DcPath(pth)
+            mainpathBound = Core.Editor.getBoundRect()
+            pth.AddRectangle(mainpathBound)
+            Core.Editor.View.Memory2screen(pth)
 
-                g.DrawPath(p, pth)
+            g.DrawPath(pth, p)
 
-                Dim bound = Rectangle.Round(pth.GetBounds)
+            Dim bound = pth.GetBound
 
-                Dim pointers() As Rectangle = {getRect(bound.X, bound.Y),
-                                                getRect(bound.X, bound.Y + bound.Height),
-                                                getRect(bound.X + bound.Width, bound.Y),
-                                                getRect(bound.X + bound.Width, bound.Y + bound.Height)}
+            Dim pointers() As Rect = {getRect(bound.X, bound.Y),
+                                            getRect(bound.X, bound.Y + bound.Height),
+                                            getRect(bound.X + bound.Width, bound.Y),
+                                            getRect(bound.X + bound.Width, bound.Y + bound.Height)}
 
 
-                'g.FillRectangles(Brushes.Brown, pointers)
-                g.SmoothingMode = SmoothingMode.AntiAlias
-                Me.DrawEllipses(g, pointers)
-            End Using
+            'g.FillRectangles(Brushes.Brown, pointers)
+            g.Smooth()
+            Me.DrawEllipses(g, pointers)
+
 
         End If
     End Sub
 
-    Public Sub mouse_Down(ByRef e As MouseEventArgs) Implements Iedtr.mouse_Down
+    Public Sub mouse_Down(e As MouseEvntArg)
         rotating = False
 
-        If MouseButtons.Left Then
+        If MouseButton.Left Then
 
 
             If Core.Editor.selection.isEmty = False Then
-                Using pth As New GraphicsPath
-                    Dim rf As RectangleF = Core.Editor.getBoundRect()
-                    pth.AddRectangle(rf)
-                    Core.View.mem2DcPath(pth)
-                    Dim bound = Rectangle.Round(pth.GetBounds)
+                Dim pth As New NodePath
+                Dim rf As Rect = Core.Editor.getBoundRect()
+                pth.AddRectangle(rf)
+                Core.View.Memory2screen(pth)
+                Dim bound = pth.GetBound
 
-                    Dim hit = Me.hittest(e.Location, bound)
+                Dim hit = Me.hittest(e.Location, bound)
 
-                    If hit <> -1 Then
-                        mdp = Me.MiddlePoint(bound)
-                        mda = Me.Angle(mdp, e.Location)
+                If hit <> -1 Then
+                    mdp = Me.MiddlePoint(bound)
+                    mda = Me.Angle(mdp, e.Location)
 
-                        svp = Core.Editor.getSelectionPath.GraphicsPath.Clone
-                        Core.View.mem2DcGPath(svp)
-                        Core.View.BufferGraphics.Initialize()
-                        rotating = True
-                        dc.ActiveScroll = False
-                    Else
-                        Core.Editor.SelectAt(e.Location)
-                    End If
-                End Using
+                    svp = Core.Editor.getSelectionPath.Path.Clone
+                    Core.View.Memory2screen(svp)
+                    Core.View.BufferGraphics.Initialize()
+                    rotating = True
+                    dc.ActiveScroll = False
+                Else
+                    Core.Editor.SelectAt(e.Location)
+                End If
+
             Else
 
                 Core.Editor.SelectAt(e.Location)
@@ -119,48 +119,48 @@ Public Class RotateTool
         End If
     End Sub
 
-    Public Sub mouse_Move(ByRef e As MouseEventArgs) Implements Iedtr.mouse_Move
-        If e.Button = MouseButtons.Left And rotating Then
+    Public Sub mouse_Move(e As MouseEvntArg)
+        If e.Button = MouseButton.Left And rotating Then
             Dim angl = Me.Angle(mdp, e.Location)
             Core.View.BufferGraphics.Clear()
-            Using mat As New Matrix, tmpth As GraphicsPath = svp.ToGraphicsPath
-                mat.RotateAt(angl - mda, mdp)
-                tmpth.Transform(mat)
-                Core.View.BufferGraphics.Graphics.DrawPath(Pens.Brown, tmpth)
-                Core.View.BufferGraphics.Render()
-            End Using
+            Dim mat As Matrix = Matrix.Identity
+            Dim tmpth = svp.Clone
+            mat.RoatateAt(angl - mda, mdp)
+            tmpth.Transform(mat)
+            Core.View.BufferGraphics.Graphics.DrawPath(tmpth, New Pen(Color.BrownColor))
+            Core.View.BufferGraphics.Render()
 
         End If
     End Sub
 
-    Public Sub mouse_Up(ByRef e As MouseEventArgs) Implements Iedtr.mouse_Up
+    Public Sub mouse_Up(e As MouseEvntArg)
         If rotating Then
             Dim angl = Me.Angle(mdp, e.Location)
-            Dim cnt As PointF = Me.MiddlePointF(mainpathBound)
-            Using mat As New Matrix
-                mat.RotateAt(angl - mda, cnt)
-                Core.Editor.getSelectionPath.GraphicsPath.Transform(mat)
+            Dim cnt As Point = Me.MiddlePoint(mainpathBound)
+            Dim mat As Matrix = Matrix.Identity
+            mat.RoatateAt(angl - mda, cnt)
+            Core.Editor.getSelectionPath.Path.Transform(mat)
 
-            End Using
+
             dc.ActiveScroll = True
             'svp.Dispose()
         End If
         Core.View.Refresh()
     End Sub
 
-    Private Function getRect(ByVal x As Integer, ByVal y As Integer) As Rectangle
-        Return New Rectangle(x - b, y - b, wh, wh)
+    Private Function getRect(ByVal x As Integer, ByVal y As Integer) As Rect
+        Return New Rect(New Point(x - b, y - b), wh, wh)
     End Function
 
-    Private Sub DrawEllipses(ByRef g As Graphics, ByRef rects() As Rectangle)
-        For Each rect As Rectangle In rects
-            g.FillEllipse(Brushes.Green, rect)
+    Private Sub DrawEllipses(g As Canvas, ByRef rects() As Rect)
+        For Each rect As Rect In rects
+            g.DrawEllipse(rect, , New SolidColorBrush(Color.GreenColor))
         Next
     End Sub
 
-    Private Function hittest(ByVal p As Point, ByRef b As Rectangle) As Integer
+    Private Function hittest(p As Point, b As Rect) As Integer
 
-        Dim pointers() As Rectangle = {getRect(b.X, b.Y),
+        Dim pointers() As Rect = {getRect(b.X, b.Y),
                                         getRect(b.X, b.Y + b.Height),
                                         getRect(b.X + b.Width, b.Y),
                                         getRect(b.X + b.Width, b.Y + b.Height)
@@ -170,7 +170,7 @@ Public Class RotateTool
         Dim rtn As Integer = -1
 
         For i As Integer = 3 To 0 Step -1
-            If pointers(i).Contains(p) Then
+            If pointers(i).Contain(p) Then
                 rtn = i
                 Exit For
             End If
@@ -184,11 +184,9 @@ Public Class RotateTool
         angl = Math.Atan2((p.Y - o.Y), (p.X - o.X)) * 180 / Math.PI
         Return angl
     End Function
-    Private Function MiddlePoint(ByRef rect As Rectangle)
+    Private Function MiddlePoint(rect As Rect)
         Return New Point(rect.X + rect.Width / 2, rect.Y + rect.Height / 2)
     End Function
-    Private Function MiddlePointF(ByRef rect As RectangleF)
-        Return New PointF(rect.X + rect.Width / 2, rect.Y + rect.Height / 2)
-    End Function
+    
 
 End Class
