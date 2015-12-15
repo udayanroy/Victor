@@ -153,10 +153,10 @@ Public Class NodeEditTool
                     , New SolidColorBrush(Color.RedColor))
 
                     g.DrawEllipse(New Rect(New Point(nd.C1.X - noderadious, nd.C1.Y - noderadious), noderadious * 2, noderadious * 2),
-                        New Pen(Color.RedColor, 2), New SolidColorBrush(Color.WhiteColor))
+                        New Pen(Color.RedColor, 1), New SolidColorBrush(Color.WhiteColor))
 
                     g.DrawEllipse(New Rect(New Point(nd.C2.X - noderadious, nd.C2.Y - noderadious), noderadious * 2, noderadious * 2),
-                     New Pen(Color.RedColor, 2), New SolidColorBrush(Color.WhiteColor))
+                     New Pen(Color.RedColor, 1), New SolidColorBrush(Color.WhiteColor))
 
                 End If
 

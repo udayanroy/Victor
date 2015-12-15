@@ -59,7 +59,7 @@ Public Class EllipseTool
         'vp.StrokWidth = edtr.strokeWidth
         'vp.isFill = edtr.isFill
         'vp.isStroke = edtr.isStroke
-        vp.Brush = New SolidColorBrush(Color.RedColor)
+        vp.Brush = New SolidColorBrush(Color.BlueColor)
         vp.Pen = New Pen(Color.BlackColor, 3)
         'Add it to Memory
         v.mem.Layers(0).Item.Add(vp)

@@ -38,11 +38,11 @@ Public Class SelectionTool
             Dim p As New Pen(Color.RedColor)
             Dim pth As New NodePath
 
-            Dim rf As Rect = Core.Editor.getBoundRect()
+            Dim rf As Rect = Core.Editor.getSelectionPath.Path.GetTightBound()
             pth.AddRectangle(rf)
             Core.View.Memory2screen(pth)
 
-            bound = pth.GetBound
+            bound = pth.GetTightBound
 
             canvas.DrawPath(pth, p)
 
@@ -216,7 +216,7 @@ Public Class SelectionTool
 
 
 
-    Private Function hittest(ByRef p As Point, ByRef b As Rect) As Integer
+    Private Function hittest(p As Point, b As Rect) As Integer
 
         ' Sequence of Points..
         '
@@ -264,8 +264,7 @@ Public Class SelectionTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New Rect(p1.X, p1.Y, _
-                                      (p2.X - p1.X), (p2.Y - p1.Y))
+            Dim rd As New Rect(p1, p2)
 
             Dim rtn As Rect
             rtn = rd
@@ -283,7 +282,7 @@ Public Class SelectionTool
 
             Dim gp = svp.Clone
 
-            Dim trect As New Rect(point.X, bnd.Y, (bnd.X - point.X) + bnd.Width, bnd.Height)
+            Dim trect As New Rect(New Point(point.X, bnd.Y), (bnd.X - point.X) + bnd.Width, bnd.Height)
 
             ScalePath(gp, trect)
 
@@ -298,7 +297,7 @@ Public Class SelectionTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New Rect(p1.X, p2.Y, _
+            Dim rd As New Rect(New Point(p1.X, p2.Y), _
                                       (p2.X - p1.X), (p1.Y - p2.Y))
 
             Dim rtn As Rect
@@ -318,7 +317,7 @@ Public Class SelectionTool
 
             Dim gp = svp.Clone
 
-            Dim trect As New Rect(bnd.X, point.Y, bnd.Width, (bnd.Y - point.Y) + bnd.Height)
+            Dim trect As New Rect(New Point(bnd.X, point.Y), bnd.Width, (bnd.Y - point.Y) + bnd.Height)
             ScalePath(gp, trect)
             nrect = trect
             Return gp
@@ -331,7 +330,7 @@ Public Class SelectionTool
 
             Dim gp = svp.Clone
 
-            Dim trect As New Rect(bnd.X, bnd.Y, bnd.Width, l)
+            Dim trect As New Rect(New Point(bnd.X, bnd.Y), bnd.Width, l)
             ScalePath(gp, trect)
             nrect = trect
             Return gp
@@ -345,7 +344,7 @@ Public Class SelectionTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New Rect(p2.X, p1.Y, _
+            Dim rd As New Rect(New Point(p2.X, p1.Y), _
                                       (p1.X - p2.X), (p2.Y - p1.Y))
 
             Dim rtn As Rect
@@ -371,7 +370,7 @@ Public Class SelectionTool
             ' svp.Transform(mat)
             Dim gp = svp.Clone
 
-            Dim trect As New Rect(bnd.X, bnd.Y, l, bnd.Height)
+            Dim trect As New Rect(bnd.Location, l, bnd.Height)
             ScalePath(gp, trect)
             nrect = trect
             Return gp
@@ -383,19 +382,11 @@ Public Class SelectionTool
             Dim p1 = bnd.Location
 
             Dim p2 = point  'New Point(bnd.X + bnd.Width, bnd.Y + bnd.Height)
+            ' Dim n = bnd.Height / bnd.Width
+            Dim rtn As New Rect(p1, p2)
 
-            Dim n = bnd.Height / bnd.Width
-
-            Dim rd As New Rect(p1.X, p1.Y, _
-                                      (p2.X - p1.X), (p2.Y - p1.Y))
-
-            Dim rtn As Rect
-
-            rtn.Location = p1
-            rtn = rd
-
-
-
+            'rtn.Location = p1
+            'rtn = rd
             Dim gp = svp.Clone
             ScalePath(gp, rtn)
             nrect = rtn
@@ -407,8 +398,31 @@ Public Class SelectionTool
 
     End Function
 
+    'Private Sub ScalePath(gp As NodePath, ByVal Torect As Rect)
+    '    Dim bnd = gp.GetTightBound
+    '    Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
+    '    Dim yinvert As Boolean = IIf(Torect.Height < 0, True, False)
+
+
+    '    Dim mat As Matrix = Matrix.Identity
+    '    mat.Translate(-bnd.X, -bnd.Y)
+    '    gp.Transform(mat)
+
+    '    mat.reset()
+    '    Dim sx = Torect.Width / bnd.Width
+    '    Dim sy = Torect.Height / bnd.Height
+    '    mat.Scale(sx, sy)
+    '    gp.Transform(mat)
+
+    '    mat.reset()
+    '    mat.Translate(Torect.X, Torect.Y)
+    '    gp.Transform(mat)
+
+
+
+    'End Sub
     Private Sub ScalePath(gp As NodePath, ByVal Torect As Rect)
-        Dim bnd = gp.GetBound
+        Dim bnd = gp.GetTightBound
         Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
         Dim yinvert As Boolean = IIf(Torect.Height < 0, True, False)
 
@@ -430,7 +444,6 @@ Public Class SelectionTool
 
 
     End Sub
-
     'Private Sub ScaleGPath(ByRef gp As GPath, ByVal Torect As Rect)
     '    Dim bnd = gp.GetTightBound
     '    Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
