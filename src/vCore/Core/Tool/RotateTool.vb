@@ -61,7 +61,7 @@ Public Class RotateTool
             Dim p As New Pen(Color.RedColor)
             Dim pth As New NodePath
 
-            mainpathBound = Core.Editor.getBoundRect()
+            mainpathBound = Core.Editor.getSelectionPath().Path.GetTightBound
             pth.AddRectangle(mainpathBound)
             Core.Editor.View.Memory2screen(pth)
 
@@ -91,10 +91,10 @@ Public Class RotateTool
 
             If Core.Editor.selection.isEmty = False Then
                 Dim pth As New NodePath
-                Dim rf As Rect = Core.Editor.getBoundRect()
+                Dim rf As Rect = Core.Editor.getSelectionPath().Path.GetTightBound
                 pth.AddRectangle(rf)
                 Core.View.Memory2screen(pth)
-                Dim bound = pth.GetBound
+                Dim bound = pth.GetTightBound
 
                 Dim hit = Me.hittest(e.Location, bound)
 
@@ -168,7 +168,7 @@ Public Class RotateTool
 
 
         Dim rtn As Integer = -1
-
+      
         For i As Integer = 3 To 0 Step -1
             If pointers(i).Contain(p) Then
                 rtn = i
