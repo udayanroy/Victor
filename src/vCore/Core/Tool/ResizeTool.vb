@@ -38,7 +38,7 @@ Public Class ResizeTool
             Dim p As New Pen(Color.RedColor)
             Dim pth As New NodePath
 
-            Dim rf As Rect = Core.Editor.getBoundRect()
+            Dim rf As Rect = Core.Editor.getSelectionPath.Path.GetTightBound
             pth.AddRectangle(rf)
             Core.View.Memory2screen(pth)
 
@@ -69,11 +69,11 @@ Public Class ResizeTool
     End Sub
 
     Private Function getRect(ByVal x As Integer, ByVal y As Integer) As Rect
-        Return New Rect(x - noderadious, y - noderadious, nodewidth, nodewidth)
+        Return New Rect(New Point(x - noderadious, y - noderadious), nodewidth, nodewidth)
     End Function
 
     Private Function getRect(ByVal x As Integer, ByVal y As Integer, radious As Integer) As Rect
-        Return New Rect(x - radious, y - radious, radious * 2, radious * 2)
+        Return New Rect(New Point(x - radious, y - radious), radious * 2, radious * 2)
     End Function
 
     Public Sub mouse_Down(e As MouseEvntArg)
@@ -85,11 +85,11 @@ Public Class ResizeTool
         Dim pth As New NodePath
 
 
-        Dim rf As Rect = Core.Editor.getBoundRect()
+        Dim rf As Rect = Core.Editor.getSelectionPath.Path.GetTightBound
         pth.AddRectangle(rf)
         Core.Editor.View.Memory2screen(pth)
 
-        bound = pth.GetBound
+        bound = pth.GetTightBound
 
         hit = Me.hittest(e.Location, bound)
         If hit <> -1 Then
@@ -227,30 +227,36 @@ Public Class ResizeTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New Rect(p1.X, p1.Y, _
+            Dim rd As New Rect(New Point(p1.X, p1.Y), _
                                       (p2.X - p1.X), (p2.Y - p1.Y))
 
             Dim rtn As Rect
 
 
             If ((Math.Abs(rd.Width * n)) <= Math.Abs(rd.Height)) Then
-                rtn.Width = rd.Width
+                Dim width = rd.Width
+                Dim height As Double
                 If rd.Height < 0 Then
-                    rtn.Height = -Math.Abs(rd.Width * n)
+                    height = -Math.Abs(rd.Width * n)
                 Else
-                    rtn.Height = Math.Abs(rd.Width * n)
+                    height = Math.Abs(rd.Width * n)
                 End If
 
-                rtn.Location = New Point(p1.X, p2.Y - rtn.Height)
+                Dim Location = New Point(p1.X, p2.Y - height)
+
+                rtn = New Rect(Location, width, height)
             Else
-                rtn.Height = rd.Height
+                Dim height = rd.Height
+                Dim width As Double
                 If rd.Width < 0 Then
-                    rtn.Width = -Math.Abs(rd.Height / n)
+                    width = -Math.Abs(rd.Height / n)
                 Else
-                    rtn.Width = Math.Abs(rd.Height / n)
+                    width = Math.Abs(rd.Height / n)
                 End If
 
-                rtn.Location = New Point(p2.X - rtn.Width, p1.Y)
+                Dim Location = New Point(p2.X - width, p1.Y)
+
+                rtn = New Rect(Location, width, height)
             End If
 
 
@@ -267,7 +273,7 @@ Public Class ResizeTool
 
             Dim gp = svp.Clone
 
-            Dim trect As New Rect(point.X, bnd.Y, (bnd.X - point.X) + bnd.Width, bnd.Height)
+            Dim trect As New Rect(New Point(point.X, bnd.Y), (bnd.X - point.X) + bnd.Width, bnd.Height)
 
             ScalePath(gp, trect)
 
@@ -282,30 +288,34 @@ Public Class ResizeTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New Rect(p1.X, p2.Y, _
+            Dim rd As New Rect(New Point(p1.X, p2.Y), _
                                       (p2.X - p1.X), (p1.Y - p2.Y))
 
             Dim rtn As Rect
 
 
             If ((Math.Abs(rd.Width * n)) <= Math.Abs(rd.Height)) Then
-                rtn.Width = rd.Width
+                Dim width = rd.Width
+                Dim height As Double
                 If rd.Height < 0 Then
-                    rtn.Height = -Math.Abs(rd.Width * n)
+                    height = -Math.Abs(rd.Width * n)
                 Else
-                    rtn.Height = Math.Abs(rd.Width * n)
+                    height = Math.Abs(rd.Width * n)
                 End If
 
-                rtn.Location = New Point(p1.X, p2.Y)
+                Dim Location = New Point(p1.X, p2.Y)
+                rtn = New Rect(Location, width, height)
             Else
-                rtn.Height = rd.Height
+                Dim height = rd.Height
+                Dim Width As Double
                 If rd.Width < 0 Then
-                    rtn.Width = -Math.Abs(rd.Height / n)
+                    Width = -Math.Abs(rd.Height / n)
                 Else
-                    rtn.Width = Math.Abs(rd.Height / n)
+                    Width = Math.Abs(rd.Height / n)
                 End If
 
-                rtn.Location = New Point(p2.X - rtn.Width, p2.Y)
+                Dim Location = New Point(p2.X - Width, p2.Y)
+                rtn = New Rect(Location, Width, height)
             End If
 
 
@@ -322,7 +332,7 @@ Public Class ResizeTool
 
             Dim gp = svp.Clone
 
-            Dim trect As New Rect(bnd.X, point.Y, bnd.Width, (bnd.Y - point.Y) + bnd.Height)
+            Dim trect As New Rect(New Point(bnd.X, point.Y), bnd.Width, (bnd.Y - point.Y) + bnd.Height)
             ScalePath(gp, trect)
             nrect = trect
             Return gp
@@ -335,7 +345,7 @@ Public Class ResizeTool
 
             Dim gp = svp.Clone
 
-            Dim trect As New Rect(bnd.X, bnd.Y, bnd.Width, l)
+            Dim trect As New Rect(New Point(bnd.X, bnd.Y), bnd.Width, l)
             ScalePath(gp, trect)
             nrect = trect
             Return gp
@@ -349,30 +359,34 @@ Public Class ResizeTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New Rect(p2.X, p1.Y, _
+            Dim rd As New Rect(New Point(p2.X, p1.Y), _
                                       (p1.X - p2.X), (p2.Y - p1.Y))
 
             Dim rtn As Rect
 
 
             If ((Math.Abs(rd.Width * n)) <= Math.Abs(rd.Height)) Then
-                rtn.Width = rd.Width
+                Dim Width = rd.Width
+                Dim Height As Double
                 If rd.Height < 0 Then
-                    rtn.Height = -Math.Abs(rd.Width * n)
+                    Height = -Math.Abs(rd.Width * n)
                 Else
-                    rtn.Height = Math.Abs(rd.Width * n)
+                    Height = Math.Abs(rd.Width * n)
                 End If
 
-                rtn.Location = New Point(p2.X, p2.Y - rtn.Height)
+                Dim Location = New Point(p2.X, p2.Y - Height)
+                rtn = New Rect(Location, Width, Height)
             Else
-                rtn.Height = rd.Height
+                Dim Height = rd.Height
+                Dim Width As Double
                 If rd.Width < 0 Then
-                    rtn.Width = -Math.Abs(rd.Height / n)
+                    Width = -Math.Abs(rd.Height / n)
                 Else
-                    rtn.Width = Math.Abs(rd.Height / n)
+                    Width = Math.Abs(rd.Height / n)
                 End If
 
-                rtn.Location = New Point(p2.X, p1.Y)
+                Dim Location = New Point(p2.X, p1.Y)
+                rtn = New Rect(Location, Width, height)
             End If
 
 
@@ -396,7 +410,7 @@ Public Class ResizeTool
             ' svp.Transform(mat)
             Dim gp = svp.Clone
 
-            Dim trect As New Rect(bnd.X, bnd.Y, l, bnd.Height)
+            Dim trect As New Rect(New Point(bnd.X, bnd.Y), l, bnd.Height)
             ScalePath(gp, trect)
             nrect = trect
             Return gp
@@ -411,8 +425,7 @@ Public Class ResizeTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New Rect(p1.X, p1.Y, _
-                                      (p2.X - p1.X), (p2.Y - p1.Y))
+            Dim rd As New Rect(p1, p2)
 
             Dim rtn As Rect
 
@@ -453,7 +466,7 @@ Public Class ResizeTool
     End Function
 
     Private Sub ScalePath(gp As NodePath, Torect As Rect)
-        Dim bnd = gp.GetBound
+        Dim bnd = gp.GetTightBound
         Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
         Dim yinvert As Boolean = IIf(Torect.Height < 0, True, False)
 
