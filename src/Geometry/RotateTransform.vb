@@ -26,7 +26,7 @@ Public Class RotateTransform
     Public Overrides ReadOnly Property Value As Matrix
         Get
             Dim m = Matrix.Identity
-            m.RoatateAt(Angle, Center.X, Center.Y)
+            m.RotateAt(Angle, Center.X, Center.Y)
             Return m
         End Get
     End Property

@@ -71,7 +71,7 @@ Imports Graphics
 
     Public Function GetElementBound() As Rect Implements DrawingElement.GetElementBound
         Dim mat As Matrix = Matrix.Identity
-        mat.Roatate(Me.Rotation)
+        mat.Rotate(Me.Rotation)
         Dim Duplicatepath = Me.Path.Clone
         Duplicatepath.Transform(mat)
         Return Duplicatepath.GetBound()
@@ -109,7 +109,7 @@ Imports Graphics
 
     Public Function GetSkeliton() As NodePath Implements DrawingElement.GetSkeliton
         Dim mat As Matrix = Matrix.Identity
-        mat.Roatate(Me.Rotation)
+        mat.Rotate(Me.Rotation)
         Dim Duplicatepath = Me.Path.Clone
         Duplicatepath.Transform(mat)
         Return Duplicatepath

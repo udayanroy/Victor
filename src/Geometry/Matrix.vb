@@ -98,7 +98,7 @@ Public Structure Matrix
         _m21 *= sy
         _m22 *= sy
     End Sub
-    Public Sub Roatate(ByVal a As Single)
+    Public Sub Rotate(ByVal a As Single)
         Dim sina As Single = 0
         Dim cosa As Single = 0
         If (a = 90 Or a = -270) Then
@@ -122,15 +122,15 @@ Public Structure Matrix
         _m22 = tm22
     End Sub
 
-    Public Sub RoatateAt(ByVal angle As Double, ByVal centerX As Double, ByVal centerY As Double)
+    Public Sub RotateAt(ByVal angle As Double, ByVal centerX As Double, ByVal centerY As Double)
         Me.Translate(centerX, centerY)
-        Me.Roatate(angle)
+        Me.Rotate(angle)
         Me.Translate(-centerX, -centerY)
 
     End Sub
 
-    Public Sub RoatateAt(ByVal angle As Double, ByVal center As Point)
-        Me.RoatateAt(angle, center.X, center.Y)
+    Public Sub RotateAt(ByVal angle As Double, ByVal center As Point)
+        Me.RotateAt(angle, center.X, center.Y)
     End Sub
 
     Public Sub Shear(ByVal sh As Single, ByVal sv As Single)

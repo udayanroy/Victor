@@ -194,7 +194,7 @@ Public Class NodeEditTool
 
                 Dim trans As Matrix = Matrix.Identity
                 Dim centerpoint = ns.selectednode.M
-                trans.RoatateAt(deg, centerpoint)
+                trans.RotateAt(deg, centerpoint)
                 Dim gp = ns.selectednode.C1
                 trans.map(gp)
                 ns.selectednode.C1 = gp
@@ -232,7 +232,7 @@ Public Class NodeEditTool
 
                 Dim trans As Matrix = Matrix.Identity
                 Dim centerpoint = ns.selectednode.M
-                trans.RoatateAt(deg, centerpoint)
+                trans.RotateAt(deg, centerpoint)
                 Dim gp = ns.selectednode.C2
                 trans.map(gp)
                 ns.selectednode.C2 = gp

@@ -125,7 +125,7 @@ Public Class RotateTool
             Core.View.BufferGraphics.Clear()
             Dim mat As Matrix = Matrix.Identity
             Dim tmpth = svp.Clone
-            mat.RoatateAt(angl - mda, mdp)
+            mat.RotateAt(angl - mda, mdp)
             tmpth.Transform(mat)
             Core.View.BufferGraphics.Graphics.DrawPath(tmpth, New Pen(Color.BrownColor))
             Core.View.BufferGraphics.Render()
@@ -138,7 +138,7 @@ Public Class RotateTool
             Dim angl = Me.Angle(mdp, e.Location)
             Dim cnt As Point = Me.MiddlePoint(mainpathBound)
             Dim mat As Matrix = Matrix.Identity
-            mat.RoatateAt(angl - mda, cnt)
+            mat.RotateAt(angl - mda, cnt)
             Core.Editor.getSelectionPath.Path.Transform(mat)
 
 
