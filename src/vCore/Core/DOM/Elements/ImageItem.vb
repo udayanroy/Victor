@@ -6,6 +6,7 @@ Public Class ImageItem
 
 
 
+
     Dim _img As Image
 
 
@@ -20,7 +21,7 @@ Public Class ImageItem
     Public Property url As String
     Public Property bound As RectangleF
 
-     
+
     Public Sub Translate(x As Single, y As Single) Implements DrawingElement.Translate
 
     End Sub
@@ -111,4 +112,8 @@ Public Class ImageItem
     End Sub
 
     Public Property Rotation As Single Implements DrawingElement.Rotation
+
+    Public Sub ApplyTransform(Transform As Geometry.Transform) Implements DrawingElement.ApplyTransform
+
+    End Sub
 End Class

@@ -27,6 +27,7 @@ Public Interface DrawingElement
     Property Rotation As Single
     Function GetSkeliton() As NodePath
     Sub ApplyTransform(mat As Matrix)
+    Sub ApplyTransform(Transform As Transform)
 End Interface
 
 

@@ -6,8 +6,6 @@ Imports Graphics
     Implements DrawingElement
 
 
-
-
     Private _Path As NodePath
 
 
@@ -136,11 +134,16 @@ Imports Graphics
         Path.Transform(mat)
     End Sub
 
+    Public Sub ApplyTransform(Transform As Transform) Implements DrawingElement.ApplyTransform
+        Path.Transform(Transform.Value)
+    End Sub
+
 #End Region
 
     Public Sub setPath(editablepath As NodePath)
         Me._Path = editablepath
     End Sub
+
 
 
 End Class
