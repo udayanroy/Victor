@@ -136,8 +136,16 @@ Public Class NodePath
     Public Sub Transform(ByVal mat As Matrix)
         For Each sp As NodeFigure In Me._FigureList
             sp.Transform(mat)
-
         Next
+    End Sub
+
+    ''' <summary>
+    ''' Apply Transform to the NodePath
+    ''' </summary>
+    ''' <param name="Transform"></param>
+    ''' <remarks></remarks>
+    Public Sub ApplyTransform(Transform As Transform)
+        Me.Transform(Transform.Value)
     End Sub
 
     Public Function GetTightBound() As Rect
