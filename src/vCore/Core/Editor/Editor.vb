@@ -10,13 +10,6 @@ Public Class Editor
     Dim slct As Selection
     Dim iedt As IEditor
 
-    'Dim move As eMove
-    'Dim size As eSize
-    'Dim rotate As eRotate
-    Dim ptconvert As ePointerConvert
-
-    Dim type As selectionType
-
     'global DrwingElement propertys
     'Dim _fillBrush As Brush
     'Dim _strokecolor As Pen
@@ -32,12 +25,6 @@ Public Class Editor
 
         vcor = v
         slct = New Selection
-        'move = New eMove(Me)
-        'size = New eSize(Me)
-        'rotate = New eRotate(Me)
-        ptconvert = New ePointerConvert(Me)
-
-        type = selectionType.None
 
     End Sub
     Public Function HittestAt(ByVal p As Point) As Selection
@@ -146,45 +133,10 @@ Public Class Editor
         vcor.View.Refresh()
     End Sub
 
-    Public Property EditingType() As selectionType
-        Get
-            Return Me.type
-        End Get
-        Set(ByVal value As selectionType)
-
-            Select Case value
-                Case selectionType.None
-                    Me.iedt = Nothing
-                Case selectionType.Move
-                    ' Me.iedt = move
-            End Select
-        End Set
-    End Property
-    Public Sub setEditingType(ByVal typ As selectionType)
-
-
-        Select Case typ
-            Case selectionType.None
-                Me.iedt = Nothing
-                'Case selectionType.Move
-                '    Me.iedt = move
-                'Case selectionType.Size
-                '    Me.iedt = size
-                'Case selectionType.Rotate
-                '    Me.iedt = rotate
-            Case selectionType.PointerConvert
-                Me.iedt = ptconvert
-        End Select
-        type = typ
-
-        Refresh()
-    End Sub
+   
     Public Sub setIEdit(ByVal Editor As IEditor)
-
         Me.iedt = Editor
-        type = selectionType.Other
         Refresh()
-
     End Sub
 
     Public Function getSelectionPath() As PathElement
@@ -198,7 +150,7 @@ Public Class Editor
 
     Public Sub paint(canvas As Canvas)
 
-        If Me.type <> selectionType.None Then
+        If Me.iedt IsNot Nothing Then
             Me.iedt.Draw(canvas)
         End If
 

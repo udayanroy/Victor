@@ -27,7 +27,7 @@ Public Class RectangleTool
 
     Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
         dc = d
-        Core.Editor.setEditingType(selectionType.None)
+        Core.Editor.setIEdit(Nothing)
     End Sub
 
     Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown

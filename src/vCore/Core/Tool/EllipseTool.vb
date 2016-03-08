@@ -74,7 +74,7 @@ Public Class EllipseTool
 
     Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
         dc = d
-        v.Editor.setEditingType(selectionType.None)
+        v.Editor.setIEdit(Nothing)
     End Sub
 
 

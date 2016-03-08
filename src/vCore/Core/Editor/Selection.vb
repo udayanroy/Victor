@@ -1,15 +1,4 @@
 ﻿
-
-Public Enum selectionType
-    None
-    Move
-    Size
-    Rotate
-    PathEdit
-    PointerConvert
-    Other
-End Enum
-
 Public Structure memLoc
     Dim layer As Integer
     Dim obj As Integer
