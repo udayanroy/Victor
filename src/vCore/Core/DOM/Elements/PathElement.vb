@@ -2,7 +2,7 @@
 Imports Geometry
 Imports Graphics
 
-<Serializable()> Public Class vPath
+<Serializable()> Public Class PathElement
     Implements DrawingElement
 
 
@@ -20,8 +20,8 @@ Imports Graphics
             Return _Path
         End Get
     End Property
-     
-  
+
+
 #Region "IDisposable Support"
     Private disposedValue As Boolean ' To detect redundant calls
 
@@ -64,9 +64,10 @@ Imports Graphics
     Public Property Opacity As Single Implements DrawingElement.Opacity
 
     Public Sub Draw(canvas As Canvas) Implements DrawingElement.Draw
-
+        canvas.Save()
+        'Transformation code here...
         canvas.DrawPath(Me.Path, Pen, Brush)
-
+        canvas.Restore()
     End Sub
 
     Public Function GetElementBound() As Rect Implements DrawingElement.GetElementBound

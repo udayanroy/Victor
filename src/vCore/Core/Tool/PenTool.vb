@@ -81,7 +81,7 @@ Public Class PenTool
                 PathFigure.Points.Remove(CurrentNode)
                 PathFigure.Closed = True
                 core.View.Screen2memory(Path)
-                Dim vpath As New vPath()
+                Dim vpath As New PathElement()
                 vpath.setPath(Path)
                 core.Memory.Layers(0).Item.Add(vpath)
 

@@ -45,7 +45,7 @@ Public Class EllipseTool
 
 
 
-        Dim vp As New vPath
+        Dim vp As New PathElement
         vp.Path.Figures.Clear()
         vp.Path.AddEllipse(mdl.X, mdl.Y, e.Location.X - mdl.X, e.Location.Y - mdl.Y)
 

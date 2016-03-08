@@ -10,7 +10,7 @@ Public Class PointerRemoveTool
     Dim Core As vCore
     Dim WithEvents dc As IDevice
 
-    Dim spath As vPath
+    Dim spath As PathElement
     Dim editablepath As NodePath
     Dim noderadious As Single = 3
 

@@ -51,7 +51,7 @@ Public Class LineTool
     Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
 
 
-        Dim vp As New vPath
+        Dim vp As New PathElement
         vp.Path.Figures.Clear()
         vp.Path.AddLine(primaryLocation, e.Location)
         'Convert path to memory path

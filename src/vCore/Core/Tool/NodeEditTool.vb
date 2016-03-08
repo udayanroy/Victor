@@ -16,7 +16,7 @@ Public Class NodeEditTool
 
     Dim mainpathBound As Rect
 
-    Dim spath As vPath
+    Dim spath As PathElement
     Dim editablepath As NodePath
     Dim noderadious As Single = 3
 

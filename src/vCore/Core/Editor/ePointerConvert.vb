@@ -7,7 +7,7 @@ Public Class ePointerConvert
     Implements IEditor
 
     Dim v As Editor
-    Dim spath As vPath
+    Dim spath As PathElement
     Dim editablepath As NodePath
     Dim noderadious As Single = 3
 

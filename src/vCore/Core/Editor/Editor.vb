@@ -187,7 +187,7 @@ Public Class Editor
 
     End Sub
 
-    Public Function getSelectionPath() As vPath
+    Public Function getSelectionPath() As PathElement
         Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
     End Function
 
@@ -224,7 +224,7 @@ Public Class Editor
 
     Public Sub Cut()
         If (Not selection.isEmty) Then
-            Dim obj As vPath = vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
+            Dim obj As PathElement = vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
             Windows.Forms.Clipboard.SetData("vcimg", obj)
             vcor.mem.Layers(slct.MemoryLocation.layer).Item.RemoveAt(slct.MemoryLocation.obj)
             slct.isEmty = True
@@ -234,7 +234,7 @@ Public Class Editor
 
     Public Sub Copy()
         If (Not selection.isEmty) Then
-            Dim obj As vPath = vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
+            Dim obj As PathElement = vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
             Windows.Forms.Clipboard.SetData("vcimg", obj)
         End If
 
@@ -243,7 +243,7 @@ Public Class Editor
     Public Sub Past()
 
         If Windows.Forms.Clipboard.ContainsData("vcimg") Then
-            Dim path As vPath = Windows.Forms.Clipboard.GetData("vcimg")
+            Dim path As PathElement = Windows.Forms.Clipboard.GetData("vcimg")
             vcor.Memory.Layers(0).Item.Add(path)
             Me.Refresh()
         End If

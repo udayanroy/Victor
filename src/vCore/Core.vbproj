@@ -105,7 +105,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Core\DOM\Document.vb" />
-    <Compile Include="Core\DOM\Elements\vPath.vb" />
+    <Compile Include="Core\DOM\Elements\PathElement.vb" />
     <Compile Include="Core\DOM\Layer.vb" />
     <Compile Include="Core\DOM\DrawingElement.vb" />
     <Compile Include="Core\Tool\Tool.vb" />
