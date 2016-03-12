@@ -7,7 +7,7 @@ Public Class Editor
 
 
     Dim vcor As vCore
-    Dim _selections As Selections
+    Dim _SelectionHolder As SelectionHolder
     Dim iedt As IEditor
 
     Public Event SelectionChanged()
@@ -15,13 +15,13 @@ Public Class Editor
     Public Sub New(ByRef v As vCore)
 
         vcor = v
-        _selections = New Selections(Me)
+        Me._SelectionHolder = New SelectionHolder(Me)
 
     End Sub
    
     Public Function SelectAt(ByVal p As Point) As Integer
         Dim returnvalue As SelectionType
-        returnvalue = Me.selections.SelectAt(p)
+        returnvalue = Me.SelectionHolder.SelectAt(p)
         RaiseEvent SelectionChanged()
         Return returnvalue
 
@@ -29,12 +29,12 @@ Public Class Editor
 
 
     Public Sub DisSelect()
-        selections.Clear()
+        Me.SelectionHolder.Clear()
     End Sub
 
-    Public ReadOnly Property selections() As Selections
+    Public ReadOnly Property SelectionHolder() As SelectionHolder
         Get
-            Return Me._selections
+            Return Me._SelectionHolder
         End Get
     End Property
 
