@@ -95,6 +95,7 @@
     <Compile Include="Core\Tool\ShearTool.vb" />
     <Compile Include="Core\Tool\NodeEditTool.vb" />
     <Compile Include="Core\Tool\PointerConverterTool.vb" />
+    <Compile Include="Core\Tool\Tools.vb" />
     <Compile Include="Core\Tool\TransformTool.vb" />
     <Compile Include="Core\Tool\RotateTool.vb" />
     <Compile Include="Core\Tool\tZoomTool.vb" />
