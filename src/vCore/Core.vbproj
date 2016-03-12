@@ -80,8 +80,10 @@
     <Compile Include="Core\DOM\Export.vb" />
     <Compile Include="Core\DOM\Elements\ImageItem.vb" />
     <Compile Include="Core\Editor\Iedtr.vb" />
+    <Compile Include="Core\Editor\ISelections.vb" />
     <Compile Include="Core\Editor\Selection.vb" />
     <Compile Include="Core\Editor\Editor.vb" />
+    <Compile Include="Core\Editor\Selections.vb" />
     <Compile Include="Core\Tool\AddPointerTool.vb" />
     <Compile Include="Core\Tool\LineTool.vb" />
     <Compile Include="Core\Tool\PenTool.vb" />

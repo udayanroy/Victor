@@ -7,7 +7,7 @@ Public Class Editor
 
 
     Dim vcor As vCore
-    Dim slct As Selection
+    Dim _selections As Selections
     Dim iedt As IEditor
 
     'global DrwingElement propertys
@@ -24,7 +24,7 @@ Public Class Editor
     Public Sub New(ByRef v As vCore)
 
         vcor = v
-        slct = New Selection
+        _selections = New Selections(Me)
 
     End Sub
     Public Function HittestAt(ByVal p As Point) As Selection
@@ -60,46 +60,10 @@ Public Class Editor
         Return retn
     End Function
     Public Function SelectAt(ByVal p As Point) As Integer
-        Dim r As Integer = 0
-
-        Dim memloc As memLoc
-        Dim flage As Boolean = False
-
-        'Dim m As PointF = vcor.View.DCpointToMemory(p)
-        'Dim mp As New PointF(m.X - vcor.View.getpagerctOrg.X, m.Y - vcor.View.getpagerctOrg.Y)
-        Dim mp = p
-        vcor.View.Screen2memory(mp)
-
-        Dim len, lobj As Integer
-        len = vcor.Memory.Layers.Count
-
-        For l As Integer = 0 To len - 1
-            lobj = vcor.Memory.Layers(l).Item.Count
-            For k As Integer = 0 To lobj - 1
-                If vcor.Memory.Layers(l).Item(k).isVisible(mp) Then
-                    memloc.create(l, k)
-
-                    flage = True
-                End If
-            Next
-        Next
-        If flage = True Then
-            If memloc.Equals(slct.MemoryLocation) Then
-                r = 1
-            Else
-                r = 2
-            End If
-            slct.MemoryLocation = memloc
-            slct.isEmty = False
-            Me.OnSelectionChanged()
-
-        Else
-            slct.isEmty = True
-            r = 0
-        End If
-
+        Dim returnvalue As SelectionType
+        returnvalue = Me.selections.SelectAt(p)
         RaiseEvent SelectionChanged()
-        Return r
+        Return returnvalue
 
     End Function
 
@@ -114,12 +78,12 @@ Public Class Editor
     End Sub
 
     Public Sub DisSelect()
-        slct.isEmty = True
+        selections.Clear()
     End Sub
 
-    Public ReadOnly Property selection() As Selection
+    Public ReadOnly Property selections() As Selections
         Get
-            Return Me.slct
+            Return Me._selections
         End Get
     End Property
 
@@ -133,18 +97,18 @@ Public Class Editor
         vcor.View.Refresh()
     End Sub
 
-   
+
     Public Sub setIEdit(ByVal Editor As IEditor)
         Me.iedt = Editor
         Refresh()
     End Sub
 
     Public Function getSelectionPath() As PathElement
-        Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
+        Return vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
     End Function
 
     Public Function getSelection() As DrawingElement
-        Return vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
+        Return vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
     End Function
 
 
@@ -171,22 +135,22 @@ Public Class Editor
     '    End If
     'End Sub
     Public Function getBoundRect() As Rect
-        Return vcor.Memory.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj).GetElementBound
+        Return vcor.Memory.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj).GetElementBound
     End Function
 
     Public Sub Cut()
         If (Not selection.isEmty) Then
-            Dim obj As PathElement = vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
+            Dim obj As PathElement = vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
             Windows.Forms.Clipboard.SetData("vcimg", obj)
-            vcor.mem.Layers(slct.MemoryLocation.layer).Item.RemoveAt(slct.MemoryLocation.obj)
-            slct.isEmty = True
+            vcor.mem.Layers(_selections.MemoryLocation.layer).Item.RemoveAt(_selections.MemoryLocation.obj)
+            _selections.isEmty = True
             Me.Refresh()
         End If
     End Sub
 
     Public Sub Copy()
         If (Not selection.isEmty) Then
-            Dim obj As PathElement = vcor.mem.Layers(slct.MemoryLocation.layer).Item(slct.MemoryLocation.obj)
+            Dim obj As PathElement = vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
             Windows.Forms.Clipboard.SetData("vcimg", obj)
         End If
 
@@ -204,8 +168,8 @@ Public Class Editor
 
     Public Sub Delete()
         If Not selection.isEmty Then
-            vcor.mem.Layers(slct.MemoryLocation.layer).Item.RemoveAt(slct.MemoryLocation.obj)
-            slct.isEmty = True
+            vcor.mem.Layers(_selections.MemoryLocation.layer).Item.RemoveAt(_selections.MemoryLocation.obj)
+            _selections.isEmty = True
             Me.Refresh()
         End If
 
@@ -215,7 +179,7 @@ Public Class Editor
         For Each Layer As Layer In vcor.mem.Layers
             Layer.Item.Clear()
         Next
-        slct.isEmty = True
+        _selections.isEmty = True
         Me.Refresh()
     End Sub
 
