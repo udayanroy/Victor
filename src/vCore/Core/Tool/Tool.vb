@@ -59,7 +59,7 @@ Public MustInherit Class Tool
 
     Public Overridable Sub SelectTool(d As IDevice) Implements Itool.SelectTool
         Me._device = d
-
+        Me.Editor.SetActiveTool(Me)
     End Sub
 
     Public Overridable Sub Draw(canvas As Canvas)

@@ -9,7 +9,7 @@ Public Class Editor
     Dim vcor As vCore
     Dim _SelectionHolder As SelectionHolder
     Dim iedt As IEditor
-
+    Dim ActiveTool As Tool
     Public Event SelectionChanged()
 
     Public Sub New(ByRef v As vCore)
@@ -54,6 +54,10 @@ Public Class Editor
         Refresh()
     End Sub
 
+    Public Sub SetActiveTool(tool As Tool)
+        Me.ActiveTool = tool
+    End Sub
+
     Public Function getSelectionPath() As PathElement
         Return vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
     End Function
@@ -61,16 +65,14 @@ Public Class Editor
 
 
     Public Sub paint(canvas As Canvas)
-
-        If Me.iedt IsNot Nothing Then
-            Me.iedt.Draw(canvas)
+        If Me.ActiveTool IsNot Nothing Then
+            Me.ActiveTool.Draw(canvas)
         End If
-
     End Sub
 
 
     Public Sub Cut()
-        If (Not selection.isEmty) Then
+        If (Not Selection.isEmty) Then
             Dim obj As PathElement = vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
             Windows.Forms.Clipboard.SetData("vcimg", obj)
             vcor.mem.Layers(_selections.MemoryLocation.layer).Item.RemoveAt(_selections.MemoryLocation.obj)
@@ -80,7 +82,7 @@ Public Class Editor
     End Sub
 
     Public Sub Copy()
-        If (Not selection.isEmty) Then
+        If (Not Selection.isEmty) Then
             Dim obj As PathElement = vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
             Windows.Forms.Clipboard.SetData("vcimg", obj)
         End If
@@ -98,7 +100,7 @@ Public Class Editor
     End Sub
 
     Public Sub Delete()
-        If Not selection.isEmty Then
+        If Not Selection.isEmty Then
             vcor.mem.Layers(_selections.MemoryLocation.layer).Item.RemoveAt(_selections.MemoryLocation.obj)
             _selections.isEmty = True
             Me.Refresh()
