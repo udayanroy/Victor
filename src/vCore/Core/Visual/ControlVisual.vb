@@ -129,7 +129,7 @@ Public Class ControlVisual
 
 #End Region
 
-    Public ReadOnly Property TennisPanel As Document
+    Public ReadOnly Property DOM As Document
         Get
             Return _document
         End Get
