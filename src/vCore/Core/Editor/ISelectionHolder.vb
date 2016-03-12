@@ -1,6 +1,6 @@
 ﻿Imports Geometry
 
-Public Interface ISelections
+Public Interface ISelectionHolder
 
     ReadOnly Property SelectionList As List(Of Selection)
     Function Count() As Integer
