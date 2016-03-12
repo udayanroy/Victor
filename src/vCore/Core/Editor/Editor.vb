@@ -48,21 +48,9 @@ Public Class Editor
         vcor.View.Refresh()
     End Sub
 
-
-    Public Sub setIEdit(ByVal Editor As IEditor)
-        Me.iedt = Editor
-        Refresh()
-    End Sub
-
     Public Sub SetActiveTool(tool As Tool)
         Me.ActiveTool = tool
     End Sub
-
-    Public Function getSelectionPath() As PathElement
-        Return vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
-    End Function
-
-
 
     Public Sub paint(canvas As Canvas)
         If Me.ActiveTool IsNot Nothing Then
@@ -70,51 +58,55 @@ Public Class Editor
         End If
     End Sub
 
+    'Public Function getSelectionPath() As PathElement
+    '    Return vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
+    'End Function
 
-    Public Sub Cut()
-        If (Not Selection.isEmty) Then
-            Dim obj As PathElement = vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
-            Windows.Forms.Clipboard.SetData("vcimg", obj)
-            vcor.mem.Layers(_selections.MemoryLocation.layer).Item.RemoveAt(_selections.MemoryLocation.obj)
-            _selections.isEmty = True
-            Me.Refresh()
-        End If
-    End Sub
 
-    Public Sub Copy()
-        If (Not Selection.isEmty) Then
-            Dim obj As PathElement = vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
-            Windows.Forms.Clipboard.SetData("vcimg", obj)
-        End If
+    'Public Sub Cut()
+    '    If (Not Selection.isEmty) Then
+    '        Dim obj As PathElement = vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
+    '        Windows.Forms.Clipboard.SetData("vcimg", obj)
+    '        vcor.mem.Layers(_selections.MemoryLocation.layer).Item.RemoveAt(_selections.MemoryLocation.obj)
+    '        _selections.isEmty = True
+    '        Me.Refresh()
+    '    End If
+    'End Sub
 
-    End Sub
+    'Public Sub Copy()
+    '    If (Not Selection.isEmty) Then
+    '        Dim obj As PathElement = vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
+    '        Windows.Forms.Clipboard.SetData("vcimg", obj)
+    '    End If
 
-    Public Sub Past()
+    'End Sub
 
-        If Windows.Forms.Clipboard.ContainsData("vcimg") Then
-            Dim path As PathElement = Windows.Forms.Clipboard.GetData("vcimg")
-            vcor.Memory.Layers(0).Item.Add(path)
-            Me.Refresh()
-        End If
+    'Public Sub Past()
 
-    End Sub
+    '    If Windows.Forms.Clipboard.ContainsData("vcimg") Then
+    '        Dim path As PathElement = Windows.Forms.Clipboard.GetData("vcimg")
+    '        vcor.Memory.Layers(0).Item.Add(path)
+    '        Me.Refresh()
+    '    End If
 
-    Public Sub Delete()
-        If Not Selection.isEmty Then
-            vcor.mem.Layers(_selections.MemoryLocation.layer).Item.RemoveAt(_selections.MemoryLocation.obj)
-            _selections.isEmty = True
-            Me.Refresh()
-        End If
+    'End Sub
 
-    End Sub
+    'Public Sub Delete()
+    '    If Not Selection.isEmty Then
+    '        vcor.mem.Layers(_selections.MemoryLocation.layer).Item.RemoveAt(_selections.MemoryLocation.obj)
+    '        _selections.isEmty = True
+    '        Me.Refresh()
+    '    End If
 
-    Public Sub ClearAll()
-        For Each Layer As Layer In vcor.mem.Layers
-            Layer.Item.Clear()
-        Next
-        _selections.isEmty = True
-        Me.Refresh()
-    End Sub
+    'End Sub
+
+    'Public Sub ClearAll()
+    '    For Each Layer As Layer In vcor.mem.Layers
+    '        Layer.Item.Clear()
+    '    Next
+    '    _selections.isEmty = True
+    '    Me.Refresh()
+    'End Sub
 
     'Public Property FillColor As Color
     '    Get
