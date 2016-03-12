@@ -10,15 +10,6 @@ Public Class Editor
     Dim _selections As Selections
     Dim iedt As IEditor
 
-    'global DrwingElement propertys
-    'Dim _fillBrush As Brush
-    'Dim _strokecolor As Pen
-    'Dim _strokewidth As Single = 1
-    'Dim _isfill As Boolean = True
-    'Dim _isstroke As Boolean = True
-
-
-    Public Event PropertyChanged()
     Public Event SelectionChanged()
 
     Public Sub New(ByRef v As vCore)
@@ -27,38 +18,7 @@ Public Class Editor
         _selections = New Selections(Me)
 
     End Sub
-    Public Function HittestAt(ByVal p As Point) As Selection
-        Dim retn As New Selection()
-
-        Dim memloc As memLoc
-        Dim flage As Boolean = False
-
-        Dim mp = p
-        vcor.View.Screen2memory(mp)
-
-        Dim len, lobj As Integer
-        len = vcor.Memory.Layers.Count
-
-        For l As Integer = 0 To len - 1
-            lobj = vcor.Memory.Layers(l).Item.Count
-            For k As Integer = 0 To lobj - 1
-                If vcor.Memory.Layers(l).Item(k).isVisible(mp) Then
-                    memloc.create(l, k)
-
-                    flage = True
-                End If
-            Next
-        Next
-
-        If flage = True Then
-            retn.MemoryLocation = memloc
-            retn.isEmty = False
-        Else
-            retn.isEmty = True
-        End If
-
-        Return retn
-    End Function
+   
     Public Function SelectAt(ByVal p As Point) As Integer
         Dim returnvalue As SelectionType
         returnvalue = Me.selections.SelectAt(p)
@@ -67,15 +27,6 @@ Public Class Editor
 
     End Function
 
-    Private Sub OnSelectionChanged()
-        Dim path = Me.getSelectionPath
-        'Me._fillcolor = path.FillColor
-        'Me._strokecolor = path.StrokeColor
-        'Me._strokewidth = path.StrokWidth
-        'Me._isfill = path.isFill
-        'Me._isstroke = path.isStroke
-        RaiseEvent PropertyChanged()
-    End Sub
 
     Public Sub DisSelect()
         selections.Clear()
@@ -107,9 +58,6 @@ Public Class Editor
         Return vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
     End Function
 
-    Public Function getSelection() As DrawingElement
-        Return vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
-    End Function
 
 
     Public Sub paint(canvas As Canvas)
@@ -119,24 +67,7 @@ Public Class Editor
         End If
 
     End Sub
-    'Public Sub mouse_Down(ByRef e As System.Windows.Forms.MouseEventArgs)
-    '    If Me.type <> selectionType.None Then
-    '        'Me.iedt.mouse_Down(e)
-    '    End If
-    'End Sub
-    'Public Sub mouse_Move(ByRef e As System.Windows.Forms.MouseEventArgs)
-    '    If Me.type <> selectionType.None Then
-    '        Me.iedt.mouse_Move(e)
-    '    End If
-    'End Sub
-    'Public Sub mouse_Up(ByRef e As System.Windows.Forms.MouseEventArgs)
-    '    If Me.type <> selectionType.None Then
-    '        Me.iedt.mouse_Up(e)
-    '    End If
-    'End Sub
-    Public Function getBoundRect() As Rect
-        Return vcor.Memory.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj).GetElementBound
-    End Function
+
 
     Public Sub Cut()
         If (Not selection.isEmty) Then
