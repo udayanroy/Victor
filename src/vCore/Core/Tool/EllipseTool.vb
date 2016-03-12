@@ -52,7 +52,7 @@ Public Class EllipseTool
         PathElement.Brush = New SolidColorBrush(Color.BlueColor)
         PathElement.Pen = New Pen(Color.BlackColor, 3)
         'Add it to Memory
-        Dom.Layers(0).Item.Add(PathElement)
+        Editor.ActiveLayer.Item.Add(PathElement)
 
         Visual.Refresh()
         Device.ActiveScroll = True
