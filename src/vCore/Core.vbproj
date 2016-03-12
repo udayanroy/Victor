@@ -79,6 +79,7 @@
     <Compile Include="Core\BufferPaint.vb" />
     <Compile Include="Core\DOM\Export.vb" />
     <Compile Include="Core\DOM\Elements\ImageItem.vb" />
+    <Compile Include="Core\Editor\CapElement.vb" />
     <Compile Include="Core\Editor\Iedtr.vb" />
     <Compile Include="Core\Editor\ISelectionHolder.vb" />
     <Compile Include="Core\Editor\Selection.vb" />
