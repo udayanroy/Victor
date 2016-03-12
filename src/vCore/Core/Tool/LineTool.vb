@@ -3,40 +3,24 @@ Imports Graphics
 
 
 Public Class LineTool
-    Implements Itool
+    Inherits Tool
 
-
-    Dim Core As vCore
-    Dim WithEvents dc As IDevice
     Dim primaryLocation As Point
 
 
     Public Sub New(ByRef vcore As vCore)
-        Core = vcore
+        MyBase.New(vcore)
     End Sub
+ 
+  
 
-    Public Sub DeSelectTool() Implements Itool.DeSelectTool
-        dc = Nothing
-    End Sub
-
-    Public ReadOnly Property Device As IDevice Implements Itool.Device
-        Get
-            Return dc
-        End Get
-    End Property
-
-    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
-        dc = d
-        Core.Editor.setIEdit(Nothing)
-    End Sub
-
-    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
+    Private Sub dc_MouseDown(e As MouseEvntArg) Handles _device.MouseDown
         primaryLocation = e.Location
         Core.View.BufferGraphics.Initialize()
-        dc.ActiveScroll = False
+        Device.ActiveScroll = False
     End Sub
 
-    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
+    Private Sub dc_MouseMove(e As MouseEvntArg) Handles _device.MouseMove
         If e.Button = Windows.Forms.MouseButtons.Left Then
             Core.View.BufferGraphics.Clear()
 
@@ -48,7 +32,7 @@ Public Class LineTool
         End If
     End Sub
 
-    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
+    Private Sub dc_MouseUp(e As MouseEvntArg) Handles _device.MouseUp
 
 
         Dim vp As New PathElement
@@ -66,9 +50,9 @@ Public Class LineTool
         'vp.isStroke = edtr.isStroke
 
         'Add it to Memory
-        Core.Memory.Layers(0).Item.Add(vp)
+        Editor.ActiveLayer.Item.Add(vp)
 
         Core.View.Refresh()
-        dc.ActiveScroll = True
+        Device.ActiveScroll = True
     End Sub
 End Class
