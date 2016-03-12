@@ -17,6 +17,9 @@ Public Class Editor
         vcor = v
         Me._SelectionHolder = New SelectionHolder(Me)
 
+        'set activelayer
+        Dim layers = v.View.DOM.Layers
+        Me.ActiveLayer = layers(layers.Count - 1)
     End Sub
    
     Public Function SelectAt(ByVal p As Point) As Integer
@@ -57,6 +60,8 @@ Public Class Editor
             Me.ActiveTool.Draw(canvas)
         End If
     End Sub
+
+    Public Property ActiveLayer As Layer
 
     'Public Function getSelectionPath() As PathElement
     '    Return vcor.mem.Layers(_selections.MemoryLocation.layer).Item(_selections.MemoryLocation.obj)
