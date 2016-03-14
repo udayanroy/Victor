@@ -85,6 +85,7 @@
     <Compile Include="Core\Editor\Selection.vb" />
     <Compile Include="Core\Editor\Editor.vb" />
     <Compile Include="Core\Editor\SelectionHolder.vb" />
+    <Compile Include="Core\Editor\TransformCapElement.vb" />
     <Compile Include="Core\Tool\AddPointerTool.vb" />
     <Compile Include="Core\Tool\LineTool.vb" />
     <Compile Include="Core\Tool\PenTool.vb" />
