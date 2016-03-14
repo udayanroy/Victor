@@ -4,9 +4,14 @@ Friend Class LayerManager
     Implements ILayerManager
 
     Private _editor As Editor
+    Private _activelayer As Layer
 
     Public Sub New(editor As Editor)
         _editor = editor
+
+        'set activelayer
+        Dim layers = _editor.View.DOM.Layers
+        Me.ActivateLayer(layers(layers.Count - 1))
     End Sub
 
     Private ReadOnly Property Editor As Editor
@@ -16,11 +21,14 @@ Friend Class LayerManager
     End Property
 
     Public Sub ActivateLayer(layer As Layer) Implements ILayerManager.ActivateLayer
-        Me.ActiveLayer = layer
-        Editor.ActiveLayer = layer
+        Me._activelayer = layer
     End Sub
 
-    Public Property ActiveLayer As Layer Implements ILayerManager.ActiveLayer
+    Public ReadOnly Property ActiveLayer As Layer Implements ILayerManager.ActiveLayer
+        Get
+            Return Me._activelayer
+        End Get
+    End Property
 
     Public Sub AddLayer(LayrName As String) Implements ILayerManager.AddLayer
 

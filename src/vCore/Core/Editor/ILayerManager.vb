@@ -2,7 +2,7 @@
 
 Public Interface ILayerManager
 
-    Property ActiveLayer As Layer
+    ReadOnly Property ActiveLayer As Layer
 
     Sub AddLayer(LayrName As String)
     Sub ActivateLayer(layer As Layer)
