@@ -81,6 +81,7 @@
     <Compile Include="Core\DOM\Elements\ImageItem.vb" />
     <Compile Include="Core\Editor\CapElement.vb" />
     <Compile Include="Core\Editor\Iedtr.vb" />
+    <Compile Include="Core\Editor\ILayerManager.vb" />
     <Compile Include="Core\Editor\ISelectionHolder.vb" />
     <Compile Include="Core\Editor\Selection.vb" />
     <Compile Include="Core\Editor\Editor.vb" />
