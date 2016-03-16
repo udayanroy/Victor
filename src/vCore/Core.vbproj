@@ -84,6 +84,7 @@
     <Compile Include="Core\Editor\ILayerManager.vb" />
     <Compile Include="Core\Editor\ISelectionHolder.vb" />
     <Compile Include="Core\Editor\LayerManager.vb" />
+    <Compile Include="Core\Editor\NodePathsCapElement.vb" />
     <Compile Include="Core\Editor\Selection.vb" />
     <Compile Include="Core\Editor\Editor.vb" />
     <Compile Include="Core\Editor\SelectionHolder.vb" />
