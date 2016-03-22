@@ -35,7 +35,7 @@ Public Class Editor
         Me.SelectionHolder.Clear()
     End Sub
 
-    Public ReadOnly Property SelectionHolder() As SelectionHolder
+    Public ReadOnly Property SelectionHolder() As ISelectionHolder
         Get
             Return Me._SelectionHolder
         End Get
