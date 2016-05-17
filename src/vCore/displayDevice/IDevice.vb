@@ -25,6 +25,7 @@ End Interface
 
 
 Public Class PaintEvntArg
+    Inherits EventArgs
 
     Private _area As Rect
     Private _canvas As Canvas
@@ -47,6 +48,7 @@ Public Class PaintEvntArg
 End Class
 
 Public Class MouseEvntArg
+    Inherits EventArgs
 
     Private _location As Point
     Private _delta As Integer

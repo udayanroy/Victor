@@ -20,7 +20,7 @@ Public Class EllipseTool
         Device.ActiveScroll = False
     End Sub
 
-    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
+    Private Sub dc_MouseMove(e As MouseEvntArg) Handles _device.MouseMove
         If e.Button = MouseButton.Left Then
             Visual.BufferGraphics.Clear()
             Dim width As Integer = (e.Location.X - MouseLocation.X)
