@@ -54,17 +54,36 @@ Public MustInherit Class Tool
     End Property
 
     Public Overridable Sub DeSelectTool() Implements Itool.DeSelectTool
+        RemoveHandler Me.Device.MouseDown, AddressOf MouseDown
+        RemoveHandler Me.Device.MouseMove, AddressOf MouseMove
+        RemoveHandler Me.Device.MouseUp, AddressOf MouseUp
+
         Me._device = Nothing
     End Sub
 
     Public Overridable Sub SelectTool(d As IDevice) Implements Itool.SelectTool
         Me._device = d
         Me.Editor.SetActiveTool(Me)
+
+        AddHandler Me.Device.MouseDown, AddressOf MouseDown
+        AddHandler Me.Device.MouseMove, AddressOf MouseMove
+        AddHandler Me.Device.MouseUp, AddressOf MouseUp
     End Sub
 
     Public Overridable Sub Draw(canvas As Canvas)
 
     End Sub
 
+    Protected Overridable Sub MouseDown(e As MouseEvntArg)
+
+    End Sub
+
+    Protected Overridable Sub MouseMove(e As MouseEvntArg)
+
+    End Sub
+
+    Protected Overridable Sub MouseUp(e As MouseEvntArg)
+
+    End Sub
 
 End Class
