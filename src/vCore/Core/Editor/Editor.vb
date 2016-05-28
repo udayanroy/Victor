@@ -80,5 +80,18 @@ Public Class Editor
         End Get
     End Property
 
+    Public Sub AddPathToCurrentLayer(element As PathElement)
+        'Transform to memory/WorldTransform 
+        View.Screen2memory(element.Path)
+
+        'Apply current Brush and Pen
+        element.Brush = New SolidColorBrush(Color.BlueColor)
+        element.Pen = New Pen(Color.BlackColor, 3)
+
+        'Add it to the ActiveLayer
+        Me.ActiveLayer.Item.Add(element)
+    End Sub
+
+
 End Class
 
