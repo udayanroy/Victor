@@ -34,25 +34,13 @@ Public Class EllipseTool
         End If
     End Sub
     Private Sub dc_MouseUp(e As MouseEvntArg) Handles _device.MouseUp
+        'Create the Element 
+        Dim Ellipse As New PathElement
+        Ellipse.Path.Figures.Clear()
+        Ellipse.Path.AddEllipse(MouseLocation.X, MouseLocation.Y, e.Location.X - MouseLocation.X, e.Location.Y - MouseLocation.Y)
 
-        Dim PathElement As New PathElement
-        PathElement.Path.Figures.Clear()
-        PathElement.Path.AddEllipse(MouseLocation.X, MouseLocation.Y, e.Location.X - MouseLocation.X, e.Location.Y - MouseLocation.Y)
-
-        'Convert path to memory path
-        Visual.Screen2memory(PathElement.Path)
-
-        'Add Active styles
-
-        'vp.FillColor = edtr.FillColor
-        'vp.StrokeColor = edtr.StrokeColor
-        'vp.StrokWidth = edtr.strokeWidth
-        'vp.isFill = edtr.isFill
-        'vp.isStroke = edtr.isStroke
-        PathElement.Brush = New SolidColorBrush(Color.BlueColor)
-        PathElement.Pen = New Pen(Color.BlackColor, 3)
-        'Add it to Memory
-        Editor.ActiveLayer.Item.Add(PathElement)
+        'Add it to Dom
+        Editor.AddPathToCurrentLayer(Ellipse)
 
         Visual.Refresh()
         Device.ActiveScroll = True
