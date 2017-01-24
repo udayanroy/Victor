@@ -1,14 +1,12 @@
-﻿Imports Geometry
+﻿Imports Core
+Imports Geometry
 Imports Graphics
 
 
 Public Class SelectionTool
-    Implements Itool, IEditor
+    Inherits Tool
 
 
-
-    Dim Core As vCore
-    Dim WithEvents dc As IDevice
 
     Private bound As Rect
     Dim noderadious As Single = 3
@@ -27,40 +25,42 @@ Public Class SelectionTool
 
     Dim nrect As Rect
 
+    Dim SelectedElements As TransformCapElement 'to handle transformation of selectionElements
+
     Public Sub New(ByRef vcore As vCore)
-        Core = vcore
+        MyBase.New(vcore)
+        SelectedElements = New TransformCapElement(Editor)
     End Sub
 
 
-    Public Sub Draw(canvas As Canvas) Implements IEditor.Draw
-        If Core.Editor.selection.isEmty = False Then
+    Public Overrides Sub Draw(canvas As Canvas)
+        If Editor.SelectionHolder.isEmpty = False Then
             canvas.Smooth()
-            Dim p As New Pen(Color.RedColor)
-            Dim pth As New NodePath
 
-            Dim rf As Rect = Core.Editor.getSelectionPath.Path.GetTightBound()
-            pth.AddRectangle(rf)
-            Core.View.Memory2screen(pth)
+            Dim p As New Pen(Color.RedColor) 'Pen should be load from configData
 
-            bound = pth.GetTightBound
+            'Get the combine bounds of all selected Elements
+            bound = SelectedElements.GetSelectionsBound
 
-            canvas.DrawPath(pth, p)
+            'Draw bounds of all selected Elements
+            canvas.DrawRects(SelectedElements.GetSelectionsBounds.ToArray, p)
+            canvas.DrawRect(bound, p) 'Draw combine bounds of all selected Elements
 
-            Dim pointers() As Rect = {getRect(bound.X, bound.Y), _
-                                  getRect(bound.X, bound.Y + bound.Height / 2), _
-                                  getRect(bound.X, bound.Y + bound.Height), _
-                                  getRect(bound.X + bound.Width / 2, bound.Y), _
-                                  getRect(bound.X + bound.Width / 2, bound.Y + bound.Height), _
-                                  getRect(bound.X + bound.Width, bound.Y), _
-                                  getRect(bound.X + bound.Width, bound.Y + bound.Height / 2), _
+            'Create pointers 
+            Dim pointers() As Rect = {getRect(bound.X, bound.Y),
+                                  getRect(bound.X, bound.Y + bound.Height / 2),
+                                  getRect(bound.X, bound.Y + bound.Height),
+                                  getRect(bound.X + bound.Width / 2, bound.Y),
+                                  getRect(bound.X + bound.Width / 2, bound.Y + bound.Height),
+                                  getRect(bound.X + bound.Width, bound.Y),
+                                  getRect(bound.X + bound.Width, bound.Y + bound.Height / 2),
                                   getRect(bound.X + bound.Width, bound.Y + bound.Height)}
 
 
 
             'Draw resize pointers
-            'canvas.FillRectangles('Brushes.White, pointers)
-            'canvas.DrawRectangles('Pens.Brown, pointers)
-            canvas.DrawRects(pointers, New Pen(Color.BlackColor), New SolidColorBrush(Color.WhiteColor))
+            canvas.DrawRects(pointers, New Pen(Color.BlackColor),
+                             New SolidColorBrush(Color.WhiteColor))
 
 
 
@@ -76,51 +76,46 @@ Public Class SelectionTool
         Return New Rect(New Point(x - radious, y - radious), radious * 2, radious * 2)
     End Function
 
-    Public Sub mouse_Down(e As MouseEvntArg)
+    Protected Overrides Sub MouseDown(e As MouseEvntArg)
+
         MouseDownLocation = e.Location
         MouseLocation = e.Location
 
-        If Core.Editor.selection.isEmty Then
+        If Core.Editor.SelectionHolder.isEmpty Then
             s = Core.Editor.SelectAt(MouseLocation)
             If s <> 0 Then
+                svp = SelectedElements.GetSelectionSkeliton
 
-                svp = Core.Editor.getSelectionPath.Path.Clone
-                Core.View.Memory2screen(svp)
                 Core.Editor.View.BufferGraphics.Initialize()
-                dc.ActiveScroll = False
+                Device.ActiveScroll = False
             End If
         Else
             hit = Me.hittest(e.Location, bound)
             If hit <> -1 Then
                 sizing = True
 
-                svp = Core.Editor.getSelectionPath.Path.Clone
-                Core.View.Memory2screen(svp)
+                svp = SelectedElements.GetSelectionSkeliton
                 Core.Editor.View.BufferGraphics.Initialize()
-                dc.ActiveScroll = False
+                Device.ActiveScroll = False
             Else
 
                 sizing = False
                 s = Core.Editor.SelectAt(MouseLocation)
 
                 If s <> 0 Then
-
-                    svp = Core.Editor.getSelectionPath.Path.Clone
-                    Core.View.Memory2screen(svp)
+                    svp = SelectedElements.GetSelectionSkeliton
                     Core.Editor.View.BufferGraphics.Initialize()
-                    dc.ActiveScroll = False
+                    Device.ActiveScroll = False
                 End If
-
 
             End If
 
         End If
 
-
-
     End Sub
 
-    Public Sub mouse_Move(e As MouseEvntArg)
+    Protected Overrides Sub MouseMove(e As MouseEvntArg)
+
         If e.Button = Windows.Forms.MouseButtons.Left Then
             If s <> 0 Then
                 Core.View.BufferGraphics.Clear()
@@ -154,64 +149,37 @@ Public Class SelectionTool
         End If
     End Sub
 
-    Public Sub mouse_Up(e As MouseEvntArg)
+    Protected Overrides Sub MouseUp(e As MouseEvntArg)
+
         If sizing Then
             Dim tr As Rect
             Dim nrctloc = nrect.Location
-            Core.View.Screen2memory(nrctloc)
+
             tr.Location = nrctloc
 
             Dim pk As New Point(nrect.X + nrect.Width, nrect.Y + nrect.Height)
-            Core.View.Screen2memory(pk)
+
 
             tr.Width = pk.X - tr.X
             tr.Height = pk.Y - tr.Y
 
-            ScalePath(Core.Editor.getSelectionPath.Path, tr)
 
-            'svp.Dispose()
+            SelectedElements.ApplyTransform(GetScaleTransform(bound, tr))
+
         Else
             If s <> 0 Then
                 Dim p1 = MouseDownLocation
-                Core.View.Screen2memory(p1)
                 Dim p2 = e.Location
-                Core.View.Screen2memory(p2)
-                Core.Editor.getSelectionPath.Translate(p2.X - p1.X, p2.Y - p1.Y)
+                Dim translate As New TranslateTransform(p2.X - p1.X, p2.Y - p1.Y)
+                SelectedElements.ApplyTransform(translate)
 
-                'svp.Dispose()
             End If
         End If
 
         Core.Editor.View.Refresh()
-        dc.ActiveScroll = True
+        Device.ActiveScroll = True
     End Sub
 
-    Public Sub DeSelectTool() Implements Itool.DeSelectTool
-        dc = Nothing
-    End Sub
-
-    Public ReadOnly Property Device As IDevice Implements Itool.Device
-        Get
-            Return dc
-        End Get
-    End Property
-
-    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
-        dc = d
-        Core.Editor.setIEdit(Me)
-    End Sub
-
-    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
-        Me.mouse_Down(e)
-    End Sub
-
-    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
-        Me.mouse_Move(e)
-    End Sub
-
-    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
-        Me.mouse_Up(e)
-    End Sub
 
 
 
@@ -231,13 +199,13 @@ Public Class SelectionTool
         '-------------------------------------------------
 
 
-        Dim pointers() As Rect = {getRect(bound.X, bound.Y), _
-                                       getRect(bound.X, bound.Y + bound.Height / 2), _
-                                       getRect(bound.X, bound.Y + bound.Height), _
-                                       getRect(bound.X + bound.Width / 2, bound.Y), _
-                                       getRect(bound.X + bound.Width / 2, bound.Y + bound.Height), _
-                                       getRect(bound.X + bound.Width, bound.Y), _
-                                       getRect(bound.X + bound.Width, bound.Y + bound.Height / 2), _
+        Dim pointers() As Rect = {getRect(bound.X, bound.Y),
+                                       getRect(bound.X, bound.Y + bound.Height / 2),
+                                       getRect(bound.X, bound.Y + bound.Height),
+                                       getRect(bound.X + bound.Width / 2, bound.Y),
+                                       getRect(bound.X + bound.Width / 2, bound.Y + bound.Height),
+                                       getRect(bound.X + bound.Width, bound.Y),
+                                       getRect(bound.X + bound.Width, bound.Y + bound.Height / 2),
                                        getRect(bound.X + bound.Width, bound.Y + bound.Height),
                                  getRect(bound.X + bound.Width / 2, bound.Y - 50, 5)}
 
@@ -297,7 +265,7 @@ Public Class SelectionTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New Rect(New Point(p1.X, p2.Y), _
+            Dim rd As New Rect(New Point(p1.X, p2.Y),
                                       (p2.X - p1.X), (p1.Y - p2.Y))
 
             Dim rtn As Rect
@@ -344,7 +312,7 @@ Public Class SelectionTool
 
             Dim n = bnd.Height / bnd.Width
 
-            Dim rd As New Rect(New Point(p2.X, p1.Y), _
+            Dim rd As New Rect(New Point(p2.X, p1.Y),
                                       (p1.X - p2.X), (p2.Y - p1.Y))
 
             Dim rtn As Rect
@@ -467,4 +435,25 @@ Public Class SelectionTool
 
     '    End Using
     'End Sub
+    Private Function GetScaleTransform(bound As Rect, ByVal Torect As Rect) As Transform
+        Dim bnd = bound
+        Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
+        Dim yinvert As Boolean = IIf(Torect.Height < 0, True, False)
+
+        Dim transform As New TransformGroup
+
+
+        Dim translate As New TranslateTransform(-bnd.X, -bnd.Y)
+        transform.Items.Add(translate)
+
+        Dim sx = Torect.Width / bnd.Width
+        Dim sy = Torect.Height / bnd.Height
+        Dim scale As New ScaleTransform(sx, sy)
+        transform.Items.Add(scale)
+
+        Dim retranslate As New TranslateTransform(Torect.X, Torect.Y)
+        transform.Items.Add(retranslate)
+
+        Return transform
+    End Function
 End Class
