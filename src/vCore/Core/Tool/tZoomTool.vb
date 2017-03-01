@@ -3,34 +3,22 @@ Imports System.Drawing
 
 
 Public Class tZoomTool
-    Implements Itool
+    Inherits Tool
 
 
-    Dim v As vCore
-    Dim WithEvents dc As IDevice
+
 
     Public Sub New(core As vCore)
-        v = core
+        MyBase.New(core)
     End Sub
-    Public ReadOnly Property Device() As IDevice Implements Itool.Device
-        Get
-            Return dc
-        End Get
-    End Property
 
-    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
+    Protected Overrides Sub MouseDown(e As MouseEvntArg)
         If e.Button = MouseButtons.Left Then
-            v.View.setZoom(v.View.ZoomPercentage + 10, e.Location)
+            Visual.setZoom(Visual.ZoomPercentage + 10, e.Location)
         ElseIf e.Button = MouseButtons.Right Then
-            v.View.setZoom(v.View.ZoomPercentage - 10, e.Location)
+            Visual.setZoom(Visual.ZoomPercentage - 10, e.Location)
         End If
     End Sub
 
-    Public Sub DeSelectTool() Implements Itool.DeSelectTool
-        dc = Nothing
-    End Sub
 
-    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
-        dc = d
-    End Sub
 End Class
