@@ -1,102 +1,67 @@
-﻿Imports Geometry
+﻿Imports Core
+Imports Geometry
 Imports Graphics
 
 
 Public Class NodeEditTool
-    Implements Itool, IEditor
+    Inherits Tool
 
 
 
 
-
-    Dim v As vCore
-    Dim WithEvents dc As IDevice
-    Dim MouseLocation As Point
+    Private MouseLocation As Point
     Private b As Integer = 3
 
-    Dim mainpathBound As Rect
+    Private mainpathBound As Rect
 
-    Dim spath As PathElement
-    Dim editablepath As NodePath
-    Dim noderadious As Single = 3
+    'Private spath As PathElement
+    Private editablepath As NodePath
+    Private noderadious As Single = 3
+    Private s As Integer = 0
+    Private svp As NodePath
+    Private nodesel As nodeselection
 
-    Dim nodesel As nodeselection
+    Private SelectedElements As NodePathsCapElement 'to handle transformation of selectionElements
 
-
-
-    Public Sub New(ByRef vew As vCore)
-        v = vew
-    End Sub
-    Public ReadOnly Property Device() As IDevice Implements Itool.Device
-        Get
-            Return dc
-        End Get
-    End Property
-    Dim s As Integer = 0
-    Dim svp As NodePath
-
-    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
-
-        Me.mouse_Down(e)
+    Public Sub New(ByRef vcore As vCore)
+        MyBase.New(vcore)
+        SelectedElements = New NodePathsCapElement(Editor)
     End Sub
 
-    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
 
-        Me.mouse_Move(e)
-    End Sub
-    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
-
-        Me.mouse_Up(e)
-    End Sub
-    Public Sub DeSelectTool() Implements Itool.DeSelectTool
-        dc = Nothing
-    End Sub
-
-    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
-        dc = d
-        v.Editor.setIEdit(Me)
-
-
-    End Sub
-
-    Public Sub Draw(g As Canvas) Implements IEditor.Draw
+    Public Overrides Sub Draw(g As Canvas)
         editablepath = Nothing
-        If v.Editor.selection.isEmty = False Then
+        If Editor.SelectionHolder.isEmpty = False Then
             g.Smooth()
             Dim p As New Pen(Color.BlueColor) ', pth As GraphicsPath = spath.GraphicsPath.ToGraphicsPath
 
-            spath = v.Editor.getSelectionPath()
-            editablepath = spath.Path.Clone
-            v.View.Memory2screen(editablepath)
+            'spath = v.Editor.getSelectionPath()
+            editablepath = SelectedElements.GetSelectionSkeliton
 
             g.DrawPath(editablepath, p)
 
             DrawNodes(g)
 
-
-
-
-
         End If
     End Sub
 
+    Protected Overrides Sub MouseDown(e As MouseEvntArg)
 
-    Public Sub mouse_Down(e As MouseEvntArg)
         MouseLocation = e.Location
         If editablepath Is Nothing Then
-            Dim s = v.Editor.SelectAt(MouseLocation)
+            Dim s = Editor.SelectAt(MouseLocation)
             If s <> 0 Then
-                v.View.Refresh()
+                Visual.Refresh()
             End If
         Else
             nodesel = GetSelectPoint(MouseLocation)
             If nodesel.selectednode IsNot Nothing Then
-                v.View.BufferGraphics.Initialize()
-                dc.ActiveScroll = False
+                Visual.BufferGraphics.Initialize()
+                Device.ActiveScroll = False
             Else
-                Dim s = v.Editor.SelectAt(MouseLocation)
+                Dim s = Editor.SelectAt(MouseLocation)
                 ' If s <> 0 Then
-                v.View.Refresh()
+                Visual.Refresh()
                 'End If
             End If
 
@@ -105,7 +70,8 @@ Public Class NodeEditTool
 
     End Sub
 
-    Public Sub mouse_Move(e As MouseEvntArg)
+    Protected Overrides Sub MouseMove(e As MouseEvntArg)
+
 
         If editablepath Is Nothing Or nodesel.selectednode Is Nothing Then Exit Sub
 
@@ -113,12 +79,12 @@ Public Class NodeEditTool
             Dim ml = e.Location
             SetNodePt(nodesel, ml)
 
-            v.View.BufferGraphics.Clear()
-            v.View.BufferGraphics.Graphics.DrawPath(editablepath, New Pen(Color.BlackColor))
-            DrawNodes(v.View.BufferGraphics.Graphics)
+            Core.View.BufferGraphics.Clear()
+            Core.View.BufferGraphics.Graphics.DrawPath(editablepath, New Pen(Color.BlackColor))
+            DrawNodes(Core.View.BufferGraphics.Graphics)
 
             ' v.View.BufferGraphics.Graphics.DrawPath(Pens.Black, svp.ToGraphicsPath)
-            v.View.BufferGraphics.Render()
+            Core.View.BufferGraphics.Render()
 
             ' mdl = e.Location
         End If
@@ -126,10 +92,14 @@ Public Class NodeEditTool
 
     Public Sub mouse_Up(e As MouseEvntArg)
         If editablepath Is Nothing Then Exit Sub
-        v.View.Screen2memory(editablepath)
-        spath.setPath(editablepath)
-        v.View.Refresh()
-        dc.ActiveScroll = True
+        'v.View.Screen2memory(editablepath)
+        'spath.setPath(editablepath)
+
+        '// please Fix this. NodeEdit Tool Does not save anything to dom'////
+        Throw New Exception("Not Implemented..... Fix this.")
+
+        Core.View.Refresh()
+        Device.ActiveScroll = True
     End Sub
     Private Sub DrawEllipses(g As Canvas, ByVal pts() As Point)
         Dim wh As Integer = b * 2
