@@ -1,74 +1,51 @@
-﻿Imports Geometry
+﻿Imports Core
+Imports Geometry
 Imports Graphics
 
 
 Public Class RectangleTool
-    Implements Itool
+    Inherits Tool
 
 
-    Dim Core As vCore
-    Dim WithEvents dc As IDevice
+
     Dim primaryLocation As Point
 
 
     Public Sub New(ByRef vcore As vCore)
-        Core = vcore
+        MyBase.New(vcore)
     End Sub
 
-    Public Sub DeSelectTool() Implements Itool.DeSelectTool
-        dc = Nothing
-    End Sub
 
-    Public ReadOnly Property Device As IDevice Implements Itool.Device
-        Get
-            Return dc
-        End Get
-    End Property
 
-    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
-        dc = d
-        Core.Editor.setIEdit(Nothing)
-    End Sub
-
-    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
+    Protected Overrides Sub MouseDown(e As MouseEvntArg)
         primaryLocation = e.Location
-        Core.View.BufferGraphics.Initialize()
-        dc.ActiveScroll = False
+        Visual.BufferGraphics.Initialize()
+        Device.ActiveScroll = False
     End Sub
 
-    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
-        If e.Button = Windows.Forms.MouseButtons.Left Then
-            Core.View.BufferGraphics.Clear()
+    Protected Overrides Sub MouseMove(e As MouseEvntArg)
+        If e.Button = MouseButton.Left Then
+            Visual.BufferGraphics.Clear()
             Dim width As Integer = (e.Location.X - primaryLocation.X)
             Dim height As Integer = (e.Location.Y - primaryLocation.Y)
 
-            Core.View.BufferGraphics.Graphics.DrawRect(New Rect(primaryLocation, e.Location), New Pen(Color.BlackColor))
-            Core.View.BufferGraphics.Render()
+            Visual.BufferGraphics.Graphics.DrawRect(New Rect(primaryLocation, e.Location), New Pen(Color.BlackColor))
+            Visual.BufferGraphics.Render()
 
         End If
     End Sub
 
-    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
+    Protected Overrides Sub MouseUp(e As MouseEvntArg)
 
+        'Create the Element 
+        Dim Rectangle As New PathElement
+        Rectangle.Path.Figures.Clear()
+        Rectangle.Path.AddRectangle(primaryLocation.X, primaryLocation.Y, e.Location.X - primaryLocation.X, e.Location.Y - primaryLocation.Y)
 
-        Dim vp As New PathElement
-        vp.Path.Figures.Clear()
-        vp.Path.AddRectangle(primaryLocation.X, primaryLocation.Y, e.Location.X - primaryLocation.X, e.Location.Y - primaryLocation.Y)
-        'Convert path to memory path
-        Core.View.Screen2memory(vp.Path)
+        'Add it to Dom
+        Editor.AddPathToCurrentLayer(Rectangle)
 
-        'Add Active styles
-        Dim edtr = Core.Editor
-        'vp.FillColor = edtr.FillColor
-        'vp.StrokeColor = edtr.StrokeColor
-        'vp.StrokWidth = edtr.strokeWidth
-        'vp.isFill = edtr.isFill
-        'vp.isStroke = edtr.isStroke
-
-        'Add it to Memory
-        Core.Memory.Layers(0).Item.Add(vp)
-
-        Core.View.Refresh()
-        dc.ActiveScroll = True
+        Visual.Refresh()
+        Device.ActiveScroll = True
     End Sub
 End Class
