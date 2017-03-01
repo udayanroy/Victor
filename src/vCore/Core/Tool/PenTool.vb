@@ -5,13 +5,11 @@ Imports Graphics
 
 
 Public Class PenTool
-    Implements Itool, IEditor
+    Inherits Tool
 
 
 
-    Dim core As vCore
-    Dim WithEvents dc As IDevice
-    Dim BufferGraphics As BufferPaint
+
     Dim MouseLocation As Point
     Dim Path As NodePath
     Dim PathFigure As NodeFigure
@@ -23,49 +21,23 @@ Public Class PenTool
 
 
     Public Sub New(ByRef core As vCore)
-        Me.core = core
-        BufferGraphics = core.View.BufferGraphics
+        MyBase.New(core)
     End Sub
 
 
-#Region "Tool Methode"
-    Public ReadOnly Property Device() As IDevice Implements Itool.Device
-        Get
-            Return dc
-        End Get
-    End Property
+    '#Region "Tool Methode"
 
-    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
-        Me.mouse_Down(e)
-    End Sub
-
-    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
-        Me.mouse_Move(e)
-    End Sub
-    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
-        Me.mouse_Up(e)
-    End Sub
-
-    Public Sub DeSelectTool() Implements Itool.DeSelectTool
-        dc = Nothing
-    End Sub
-
-    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
-        dc = d
-        core.Editor.setIEdit(Me)
-        initCurrentPath()
-    End Sub
+    '    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
+    '        dc = d
+    '        core.Editor.setIEdit(Me)
+    '        initCurrentPath()
+    '    End Sub
 
 
-#End Region
+    '#End Region
 
 
-
-    Public Sub Draw(g As Canvas) Implements IEditor.Draw
-
-    End Sub
-
-    Public Sub mouse_Down(e As MouseEvntArg)
+    Protected Overrides Sub MouseDown(e As MouseEvntArg)
 
         If Not DrawingStarted Then
             MouseLocation = e.Location
@@ -73,36 +45,31 @@ Public Class PenTool
             PathFigure.Points.Add(CurrentNode)
             startnode = CurrentNode
             DrawingStarted = True
-            BufferGraphics.Initialize()
-            dc.ActiveScroll = False
+            Visual.BufferGraphics.Initialize()
+            Device.ActiveScroll = False
         Else
             Dim nodeBound = getNodeptBound(startnode.M)
             If nodeBound.Contain(e.Location) Then
                 PathFigure.Points.Remove(CurrentNode)
                 PathFigure.Closed = True
-                core.View.Screen2memory(Path)
-                Dim vpath As New PathElement()
-                vpath.setPath(Path)
-                core.Memory.Layers(0).Item.Add(vpath)
 
-                'Add Active styles
-                Dim edtr = core.Editor
-                'vpath.FillColor = edtr.FillColor
-                'vpath.StrokeColor = edtr.StrokeColor
-                'vpath.StrokWidth = edtr.strokeWidth
-                'vpath.isFill = edtr.isFill
-                'vpath.isStroke = edtr.isStroke
+
+                'Create the Element 
+                Dim pathElm As New PathElement()
+                pathElm.setPath(Path)
+                'Add it to Dom
+                Editor.AddPathToCurrentLayer(pathElm)
 
                 'Set global states
                 DrawingStarted = False
                 CurrentNode = Nothing
                 startnode = Nothing
 
-                dc.ActiveScroll = True
+                Device.ActiveScroll = True
 
                 initCurrentPath()
 
-                core.View.Refresh()
+                Core.View.Refresh()
             End If
         End If
 
@@ -112,7 +79,7 @@ Public Class PenTool
         If DrawingStarted Then
             If e.Button = Windows.Forms.MouseButtons.Left Then
 
-                BufferGraphics.Clear()
+                Visual.BufferGraphics.Clear()
                 Dim ml = e.Location
 
                 CurrentNode.C2 = e.Location
@@ -123,39 +90,39 @@ Public Class PenTool
                 CurrentNode.C1 = New Point(-v1.X + m.X, -v1.Y + m.Y)
 
                 CurrentNode.Type = NodeType.Smooth
-                BufferGraphics.Graphics.DrawPath(Path, New Pen(Color.MagentaColor))
+                Visual.BufferGraphics.Graphics.DrawPath(Path, New Pen(Color.MagentaColor))
 
-                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(startnode.M.X - noderadious, startnode.M.Y - noderadious),
+                Visual.BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(startnode.M.X - noderadious, startnode.M.Y - noderadious),
                                                    noderadious * 2, noderadious * 2), , New SolidColorBrush(Color.WhiteColor))
-                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(startnode.M.X - noderadious, startnode.M.Y - noderadious),
+                Visual.BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(startnode.M.X - noderadious, startnode.M.Y - noderadious),
                                                   noderadious * 2, noderadious * 2), New Pen(Color.DarkMagentaColor))
 
-                BufferGraphics.Graphics.DrawLine(m, ml, New Pen(Color.DarkMagentaColor))
-                BufferGraphics.Graphics.DrawLine(m, CurrentNode.C1, New Pen(Color.DarkMagentaColor))
+                Visual.BufferGraphics.Graphics.DrawLine(m, ml, New Pen(Color.DarkMagentaColor))
+                Visual.BufferGraphics.Graphics.DrawLine(m, CurrentNode.C1, New Pen(Color.DarkMagentaColor))
 
-                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(m.X - noderadious, m.Y - noderadious),
+                Visual.BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(m.X - noderadious, m.Y - noderadious),
                                                   noderadious * 2, noderadious * 2), , New SolidColorBrush(Color.DarkMagentaColor))
-                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(CurrentNode.C1.X - noderadious,
+                Visual.BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(CurrentNode.C1.X - noderadious,
                                                    CurrentNode.C1.Y - noderadious),
                                                  noderadious * 2, noderadious * 2), , New SolidColorBrush(Color.DarkMagentaColor))
-                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(ml.X - noderadious, ml.Y - noderadious),
+                Visual.BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(ml.X - noderadious, ml.Y - noderadious),
                                                  noderadious * 2, noderadious * 2), , New SolidColorBrush(Color.DarkMagentaColor))
- 
-                BufferGraphics.Render()
+
+                Visual.BufferGraphics.Render()
 
             ElseIf e.Button = Windows.Forms.MouseButtons.None Then
-                BufferGraphics.Clear()
+                Visual.BufferGraphics.Clear()
                 CurrentNode.M = e.Location
                 CurrentNode.C1 = e.Location
                 CurrentNode.C2 = e.Location
 
-                BufferGraphics.Graphics.DrawPath(Path, New Pen(Color.MagentaColor))
+                Visual.BufferGraphics.Graphics.DrawPath(Path, New Pen(Color.MagentaColor))
 
-                BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(startnode.M.X - noderadious, startnode.M.Y - noderadious),
+                Visual.BufferGraphics.Graphics.DrawEllipse(New Rect(New Point(startnode.M.X - noderadious, startnode.M.Y - noderadious),
                                                 noderadious * 2, noderadious * 2), New Pen(Color.WhiteColor), New SolidColorBrush(Color.WhiteColor))
 
 
-                BufferGraphics.Render()
+                Visual.BufferGraphics.Render()
             End If
         End If
 
