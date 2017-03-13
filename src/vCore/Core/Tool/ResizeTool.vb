@@ -3,21 +3,19 @@ Imports Graphics
 
 
 Public Class ResizeTool
-    Implements Itool, IEditor
+    Inherits Tool
 
 
 
-
-
-    Dim Core As vCore
-    Dim WithEvents dc As IDevice
 
     Private bound As Rect
     Dim noderadious As Single = 3
     Private nodewidth As Integer = noderadious * 2
 
-    Dim mdl As Point
-    Dim md As Point
+    Dim MouseLocation As Point
+    Dim MouseDownLocation As Point
+    'Dim mdl As Point
+    'Dim md As Point
 
     Dim s As Integer = 0
     Dim svp As NodePath
@@ -27,43 +25,46 @@ Public Class ResizeTool
 
     Dim nrect As Rect
 
-    Public Sub New(ByRef vcore As vCore)
-        Core = vcore
+    Dim SelectedElements As TransformCapElement 'to handle transformation of selectionElements
+
+    Public Sub New(ByRef core As vCore)
+        MyBase.New(core)
+        SelectedElements = New TransformCapElement(Editor)
     End Sub
 
-    Public Sub Draw(g As Canvas) Implements IEditor.Draw
+    Public Overrides Sub Draw(canvas As Canvas)
 
-        If Core.Editor.selection.isEmty = False Then
-            g.Smooth()
-            Dim p As New Pen(Color.RedColor)
-            Dim pth As New NodePath
+        If Not Editor.SelectionHolder.isEmpty Then
+            canvas.Smooth()
 
-            Dim rf As Rect = Core.Editor.getSelectionPath.Path.GetTightBound
-            pth.AddRectangle(rf)
-            Core.View.Memory2screen(pth)
+            Dim p As New Pen(Color.RedColor) 'Pen should be load from configData
 
-            bound = pth.GetBound
+            'Get the combine bounds of all selected Elements
+            bound = SelectedElements.GetSelectionsBound
 
-            g.DrawPath(pth, p)
+            'Draw bounds of all selected Elements
+            canvas.DrawRects(SelectedElements.GetSelectionsBounds.ToArray, p)
+            canvas.DrawRect(bound, p) 'Draw combine bounds of all selected Elements
 
-            Dim pointers() As Rect = {getRect(bound.X, bound.Y), _
-                                  getRect(bound.X, bound.Y + bound.Height / 2), _
-                                  getRect(bound.X, bound.Y + bound.Height), _
-                                  getRect(bound.X + bound.Width / 2, bound.Y), _
-                                  getRect(bound.X + bound.Width / 2, bound.Y + bound.Height), _
-                                  getRect(bound.X + bound.Width, bound.Y), _
-                                  getRect(bound.X + bound.Width, bound.Y + bound.Height / 2), _
+
+            Dim pointers() As Rect = {getRect(bound.X, bound.Y),
+                                  getRect(bound.X, bound.Y + bound.Height / 2),
+                                  getRect(bound.X, bound.Y + bound.Height),
+                                  getRect(bound.X + bound.Width / 2, bound.Y),
+                                  getRect(bound.X + bound.Width / 2, bound.Y + bound.Height),
+                                  getRect(bound.X + bound.Width, bound.Y),
+                                  getRect(bound.X + bound.Width, bound.Y + bound.Height / 2),
                                   getRect(bound.X + bound.Width, bound.Y + bound.Height)}
 
 
 
+
+
             'Draw resize pointers
-            'g.FillRectangles(Brushes.White, pointers)
-            'g.DrawRectangles(Pens.Brown, pointers)
-            g.DrawRects(pointers, New Pen(Color.BrownColor), New SolidColorBrush(Color.WhiteColor))
+            canvas.DrawRects(pointers, New Pen(Color.BlackColor),
+                             New SolidColorBrush(Color.WhiteColor))
 
 
-            'End Using
 
         End If
     End Sub
@@ -76,30 +77,27 @@ Public Class ResizeTool
         Return New Rect(New Point(x - radious, y - radious), radious * 2, radious * 2)
     End Function
 
-    Public Sub mouse_Down(e As MouseEvntArg)
-        If Core.Editor.selection.isEmty Then Exit Sub
-
-        md = e.Location
-        mdl = md
-
-        Dim pth As New NodePath
+    Protected Overrides Sub MouseDown(e As MouseEvntArg)
 
 
-        Dim rf As Rect = Core.Editor.getSelectionPath.Path.GetTightBound
-        pth.AddRectangle(rf)
-        Core.Editor.View.Memory2screen(pth)
 
-        bound = pth.GetTightBound
+        If Core.Editor.SelectionHolder.isEmpty Then Exit Sub
+
+        'md = e.Location
+        'mdl = md
+        MouseDownLocation = e.Location
+        MouseLocation = e.Location
+
+
 
         hit = Me.hittest(e.Location, bound)
         If hit <> -1 Then
             sizing = True
             'Debug.Print("true")
-            svp = Core.Editor.getSelectionPath.Path.Clone
-            Core.Editor.View.Memory2screen(svp)
+            svp = SelectedElements.GetSelectionSkeliton
             Core.Editor.View.BufferGraphics.Initialize()
 
-            dc.ActiveScroll = False
+            Device.ActiveScroll = False
         Else
 
             sizing = False
@@ -130,18 +128,19 @@ Public Class ResizeTool
             Dim tr As Rect
 
             Dim rloc = nrect.Location
-            Core.View.Screen2memory(rloc)
+            ' Core.View.Screen2memory(rloc)
             tr.Location = rloc
 
             Dim pk = New Point(nrect.X + nrect.Width, nrect.Y + nrect.Height)
-            Core.View.Screen2memory(pk)
+
 
             tr.Width = pk.X - tr.X
             tr.Height = pk.Y - tr.Y
 
-            ScalePath(Core.Editor.getSelectionPath.Path, tr)
 
-            dc.ActiveScroll = True
+            SelectedElements.ApplyTransform(GetScaleTransform(bound, tr))
+
+            Device.ActiveScroll = True
             'svp.Dispose()
         End If
 
@@ -149,35 +148,6 @@ Public Class ResizeTool
         Core.View.Refresh()
     End Sub
 
-    Public Sub DeSelectTool() Implements Itool.DeSelectTool
-        dc = Nothing
-    End Sub
-
-    Public ReadOnly Property Device As IDevice Implements Itool.Device
-        Get
-            Return dc
-        End Get
-    End Property
-
-    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
-        dc = d
-        Core.Editor.setIEdit(Me)
-    End Sub
-
-
-
-
-    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
-        Me.mouse_Down(e)
-    End Sub
-
-    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
-        Me.mouse_Move(e)
-    End Sub
-
-    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
-        Me.mouse_Up(e)
-    End Sub
 
     Private Function hittest(p As Point, b As Rect) As Integer
 
@@ -512,4 +482,25 @@ Public Class ResizeTool
 
     '    End Using
     'End Sub
+    Private Function GetScaleTransform(bound As Rect, ByVal Torect As Rect) As Transform
+        Dim bnd = bound
+        Dim xinvert As Boolean = IIf(Torect.Width < 0, True, False)
+        Dim yinvert As Boolean = IIf(Torect.Height < 0, True, False)
+
+        Dim transform As New TransformGroup
+
+
+        Dim translate As New TranslateTransform(-bnd.X, -bnd.Y)
+        transform.Items.Add(translate)
+
+        Dim sx = Torect.Width / bnd.Width
+        Dim sy = Torect.Height / bnd.Height
+        Dim scale As New ScaleTransform(sx, sy)
+        transform.Items.Add(scale)
+
+        Dim retranslate As New TranslateTransform(Torect.X, Torect.Y)
+        transform.Items.Add(retranslate)
+
+        Return transform
+    End Function
 End Class
