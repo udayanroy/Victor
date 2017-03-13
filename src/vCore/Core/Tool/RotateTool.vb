@@ -2,17 +2,17 @@
 Imports Graphics
 
 Public Class RotateTool
-    Implements Itool, IEditor
+    Inherits Tool
 
     Private b As Integer = 3
     Private wh As Integer = b * 2
 
 
 
-    Dim Core As vCore
-    Dim WithEvents dc As IDevice
-    Dim mdl As Point
-    Dim md As Point
+    Dim MouseLocation As Point
+    Dim MouseDownLocation As Point
+    'Dim mdl As Point
+    'Dim md As Point
 
     Dim s As Integer = 0
     Dim svp As NodePath
@@ -21,53 +21,28 @@ Public Class RotateTool
     Dim rotating As Boolean = False
     Dim mainpathBound As Rect
 
+    Dim SelectedElements As TransformCapElement 'to handle transformation of selectionElements
 
-    Public Sub New(ByRef vew As vCore)
-        Core = vew
-    End Sub
-    Public ReadOnly Property Device() As IDevice Implements Itool.Device
-        Get
-            Return dc
-        End Get
-    End Property
-   
-
-    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
-
-        Me.mouse_Down(e)
+    Public Sub New(ByRef Core As vCore)
+        MyBase.New(Core)
+        SelectedElements = New TransformCapElement(Editor)
     End Sub
 
-    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
 
-        Me.mouse_Move(e)
-    End Sub
-    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
+    Public Overrides Sub Draw(canvas As Canvas)
+        If Not Editor.SelectionHolder.isEmpty Then
 
-        Me.mouse_Up(e)
-    End Sub
-    Public Sub DeSelectTool() Implements Itool.DeSelectTool
-        dc = Nothing
-    End Sub
-
-    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
-        dc = d
-
-        Core.Editor.setIEdit(Me)
-    End Sub
-
-    Public Sub Draw(g As Canvas) Implements IEditor.Draw
-        If Core.Editor.selection.isEmty = False Then
-
-            Dim p As New Pen(Color.RedColor)
+            Dim p As New Pen(Color.RedColor) 'Pen should be load from configData
             Dim pth As New NodePath
 
-            mainpathBound = Core.Editor.getSelectionPath().Path.GetTightBound
-            pth.AddRectangle(mainpathBound)
-            Core.Editor.View.Memory2screen(pth)
+            'Get the combine bounds of all selected Elements
+            mainpathBound = SelectedElements.GetSelectionsBound
 
-            g.DrawPath(pth, p)
+            'Draw bounds of all selected Elements
+            canvas.DrawRects(SelectedElements.GetSelectionsBounds.ToArray, p)
+            canvas.DrawRect(mainpathBound, p) 'Draw combine bounds of all selected Elements
 
-            Dim bound = pth.GetBound
+            Dim bound = mainpathBound
 
             Dim pointers() As Rect = {getRect(bound.X, bound.Y),
                                             getRect(bound.X, bound.Y + bound.Height),
@@ -75,51 +50,65 @@ Public Class RotateTool
                                             getRect(bound.X + bound.Width, bound.Y + bound.Height)}
 
 
-            'g.FillRectangles(Brushes.Brown, pointers)
-            g.Smooth()
-            Me.DrawEllipses(g, pointers)
-
+            'Draw rotate pointers
+            canvas.Smooth()
+            canvas.DrawEllipses(pointers, New Pen(Color.BlackColor),
+                            New SolidColorBrush(Color.WhiteColor))
 
         End If
     End Sub
 
-    Public Sub mouse_Down(e As MouseEvntArg)
+    Protected Overrides Sub MouseDown(e As MouseEvntArg)
         rotating = False
+        MouseDownLocation = e.Location
+        MouseLocation = e.Location
 
         If MouseButton.Left Then
 
 
-            If Core.Editor.selection.isEmty = False Then
-                Dim pth As New NodePath
-                Dim rf As Rect = Core.Editor.getSelectionPath().Path.GetTightBound
-                pth.AddRectangle(rf)
-                Core.View.Memory2screen(pth)
-                Dim bound = pth.GetTightBound
+            If Not Editor.SelectionHolder.isEmpty Then
+                'Dim pth As New NodePath
+                'Dim rf As Rect = Core.Editor.getSelectionPath().Path.GetTightBound
+                'pth.AddRectangle(rf)
+                'Core.View.Memory2screen(pth)
+                'Dim bound = pth.GetTightBound
 
-                Dim hit = Me.hittest(e.Location, bound)
+                Dim hit = Me.hittest(e.Location, mainpathBound)
 
                 If hit <> -1 Then
-                    mdp = Me.MiddlePoint(bound)
+                    mdp = Me.MiddlePoint(mainpathBound)
                     mda = Me.Angle(mdp, e.Location)
 
-                    svp = Core.Editor.getSelectionPath.Path.Clone
+                    svp = SelectedElements.GetSelectionSkeliton
                     Core.View.Memory2screen(svp)
                     Core.View.BufferGraphics.Initialize()
                     rotating = True
-                    dc.ActiveScroll = False
+                    Device.ActiveScroll = False
                 Else
-                    Core.Editor.SelectAt(e.Location)
+                    s = Core.Editor.SelectAt(MouseLocation)
+                    If s <> 0 Then
+                        svp = SelectedElements.GetSelectionSkeliton
+
+                        Core.Editor.View.BufferGraphics.Initialize()
+                        Device.ActiveScroll = False
+                    End If
                 End If
 
             Else
+                s = Core.Editor.SelectAt(MouseLocation)
+                If s <> 0 Then
+                    svp = SelectedElements.GetSelectionSkeliton
 
-                Core.Editor.SelectAt(e.Location)
+                    Core.Editor.View.BufferGraphics.Initialize()
+                    Device.ActiveScroll = False
+                End If
+
             End If
 
         End If
     End Sub
 
-    Public Sub mouse_Move(e As MouseEvntArg)
+    Protected Overrides Sub MouseMove(e As MouseEvntArg)
         If e.Button = MouseButton.Left And rotating Then
             Dim angl = Me.Angle(mdp, e.Location)
             Core.View.BufferGraphics.Clear()
@@ -133,16 +122,17 @@ Public Class RotateTool
         End If
     End Sub
 
-    Public Sub mouse_Up(e As MouseEvntArg)
+    Protected Overrides Sub MouseUp(e As MouseEvntArg)
         If rotating Then
             Dim angl = Me.Angle(mdp, e.Location)
             Dim cnt As Point = Me.MiddlePoint(mainpathBound)
-            Dim mat As Matrix = Matrix.Identity
-            mat.RotateAt(angl - mda, cnt)
-            Core.Editor.getSelectionPath.Path.Transform(mat)
+            'Dim mat As Matrix = Matrix.Identity
+            'mat.RotateAt(angl - mda, cnt)
+            'Core.Editor.getSelectionPath.Path.Transform(mat)
+            Dim Rotation As New RotateTransform(angl - mda, cnt)
+            SelectedElements.ApplyTransform(Rotation)
 
-
-            dc.ActiveScroll = True
+            Device.ActiveScroll = True
             'svp.Dispose()
         End If
         Core.View.Refresh()

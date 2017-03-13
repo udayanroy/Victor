@@ -33,6 +33,11 @@ Public Class Canvas
             _graphics.DrawLine(np, CSng(p1.X), CSng(p1.Y), CSng(p2.X), CSng(p2.Y))
         End Using
     End Sub
+    Public Sub DrawEllipses(rects() As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
+        For Each Rect As Rect In rects
+            Me.DrawEllipse(Rect, Pen, Brush)
+        Next
+    End Sub
     Public Sub DrawEllipse(rect As Rect, Optional ByVal Pen As Pen = Nothing, Optional ByVal Brush As Brush = Nothing)
         If (Pen IsNot Nothing) Or (Brush IsNot Nothing) Then
             If Brush IsNot Nothing Then
