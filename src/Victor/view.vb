@@ -24,7 +24,7 @@ Public Class view
         'update GUI variables
         SelectionPropertyChanged()
 
-        AddHandler core.Editor.PropertyChanged, AddressOf SelectionPropertyChanged
+        ' AddHandler core.Editor.PropertyChanged, AddressOf SelectionPropertyChanged
         AddHandler core.Editor.SelectionChanged, AddressOf SelectionChanged
     End Sub
 
@@ -38,23 +38,23 @@ Public Class view
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DeleteToolStripMenuItem.Click
-        core.Editor.Delete()
+        ' core.Editor.Delete()
     End Sub
 
     Private Sub ClearAllToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearAllToolStripMenuItem.Click
-        core.Editor.ClearAll()
+        '  core.Editor.ClearAll()
     End Sub
 
     Private Sub PastToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PastToolStripMenuItem.Click
-        core.Editor.Past()
+        ' core.Editor.Past()
     End Sub
 
     Private Sub CopyToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyToolStripMenuItem.Click
-        core.Editor.Copy()
+        ' core.Editor.Copy()
     End Sub
 
     Private Sub CutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CutToolStripMenuItem.Click
-        core.Editor.Cut()
+        ' core.Editor.Cut()
     End Sub
 
     Private Sub ExportToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExportToolStripMenuItem.Click
@@ -111,7 +111,7 @@ Public Class view
     End Sub
 
     Private Sub SelectionChanged()
-        Dim enable = Not core.Editor.selection.isEmty
+        Dim enable = Not core.Editor.SelectionHolder.isEmpty
         CutToolStripMenuItem.Enabled = enable
         CopyToolStripMenuItem.Enabled = enable
         DeleteToolStripMenuItem.Enabled = enable
