@@ -5,65 +5,40 @@ Imports Geometry
 
 
 Public Class AddPointerTool
-    Implements Itool, IEditor
+    Inherits Tool
 
 
-    Dim Core As vCore
-    Dim WithEvents dc As IDevice
 
-    Dim spath As PathElement
+
+
+    ' Dim spath As PathElement
     Dim editablepath As NodePath
     Dim noderadious As Single = 3
 
+    Private SelectedElements As NodePathsCapElement 'to handle transformation of selectionElements
+
     Public Sub New(ByRef vcore As vCore)
-        Core = vcore
-    End Sub
-
-    Public Sub DeSelectTool() Implements Itool.DeSelectTool
-        dc = Nothing
-    End Sub
-
-    Public ReadOnly Property Device As IDevice Implements Itool.Device
-        Get
-            Return dc
-        End Get
-    End Property
-
-    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
-        dc = d
-        Core.Editor.setIEdit(Me)
+        MyBase.New(vcore)
+        SelectedElements = New NodePathsCapElement(Editor)
     End Sub
 
 
-    Private Sub dc_MouseDown(ByVal e As MouseEvntArg) Handles dc.MouseDown
 
-        Me.mouse_Down(e)
-    End Sub
-
-    Private Sub dc_MouseMove(ByVal e As MouseEvntArg) Handles dc.MouseMove
-
-
-    End Sub
-    Private Sub dc_MouseUp(ByVal e As MouseEvntArg) Handles dc.MouseUp
-
-
-    End Sub
-
-    Public Sub Draw(canvas As Canvas) Implements IEditor.Draw
-        If Core.Editor.selection.isEmty = False Then
-            canvas.Smooth()
+    Public Overrides Sub Draw(g As Canvas)
+        If Not Editor.SelectionHolder.isEmpty Then
+            g.Smooth()
             Dim p As New Pen(Color.RedColor)
-            spath = Core.Editor.getSelectionPath()
-            editablepath = spath.Path.Clone
-            Core.View.Screen2memory(editablepath)
-            canvas.DrawPath(editablepath, p)
-            DrawNodes(canvas)
+
+            editablepath = SelectedElements.GetSelectionSkeliton
+
+            g.DrawPath(editablepath, p)
+            DrawNodes(g)
 
         End If
     End Sub
 
-    Public Sub mouse_Down(e As MouseEvntArg)
-        If Core.Editor.selection.isEmty Then Exit Sub
+    Protected Overrides Sub MouseDown(e As MouseEvntArg)
+        If Core.Editor.SelectionHolder.isEmpty Then Exit Sub
 
         Dim mouseLocation = e.Location
 
@@ -131,14 +106,14 @@ Public Class AddPointerTool
 
             fig.Points.Insert(pointerIndex + 1, nPointer)
 
-            Core.View.Screen2memory(editablepath)
-            spath.setPath(editablepath)
+            'Core.View.Screen2memory(editablepath)
+            'spath.setPath(editablepath)
             Core.View.Refresh()
         End If
 
     End Sub
 
-     
+
 
 
     Private Sub DrawNodes(g As Canvas)

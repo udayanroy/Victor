@@ -2,81 +2,51 @@
 Imports Graphics
 
 Public Class PointerConverterTool
-    Implements Itool, IEditor
+    Inherits Tool
 
 
-    Dim Core As vCore
-    Dim WithEvents dc As IDevice
 
-    Dim spath As PathElement
+
+    'Dim spath As PathElement
     Dim editablepath As NodePath
     Dim noderadious As Single = 3
 
     Dim nodesel As nodeselection
 
 
+    Private SelectedElements As NodePathsCapElement 'to handle transformation of selectionElements
 
-
-    Public Sub New(ByRef vew As vCore)
-        Core = vew
-    End Sub
-
-    Public Sub DeSelectTool() Implements Itool.DeSelectTool
-        dc = Nothing
-    End Sub
-
-    Public ReadOnly Property Device As IDevice Implements Itool.Device
-        Get
-            Return dc
-        End Get
-    End Property
-
-    Public Sub SelectTool(ByRef d As IDevice) Implements Itool.SelectTool
-        dc = d
-        Core.Editor.setIEdit(Me)
+    Public Sub New(ByRef vcore As vCore)
+        MyBase.New(vcore)
+        SelectedElements = New NodePathsCapElement(Editor)
     End Sub
 
 
 
-    Private Sub dc_MouseDown(e As MouseEvntArg) Handles dc.MouseDown
-
-        Me.mouse_Down(e)
-    End Sub
-
-    Private Sub dc_MouseMove(e As MouseEvntArg) Handles dc.MouseMove
-
-        Me.mouse_Move(e)
-    End Sub
-    Private Sub dc_MouseUp(e As MouseEvntArg) Handles dc.MouseUp
-
-        Me.mouse_Up(e)
-    End Sub
-
-    Public Sub Draw(g As Canvas) Implements IEditor.Draw
-        If Core.Editor.selection.isEmty = False Then
+    Public Overrides Sub Draw(g As Canvas)
+        editablepath = Nothing
+        If Editor.SelectionHolder.isEmpty = False Then
             g.Smooth()
-            Dim p As New Pen(Color.BlueColor)
-            spath = Core.Editor.getSelectionPath()
-            editablepath = spath.Path.Clone
-            Core.View.Memory2screen(editablepath)
+            Dim p As New Pen(Color.BlueColor) ', pth As GraphicsPath = spath.GraphicsPath.ToGraphicsPath
+
+            'spath = v.Editor.getSelectionPath()
+            editablepath = SelectedElements.GetSelectionSkeliton
 
             g.DrawPath(editablepath, p)
 
             DrawNodes(g)
 
-
-
         End If
     End Sub
 
-    Public Sub mouse_Down(e As MouseEvntArg)
+    Protected Overrides Sub MouseDown(e As MouseEvntArg)
         Dim md = e.Location
-        If Core.Editor.selection.isEmty Then Exit Sub
+        If Core.Editor.SelectionHolder.isEmpty Then Exit Sub
 
         nodesel = GetSelectPoint(md)
         If nodesel.selectednode IsNot Nothing Then
             Core.View.BufferGraphics.Initialize()
-            dc.ActiveScroll = False  ' disable Scroll 
+            Device.ActiveScroll = False  ' disable Scroll 
 
             If nodesel.typeid = 1 Then
                 nodesel.selectednode.Type = PathPointType.None
@@ -91,8 +61,8 @@ Public Class PointerConverterTool
         End If
     End Sub
 
-    Public Sub mouse_Move(e As MouseEvntArg)
-        If Core.Editor.selection.isEmty Then Exit Sub
+    Protected Overrides Sub MouseMove(e As MouseEvntArg)
+        If Core.Editor.SelectionHolder.isEmpty Then Exit Sub
         If nodesel.selectednode Is Nothing Then Exit Sub
 
         If e.Button = Windows.Forms.MouseButtons.Left Then
@@ -126,11 +96,11 @@ Public Class PointerConverterTool
     End Sub
 
     Public Sub mouse_Up(e As MouseEvntArg)
-        If Core.Editor.selection.isEmty Then Exit Sub
-        dc.ActiveScroll = True  ' enable Scroll 
+        If Core.Editor.SelectionHolder.isEmpty Then Exit Sub
+        Device.ActiveScroll = True  ' enable Scroll 
 
-        Core.View.Screen2memory(editablepath)
-        spath.setPath(editablepath)
+        'Core.View.Screen2memory(editablepath)
+        'spath.setPath(editablepath)
 
         Core.View.Refresh()
     End Sub
