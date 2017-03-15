@@ -103,7 +103,11 @@ Imports Graphics
 #Region "Transform Function"
 
     Public Function GetItemBound() As Rect Implements DrawingElement.GetItemBound
-        Throw New NotImplementedException()
+        Dim mat As Matrix = Matrix.Identity
+        mat.Rotate(Me.Rotation)
+        Dim Duplicatepath = Me.Path.Clone
+        Duplicatepath.Transform(mat)
+        Return Duplicatepath.GetTightBound
     End Function
 
     Public Function GetSkeliton() As NodePath Implements DrawingElement.GetSkeliton
