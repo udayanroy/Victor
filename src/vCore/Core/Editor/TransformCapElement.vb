@@ -43,14 +43,25 @@ Public Class TransformCapElement
     End Function
 
     Public Sub ApplyTransform(transform As Transform)
-        'Dim t = New TransformGroup
+        Dim t = New TransformGroup
 
-        't.Items.Add(transform)
-        't.Items.Add(New MatrixTransform(Editor.))
-        'Me.SelectionHolder.SelectionList(0).Element.ApplyTransform(t)
+        t.Items.Add(transform)
+        t.Items.Add(New MatrixTransform(Visual.Screen2memory))
+        Me.SelectionHolder.SelectionList(0).Element.ApplyTransform(t)
         'Dim mat = Editor.View.Screen2memory()  'Matrix.Identity
         'mat.Multiply(transform.Value)
         'Me.SelectionHolder.SelectionList(0).Element.ApplyTransform(mat)
+    End Sub
+
+    Public Sub ApplyTransformDirect(transform As Transform)
+        Me.SelectionHolder.SelectionList(0).Element.ApplyTransform(transform)
+    End Sub
+
+    Public Sub ApplyTranslateTransform(p1 As Point, p2 As Point)
+
+        Visual.Screen2memory(p1)
+        Visual.Screen2memory(p2)
+        Me.SelectionHolder.SelectionList(0).Element.Translate(p2.X - p1.X, p2.Y - p1.Y)
     End Sub
 
     Public Property centerpoint As Point
