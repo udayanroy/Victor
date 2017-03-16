@@ -43,14 +43,15 @@ Public Class TransformCapElement
     End Function
 
     Public Sub ApplyTransform(transform As Transform)
+        ' The logic is to tranform the DOM element into screen then apply 
+        ' desaire transform and then transform it back to dom.
+        '  (Memory2screen * transform * Screen2memory)
         Dim t = New TransformGroup
-
+        t.Items.Add(New MatrixTransform(Visual.Memory2screen))
         t.Items.Add(transform)
         t.Items.Add(New MatrixTransform(Visual.Screen2memory))
         Me.SelectionHolder.SelectionList(0).Element.ApplyTransform(t)
-        'Dim mat = Editor.View.Screen2memory()  'Matrix.Identity
-        'mat.Multiply(transform.Value)
-        'Me.SelectionHolder.SelectionList(0).Element.ApplyTransform(mat)
+
     End Sub
 
     Public Sub ApplyTransformDirect(transform As Transform)
