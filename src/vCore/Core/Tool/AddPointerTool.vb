@@ -25,13 +25,16 @@ Public Class AddPointerTool
 
 
     Public Overrides Sub Draw(g As Canvas)
-        If Not Editor.SelectionHolder.isEmpty Then
+        editablepath = Nothing
+        If Editor.SelectionHolder.isEmpty = False Then
             g.Smooth()
-            Dim p As New Pen(Color.RedColor)
+            Dim p As New Pen(Color.BlueColor) ', pth As GraphicsPath = spath.GraphicsPath.ToGraphicsPath
 
+            'spath = v.Editor.getSelectionPath()
             editablepath = SelectedElements.GetSelectionSkeliton
 
             g.DrawPath(editablepath, p)
+
             DrawNodes(g)
 
         End If
@@ -118,13 +121,13 @@ Public Class AddPointerTool
 
     Private Sub DrawNodes(g As Canvas)
         Dim Pen As New Pen(Color.RedColor, 1)
-        Dim brush As New SolidColorBrush(Color.RedColor)
         For Each sp As NodeFigure In editablepath.Figures
             For Each nd As Node In sp.Points
                 ' g.FillEllipse(Brushes.White, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
                 ' g.DrawEllipse(Pen, nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
-                Dim rct As New Rect(nd.M.X - noderadious, nd.M.Y - noderadious, noderadious * 2, noderadious * 2)
-                g.DrawRect(rct, Pen, brush)
+
+                g.DrawRect(New Rect(New Point(nd.M.X - noderadious, nd.M.Y - noderadious), noderadious * 2, noderadious * 2),
+                    Pen, New SolidColorBrush(Color.WhiteColor))
             Next
         Next
 
