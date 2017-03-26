@@ -80,7 +80,6 @@ Public Class RotateTool
                     mda = Me.Angle(mdp, e.Location)
 
                     svp = SelectedElements.GetSelectionSkeliton
-                    Core.View.Memory2screen(svp)
                     Core.View.BufferGraphics.Initialize()
                     rotating = True
                     Device.ActiveScroll = False

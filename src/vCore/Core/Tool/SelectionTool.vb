@@ -170,8 +170,9 @@ Public Class SelectionTool
             If s <> 0 Then
                 Dim p1 = MouseDownLocation
                 Dim p2 = e.Location
-                Dim translate As New TranslateTransform(p2.X - p1.X, p2.Y - p1.Y)
-                SelectedElements.ApplyTransform(translate)
+                ''Dim translate As New TranslateTransform(p2.X - p1.X, p2.Y - p1.Y)
+                ''SelectedElements.ApplyTransform(translate)
+                SelectedElements.ApplyTranslateTransform(p1, p2)
 
             End If
         End If

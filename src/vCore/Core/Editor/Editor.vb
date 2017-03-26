@@ -61,6 +61,7 @@ Public Class Editor
 
     Friend Sub SetActiveTool(tool As Tool)
         Me._ActiveTool = tool
+        Me.Refresh()
     End Sub
 
     Friend Sub paint(canvas As Canvas)
