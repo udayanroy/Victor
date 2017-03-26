@@ -23,7 +23,10 @@ Public Class NodePathsCapElement
     End Sub
 
     Public Function GetSelectionSkeliton() As NodePath
-        Throw New NotImplementedException()
+        ' !! upgrade code for multi selection !!
+        Dim SkelitonPath = SelectionHolder.SelectionList(0).Element.GetSkeliton
+        Editor.View.Memory2screen(SkelitonPath)
+        Return SkelitonPath
     End Function
 
     Public Function GetNodePoints() As List(Of CapNode)
