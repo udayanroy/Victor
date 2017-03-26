@@ -32,4 +32,15 @@ Public Class NodePathsCapElement
     Public Function GetNodePoints() As List(Of CapNode)
         Throw New NotImplementedException()
     End Function
+
+    Public Sub SetPath(path As NodePath)
+
+        Visual.Screen2memory(path)
+        Dim SelectedPath = SelectionHolder.SelectionList(0).Element
+
+        If TypeOf SelectedPath Is PathElement Then
+            CType(SelectedPath, PathElement).setPath(path)
+        End If
+
+    End Sub
 End Class
