@@ -22,12 +22,16 @@ Public Class NodeEditTool
     Private nodesel As nodeselection
 
     Private SelectedElements As NodePathsCapElement 'to handle transformation of selectionElements
+    Private nodes As List(Of CapNode)
 
     Public Sub New(ByRef vcore As vCore)
         MyBase.New(vcore)
         SelectedElements = New NodePathsCapElement(Editor)
     End Sub
 
+    Protected Overrides Sub ToolActivated()
+       ' nodes = SelectedElements.GetNodePoints
+    End Sub
 
     Public Overrides Sub Draw(g As Canvas)
         editablepath = Nothing
@@ -35,11 +39,12 @@ Public Class NodeEditTool
             g.Smooth()
             Dim p As New Pen(Color.BlueColor) ', pth As GraphicsPath = spath.GraphicsPath.ToGraphicsPath
 
-            'spath = v.Editor.getSelectionPath()
+            'get the Skeliton and Editable nodes
             editablepath = SelectedElements.GetSelectionSkeliton
 
-            g.DrawPath(editablepath, p)
 
+            'draw paths and nodes
+            g.DrawPath(editablepath, p)
             DrawNodes(g)
 
         End If
@@ -90,13 +95,15 @@ Public Class NodeEditTool
         End If
     End Sub
 
-    Public Sub mouse_Up(e As MouseEvntArg)
+    Protected Overrides Sub MouseUp(e As MouseEvntArg)
+
         If editablepath Is Nothing Then Exit Sub
-        'v.View.Screen2memory(editablepath)
+        'Visual.Screen2memory(editablepath)
         'spath.setPath(editablepath)
 
         '// please Fix this. NodeEdit Tool Does not save anything to dom'////
-        Throw New Exception("Not Implemented..... Fix this.")
+        ' Throw New Exception("Not Implemented..... Fix this.")
+        SelectedElements.SetPath(editablepath)
 
         Core.View.Refresh()
         Device.ActiveScroll = True

@@ -101,6 +101,7 @@ Public Class PointerConverterTool
 
         'Core.View.Screen2memory(editablepath)
         'spath.setPath(editablepath)
+        SelectedElements.SetPath(editablepath)
 
         Core.View.Refresh()
     End Sub
